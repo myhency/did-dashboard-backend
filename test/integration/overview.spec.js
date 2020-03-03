@@ -1,8 +1,8 @@
-const request = require('supertest');
-const should = require('should');
-const app = require('../..');
-const Log = require('../../db/models/Log');
-const subMinutes = require('date-fns/subMinutes');
+import request from 'supertest';
+import should from 'should';
+import app from '../../';
+import Log from '../../db/models/Log';
+import { subMinutes } from 'date-fns';
 
 describe('GET /는', () => {
     const Logs = [
@@ -49,10 +49,10 @@ describe('GET /는', () => {
 
     describe('성공 시', () => {
       it('test', (done) => {
-          Log.findAll({ raw: true }).then(errorLogs => {
-            console.log(errorLogs);
-            done();
-          })
+        Log.findAll({ raw: true }).then(errorLogs => {
+          console.log(errorLogs);
+          done();
+        })
       });
     });
 });

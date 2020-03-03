@@ -1,5 +1,5 @@
-const sequelize = require('.');
-const Sequelize = require('sequelize');
+import sequelize from './index';
+import Sequelize from 'sequelize';
 
 const Model = Sequelize.Model;
 class Log extends Model {}
@@ -41,8 +41,8 @@ Log.init({
     allowNull: false
   }
 }, {
-  sequelize,
+  sequelize: sequelize,
   modelName: 'LOG'
 });
 
-module.exports = Log;
+export default Log;

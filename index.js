@@ -1,9 +1,9 @@
-var express = require('express');
-var morgan = require('morgan');
-var bodyParser = require('body-parser');
-var overview = require('./api/overview')
+import express from 'express';
+import morgan from 'morgan';
+import bodyParser from 'body-parser';
+import overview from './api/overview';
 
-var app = express();
+const app = express();
 
 if(process.env.NODE_ENV !== 'test') {
   app.use(morgan('dev'));

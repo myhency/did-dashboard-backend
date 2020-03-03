@@ -1,12 +1,14 @@
-'use strict';
+// 'use strict';
 
-const fs = require('fs');
-const path = require('path');
-const Sequelize = require('sequelize');
+import fs from 'fs';
+import path from 'path';
+import Sequelize from 'sequelize';
+import configs from '../config';
+
 const basename = path.basename(__filename);
 const env = process.env.NODE_ENV || 'development';
-const config = require(__dirname + '/../config.js')[env];
-const db = {};
+const config = configs[env];
+const models = {};
 
 let sequelize;
 if (config.use_env_variable) {
@@ -23,20 +25,25 @@ fs
   })
   .forEach(file => {
     const model = sequelize['import'](path.join(__dirname, file));
-    db[model.name] = model;
+    models[model.name] = model;
   });
 
-Object.keys(db).forEach(modelName => {
-  if (db[modelName].associate) {
-    db[modelName].associate(db);
+Object.keys(models).forEach(modelName => {
+  if (models[modelName].associate) {
+    models[modelName].associate(models);
   }
 });
 
-db.sequelize = sequelize;
-db.Sequelize = Sequelize;
 
-module.exports = db;
+models.sequelize = sequelize;
+models.Sequelize = Sequelize;
+console.log('asdfdasfd');
+console.log(models);
+
+
+module.exports = models;
 */
 
-module.exports = sequelize;
+export default sequelize;
+// module.exports = sequelize;
 
