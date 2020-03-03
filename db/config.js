@@ -2,7 +2,7 @@ module.exports = {
   test: {
     dialect: "sqlite",
     storage: ":memory:",
-    logging: true,
+    logging: false,
 
     // Specify options, which are used when sequelize.define is called.
     // The following example:

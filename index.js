@@ -14,9 +14,9 @@ app.use(bodyParser.urlencoded({ extended: true }));
 
 app.use('/overview', overview);
 
-app.use((req, res, next) => { // 404 처리 부분
-  res.status(404).send();
-});
+// app.use((req, res, next) => { // 404 처리 부분
+//   res.status(404).send();
+// });
 
 app.use((err, req, res, next) => { // 에러 처리 부분
   console.error(err.stack); // 에러 메시지 표시
