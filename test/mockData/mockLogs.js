@@ -57,7 +57,7 @@ const logs = [
   },
   {
     logId: 401,
-    timestamp: subSeconds(subMinutes(new Date(), 59), 1),
+    timestamp: subMinutes(new Date(), 60),
     siteId: 1,
     serviceId: 1,
     instanceId: 1,
@@ -81,7 +81,7 @@ const logs = [
   },
   {
     logId: 410,
-    timestamp: subMinutes(new Date(), 60),
+    timestamp: subMinutes(new Date(), 30),
     siteId: 1,
     serviceId: 1,
     instanceId: 1,

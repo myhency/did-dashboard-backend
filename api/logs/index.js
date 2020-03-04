@@ -1,7 +1,7 @@
 import express from 'express';
 import { Op, Sequelize } from 'sequelize';
 import Log from '../../db/models/Log';
-import { format, subMinutes } from 'date-fns';
+import { format, subMinutes, startOfMinute } from 'date-fns';
 import _ from 'lodash';
 import LogLevel from '../../enums/LogLevel';
 import LogName from '../../enums/LogName';
@@ -57,7 +57,7 @@ router.get('/info/apicall/transition', async (req, res, next) => {
                 logLevel: LogLevel.INFO,
                 logName: LogName.INFO.API_CALL_INFO,
                 timestamp: {
-                    [Op.gte]: subMinutes(now, 59)
+                    [Op.gte]: startOfMinute(subMinutes(now, 59))
                 }
             },
             // Sequelize의 최대 단점..

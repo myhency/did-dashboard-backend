@@ -30,13 +30,14 @@ describe('GET /api/logs/info/apicall/transition 는', () => {
   before(() => Log.bulkCreate(mockLogs));
 
   describe('성공 시', () => {
-    it('최근 60분의 API Call 카운트를 리턴한다.', (done) => {
+    it('최근 60분 동안의 api call 카운트를 1분 주기로 하여 배열을 리턴한다.', (done) => {
       request(app)
         .get('/api/logs/info/apicall/transition')
         .expect(200)
         .end((err, res) => {
           if(err) done(err);
 
+          // console.log(res.body);
           res.body.result.should.be.instanceof(Array).and.have.lengthOf(60);
           res.body.result.forEach(e => {
             e.timestamp.should.match(/^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$/);
