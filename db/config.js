@@ -1,4 +1,4 @@
-module.exports = {
+const config = {
   test: {
     dialect: "sqlite",
     storage: ":memory:",
@@ -22,13 +22,22 @@ module.exports = {
     },
   },
   development: {
-    username: "test",
-    password: "test",
-    database: "test",
-    host: "127.0.0.1",
-    dialect: "mysql",
+    username: "root",
+    password: "root",
+    database: "did_dashboard",
+    host: "192.168.1.253",
+    dialect: "mariadb",
+    define: {
+      underscored: true,
+      freezeTableName: true,
+      charset: 'utf8',
+      dialectOptions: {
+        collate: 'utf8_general_ci'
+      },
+      timestamps: false
+    },
     pool: {
-      max: 20,
+      max: 5,
       min: 0,
       acquire: 30000,
       idle: 10000
@@ -41,6 +50,15 @@ module.exports = {
     host: process.env.DB_HOSTNAME,
     dialect: 'mysql',
     use_env_variable: 'DATABASE_URL',
+    define: {
+      underscored: true,
+      freezeTableName: true,
+      charset: 'utf8',
+      dialectOptions: {
+        collate: 'utf8_general_ci'
+      },
+      timestamps: false
+    },
     pool: {
       max: 20,
       min: 0,
@@ -49,3 +67,5 @@ module.exports = {
     }
   }
 };
+
+export default config;
