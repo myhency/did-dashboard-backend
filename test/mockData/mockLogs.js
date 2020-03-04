@@ -1,4 +1,4 @@
-import { subMinutes, subSeconds } from 'date-fns';
+import { subDays, subHours, subMinutes, subSeconds } from 'date-fns';
 import LogLevel from '../../enums/LogLevel';
 import LogName from '../../enums/LogName';
 
@@ -94,7 +94,7 @@ const logs = [
   // INFO.NEW_PAIRWISEDID_INFO
   {
     logId: 500,
-    timestamp: subMinutes(new Date(), 4),
+    timestamp: subDays(new Date(), 4),
     siteId: 1,
     serviceId: 1,
     instanceId: 1,
@@ -104,10 +104,70 @@ const logs = [
       message:'new pairwisedid info'
     })
   },
+  {
+    logId: 501,
+    timestamp: subDays(new Date(), 3),
+    siteId: 1,
+    serviceId: 1,
+    instanceId: 1,
+    logLevel: LogLevel.INFO,
+    logName: LogName.INFO.NEW_PAIRWISEDID_INFO,
+    logDetail: JSON.stringify({
+      message:'new pairwisedid info'
+    })
+  },
+  {
+    logId: 502,
+    timestamp: subDays(new Date(), 4),
+    siteId: 1,
+    serviceId: 1,
+    instanceId: 1,
+    logLevel: LogLevel.INFO,
+    logName: LogName.INFO.NEW_PAIRWISEDID_INFO,
+    logDetail: JSON.stringify({
+      message:'new pairwisedid info'
+    })
+  },
+  {
+    logId: 503,
+    timestamp: subHours(new Date(), 1),
+    siteId: 1,
+    serviceId: 1,
+    instanceId: 1,
+    logLevel: LogLevel.INFO,
+    logName: LogName.INFO.NEW_PAIRWISEDID_INFO,
+    logDetail: JSON.stringify({
+      message:'new pairwisedid info'
+    })
+  },
+  {
+    logId: 504,
+    timestamp: subDays(new Date(), 2),
+    siteId: 1,
+    serviceId: 2,
+    instanceId: 3,
+    logLevel: LogLevel.INFO,
+    logName: LogName.INFO.NEW_PAIRWISEDID_INFO,
+    logDetail: JSON.stringify({
+      message:'new pairwisedid info'
+    })
+  },
+  {
+    logId: 505,
+    timestamp: subHours(new Date(), 1),
+    siteId: 1,
+    serviceId: 2,
+    instanceId: 4,
+    logLevel: LogLevel.INFO,
+    logName: LogName.INFO.NEW_PAIRWISEDID_INFO,
+    logDetail: JSON.stringify({
+      message:'new pairwisedid info'
+    })
+  },
   // INFO.CREDENTIAL_ISSUANCE_INFO
   {
     logId: 600,
-    timestamp: subMinutes(new Date(), 5),
+    timestamp: subDays(new Date(), 2),
     siteId: 1,
     serviceId: 1,
     instanceId: 1,
@@ -117,13 +177,37 @@ const logs = [
       message:'credential issuance info'
     })
   },
+  {
+    logId: 601,
+    timestamp: subMinutes(new Date(), 5),
+    siteId: 1,
+    serviceId: 1,
+    instanceId: 2,
+    logLevel: LogLevel.INFO,
+    logName: LogName.INFO.CREDENTIAL_ISSUANCE_INFO,
+    logDetail: JSON.stringify({
+      message:'credential issuance info'
+    })
+  },
   // INFO.CREDENTIAL_VERIFICATION_INFO
   {
     logId: 700,
+    timestamp: subDays(new Date(), 6),
+    siteId: 1,
+    serviceId: 2,
+    instanceId: 3,
+    logLevel: LogLevel.INFO,
+    logName: LogName.INFO.CREDENTIAL_VERIFICATION_INFO,
+    logDetail: JSON.stringify({
+      message:'credential verification info'
+    })
+  },
+  {
+    logId: 701,
     timestamp: subMinutes(new Date(), 6),
     siteId: 1,
-    serviceId: 1,
-    instanceId: 1,
+    serviceId: 2,
+    instanceId: 4,
     logLevel: LogLevel.INFO,
     logName: LogName.INFO.CREDENTIAL_VERIFICATION_INFO,
     logDetail: JSON.stringify({
