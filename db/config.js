@@ -27,6 +27,7 @@ const config = {
     database: "did_dashboard",
     host: "192.168.1.253",
     dialect: "mariadb",
+    timezone: '+09:00',
     define: {
       underscored: true,
       freezeTableName: true,
