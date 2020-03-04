@@ -12,7 +12,7 @@ describe('GET /api/sites/count 는', () => {
           .end((err, res) => {
             if(err) done(err);
 
-            res.body.result.should.be.equal(1);
+            res.body.result.should.be.instanceof(Number).and.aboveOrEqual(0);
             done();
           })
       });

@@ -189,6 +189,30 @@ const logs = [
       message:'credential issuance info'
     })
   },
+  {
+    logId: 602,
+    timestamp: subHours(new Date(), 5),
+    siteId: 1,
+    serviceId: 1,
+    instanceId: 2,
+    logLevel: LogLevel.INFO,
+    logName: LogName.INFO.CREDENTIAL_ISSUANCE_INFO,
+    logDetail: JSON.stringify({
+      message:'credential issuance info'
+    })
+  },
+  {
+    logId: 603,
+    timestamp: subHours(new Date(), 10),
+    siteId: 1,
+    serviceId: 1,
+    instanceId: 2,
+    logLevel: LogLevel.INFO,
+    logName: LogName.INFO.CREDENTIAL_ISSUANCE_INFO,
+    logDetail: JSON.stringify({
+      message:'credential issuance info'
+    })
+  },
   // INFO.CREDENTIAL_VERIFICATION_INFO
   {
     logId: 700,

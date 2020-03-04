@@ -14,7 +14,7 @@ describe('GET /api/instances/health 는', () => {
 
             res.body.result.should.be.instanceOf(Array);
             res.body.result.forEach(e => {
-              e.instanceId.should.be.instanceOf(Number);
+              e.instanceId.should.be.instanceOf(Number).and.aboveOrEqual(0);
               e.instanceName.should.be.instanceOf(String);
               e.siteName.should.be.instanceOf(String);
               e.status.should.be.oneOf(true, false);

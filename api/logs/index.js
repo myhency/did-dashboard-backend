@@ -57,13 +57,15 @@ router.get('/info/apicall/transition', async (req, res, next) => {
                 logLevel: LogLevel.INFO,
                 logName: LogName.INFO.API_CALL_INFO,
                 timestamp: {
-                    [Op.gte]: subMinutes(now, 60)
+                    [Op.gte]: subMinutes(now, 59)
                 }
             },
             // Sequelize의 최대 단점..
-            group: process.env.NODE_ENV === 'test' ?
-                [Sequelize.fn('strftime', '%H:%M', Sequelize.col('timestamp'), 'localtime')]
-                : [Sequelize.fn('DATE_FORMAT', Sequelize.col('timestamp'), '%H:%i')]
+            group: [ 
+                process.env.NODE_ENV === 'test' ?
+                    Sequelize.fn('strftime', '%H:%M', Sequelize.col('timestamp'), 'localtime')
+                    : Sequelize.fn('DATE_FORMAT', Sequelize.col('timestamp'), '%H:%i')
+            ]
         });
     } catch (err) {
         next(err);

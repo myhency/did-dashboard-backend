@@ -5,7 +5,8 @@ import Log from '../../db/models/Log';
 import LogLevel from '../../enums/LogLevel';
 import LogName from '../../enums/LogName';
 import { Sequelize, Op } from 'sequelize';
-import { startOfToday } from 'date-fns';
+import { format, startOfToday, startOfHour, subHours } from 'date-fns';
+import _ from 'lodash';
 const router = express.Router();
 
 router.get('/', async (req, res, next) => {
@@ -156,6 +157,78 @@ router.get('/:serviceId/statistic', [
             todayCredentialVerification
         }
     });
+});
+
+
+router.get('/:serviceId/transition', [
+    param('serviceId').isNumeric()
+], async (req, res, next) => {
+    const errors = validationResult(req);
+    if(!errors.isEmpty()) {
+        return res.status(400).send();
+    }
+
+    const { serviceId } = req.params;
+
+    const now = new Date();
+    const timetable = _.range(23, -1).map(i => {
+        return {
+            timestamp: format(startOfHour(subHours(now, i)), 'yyyy-MM-dd HH:mm'),
+            issuance: 0,
+            verification: 0
+        }
+    });
+
+    let recentInfoLogs;
+
+    try {
+        recentInfoLogs = await Log.findAll({
+            raw: true,
+            attributes: [
+                'logName',
+                [
+                    process.env.NODE_ENV === 'test' ?
+                        Sequelize.fn('strftime', '%Y-%m-%d %H:00', Sequelize.col('timestamp'), 'localtime')
+                        : Sequelize.fn('DATE_FORMAT', Sequelize.col('timestamp'), '%Y-%m-%d %H:00')
+                    , 'timestamp'
+                ]
+            ],
+            where: {
+                serviceId: serviceId,
+                timestamp: {
+                    [Op.gte]: startOfHour(subHours(now, 23))
+                },
+                logLevel: LogLevel.INFO,
+                logName: {
+                    [Op.in]: [
+                        LogName.INFO.CREDENTIAL_ISSUANCE_INFO,
+                        LogName.INFO.CREDENTIAL_VERIFICATION_INFO
+                    ]
+                }
+            },
+            group: [
+                process.env.NODE_ENV === 'test' ?
+                    Sequelize.fn('strftime', '%Y-%m-%d %H:00', Sequelize.col('timestamp'), 'localtime')
+                    : Sequelize.fn('DATE_FORMAT', Sequelize.col('timestamp'), '%Y-%m-%d %H:00'),
+                'logName'
+            ]
+        });
+    } catch (err) {
+        next(err);
+        return;
+    }
+
+    recentInfoLogs.forEach(info => {
+        const index = timetable.findIndex(e => e.timestamp === info.timestamp);
+        if(info.logName === LogName.INFO.CREDENTIAL_ISSUANCE_INFO)
+            timetable[index].issuance += 1;
+        if(info.logName === LogName.INFO.CREDENTIAL_VERIFICATION_INFO)
+            timetable[index].verification += 1;
+    });
+
+    res.json({
+        result: timetable
+    })
 });
 
 module.exports = router;
