@@ -20,7 +20,7 @@ $ npm test
 ----
 
 ## Install Rest Client Plugin & Test
-- Local Server 실행 후, http 폴더 내부의 *.http 파일에서 각 API 실행 가능
+- Local Server 실행 후, `http` 폴더 내부의 `*.http` 파일에서 `Send Request`를 통해 각 API 실행 가능
 ----
 
 ## Run Local Server
@@ -64,3 +64,4 @@ $ npm run start:prod
     - test (when adding missing tests)
     - chore (maintain)
 - [Markdown](https://dooray.com/htmls/guides/markdown_ko_KR.html)
+- [MariaDB Docker](https://hub.docker.com/_/mariadb)
