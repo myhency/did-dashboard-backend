@@ -4,6 +4,7 @@ const config = {
     password: "root",
     database: "did_dashboard",
     host: "localhost",
+    
     dialect: "mariadb",
     timezone: '+09:00',
     define: {
@@ -28,6 +29,7 @@ const config = {
     password: "root",
     database: "did_dashboard",
     host: "localhost",
+
     dialect: "mariadb",
     timezone: '+09:00',
     define: {
@@ -50,7 +52,8 @@ const config = {
     username: "root",
     password: "root",
     database: "did_dashboard",
-    host: "192.168.1.253",
+    host: "localhost",
+
     dialect: "mariadb",
     timezone: '+09:00',
     define: {
@@ -74,8 +77,9 @@ const config = {
     password: process.env.DB_PASSWORD,
     database: process.env.DB_NAME,
     host: process.env.DB_HOSTNAME,
-    dialect: 'mariadb',
     use_env_variable: 'DATABASE_URL',
+
+    dialect: 'mariadb',
     timezone: '+09:00',
     define: {
       underscored: true,
