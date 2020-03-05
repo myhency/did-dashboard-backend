@@ -50,6 +50,10 @@ Log.init({
     {
       using: 'BTREE',
       fields: ['log_name']
+    },
+    {
+      using: 'BTREE',
+      fields: ['service_id']
     }
   ],
   sequelize: sequelize
