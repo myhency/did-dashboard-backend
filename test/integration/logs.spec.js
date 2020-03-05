@@ -6,7 +6,7 @@ import mockLogs from '../mockData/mockLogs';
 
 describe('Logs API', () => {
   before(() => Log.sync({force: true}))
-  before(() => Log.bulkCreate(mockLogs));
+  before(() => Log.bulkCreate(mockLogs, { logging: false }));
 
   describe('GET /api/logs/error/count 는', () => {
       describe('성공 시', () => {

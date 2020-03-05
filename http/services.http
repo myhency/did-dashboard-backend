@@ -1,0 +1,17 @@
+@host = http://localhost:3000
+
+GET {{host}}/api/services
+###
+
+GET {{host}}/api/services/count
+###
+
+GET {{host}}/api/services/1/statistic
+###
+GET {{host}}/api/services/2/statistic
+###
+
+GET {{host}}/api/services/1/transition
+###
+GET {{host}}/api/services/2/transition
+###

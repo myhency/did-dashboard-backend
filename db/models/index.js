@@ -1,7 +1,7 @@
 import Sequelize from 'sequelize';
 import configs from '../config';
 
-const env = process.env.NODE_ENV || 'development';
+const env = process.env.NODE_ENV || 'dev';
 const config = configs[env];
 if(!config) throw new Error('config not found');
 

@@ -2,6 +2,8 @@ import app from '../index';
 const debug = require('debug')('express-sequelize');
 import http from 'http';
 import sequelize from '../db/models';
+import Log from '../db/models/Log';
+import mockLogs from '../test/mockData/mockLogs';
 
 const port = normalizePort(process.env.PORT || '3000');
 app.set('port', port);
@@ -10,13 +12,21 @@ const server = http.createServer(app);
 
 // sequelize options
 const options = {
-    force: process.env.NODE_ENV === 'test' ? true : false
+    force: process.env.NODE_ENV === 'local' ? true : false
 };
 
 sequelize.sync(options).then(() => {
     server.listen(port);
     server.on('error', onError);
     server.on('listening', onListening);
+
+    if(process.env.NODE_ENV === 'local') {
+        console.log('Creating Bulk Data ...')
+        Log.bulkCreate(mockLogs, {
+            logging: false
+        });
+        console.log('Bulk Data Created.')
+    }
 });
 
 function normalizePort(val) {

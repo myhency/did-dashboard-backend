@@ -187,9 +187,7 @@ router.get('/:serviceId/transition', [
             attributes: [
                 'logName',
                 [
-                    process.env.NODE_ENV === 'test' ?
-                        Sequelize.fn('strftime', '%Y-%m-%d %H:00', Sequelize.col('timestamp'), 'localtime')
-                        : Sequelize.fn('DATE_FORMAT', Sequelize.col('timestamp'), '%Y-%m-%d %H:00')
+                    Sequelize.fn('DATE_FORMAT', Sequelize.col('timestamp'), '%Y-%m-%d %H:00')
                     , 'timestamp'
                 ]
             ],
@@ -206,10 +204,8 @@ router.get('/:serviceId/transition', [
                     ]
                 }
             },
-            group: [
-                process.env.NODE_ENV === 'test' ?
-                    Sequelize.fn('strftime', '%Y-%m-%d %H:00', Sequelize.col('timestamp'), 'localtime')
-                    : Sequelize.fn('DATE_FORMAT', Sequelize.col('timestamp'), '%Y-%m-%d %H:00'),
+            group: [    
+                Sequelize.fn('DATE_FORMAT', Sequelize.col('timestamp'), '%Y-%m-%d %H:00'),
                 'logName'
             ]
         });

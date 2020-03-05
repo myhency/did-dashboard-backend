@@ -1,16 +1,11 @@
 const config = {
   test: {
-    dialect: "sqlite",
-    storage: ":memory:",
-    logging: false,
-
-    // Specify options, which are used when sequelize.define is called.
-    // The following example:
-    //   define: { timestamps: false }
-    // is basically the same as:
-    //   Model.init(attributes, { timestamps: false });
-    //   sequelize.define(name, attributes, { timestamps: false });
-    // so defining the timestamps for each model will be not necessary
+    username: "root",
+    password: "root",
+    database: "did_dashboard",
+    host: "localhost",
+    dialect: "mariadb",
+    timezone: '+09:00',
     define: {
       underscored: true,
       freezeTableName: true,
@@ -20,8 +15,38 @@ const config = {
       },
       timestamps: false
     },
+    pool: {
+      max: 5,
+      min: 0,
+      acquire: 30000,
+      idle: 10000
+    },
+    logging: false
   },
-  development: {
+  local: {
+    username: "root",
+    password: "root",
+    database: "did_dashboard",
+    host: "localhost",
+    dialect: "mariadb",
+    timezone: '+09:00',
+    define: {
+      underscored: true,
+      freezeTableName: true,
+      charset: 'utf8',
+      dialectOptions: {
+        collate: 'utf8_general_ci'
+      },
+      timestamps: false
+    },
+    pool: {
+      max: 5,
+      min: 0,
+      acquire: 30000,
+      idle: 10000
+    }
+  },
+  dev: {
     username: "root",
     password: "root",
     database: "did_dashboard",
@@ -44,7 +69,7 @@ const config = {
       idle: 10000
     }
   },
-  production: {
+  prod: {
     username: process.env.DB_USERNAME,
     password: process.env.DB_PASSWORD,
     database: process.env.DB_NAME,

@@ -1,0 +1,7 @@
+@host = http://localhost:3000
+
+GET {{host}}/api/logs/error/count
+###
+
+GET {{host}}/api/logs/info/apicall/transition
+###

@@ -46,9 +46,7 @@ router.get('/info/apicall/transition', async (req, res, next) => {
             raw: true,
             attributes: [
                 [
-                    process.env.NODE_ENV === 'test' ?
-                        Sequelize.fn('strftime', '%H:%M', Sequelize.col('timestamp'), 'localtime')
-                        : Sequelize.fn('DATE_FORMAT', Sequelize.col('timestamp'), '%H:%i')
+                    Sequelize.fn('DATE_FORMAT', Sequelize.col('timestamp'), '%H:%i')
                     , 'timestamp'
                 ],
                 [Sequelize.fn('count', 'timestamp'), 'count']
@@ -62,9 +60,7 @@ router.get('/info/apicall/transition', async (req, res, next) => {
             },
             // Sequelize의 최대 단점..
             group: [ 
-                process.env.NODE_ENV === 'test' ?
-                    Sequelize.fn('strftime', '%H:%M', Sequelize.col('timestamp'), 'localtime')
-                    : Sequelize.fn('DATE_FORMAT', Sequelize.col('timestamp'), '%H:%i')
+                Sequelize.fn('DATE_FORMAT', Sequelize.col('timestamp'), '%H:%i') 
             ]
         });
     } catch (err) {
