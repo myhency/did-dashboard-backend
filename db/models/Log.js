@@ -41,8 +41,18 @@ Log.init({
     allowNull: false
   }
 }, {
-  sequelize: sequelize,
-  modelName: 'LOG'
+  modelName: 'LOG',
+  indexes: [
+    {
+      using: 'BTREE',
+      fields: ['timestamp']
+    },
+    {
+      using: 'BTREE',
+      fields: ['log_name']
+    }
+  ],
+  sequelize: sequelize
 });
 
 export default Log;
