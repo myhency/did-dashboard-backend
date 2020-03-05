@@ -1,7 +1,7 @@
 # did-dashboard-backend
 
 ## How to run
-### MariaDB 구성 (Test/Local 용도)
+### MariaDB install (for Test/Local)
 ```shell
 $ docker run -d \
     -p 3306:3306 \
