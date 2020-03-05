@@ -1,6 +1,7 @@
 # did-dashboard-backend
 
-## MariaDB 구성 (Test/Local 용도)
+## How to run
+### MariaDB 구성 (Test/Local 용도)
 ```shell
 $ docker run -d \
     -p 3306:3306 \
@@ -11,19 +12,16 @@ $ docker run -d \
     mariadb \
     --character-set-server=utf8 --collation-server=utf8_general_ci
 ```
----
 
-## Test
+### Test
 ```shell
 $ npm test
 ```
----
 
-## Install Rest Client Plugin & Test
+### Install Rest Client Plugin & Test
 - Local Server 실행 후, `http` 폴더 내부의 `*.http` 파일에서 `Send Request`를 통해 각 API 실행 가능
----
 
-## Run Local Server
+### Run Local Server
 ```shell
 $ npm start
 ```
@@ -31,21 +29,18 @@ or
 ```shell
 $ npm run start:local
 ```
----
 
-## Run Development Server
+### Run Development Server
 ```shell
 $ npm run start:dev
 ```
----
 
-## Run Production Server
+### Run Production Server
 ```shell
 $ npm run start:prod
 ```
----
 
-## Reference
+### Reference
 - [Sequelize](https://sequelize.org/v5/)
 - [javascript export/import](https://beomy.tistory.com/22)
 - [Node.js Error: gyp: no xcode or clt version detected!](https://devsoyoung.github.io/posts/no-xcode/)
