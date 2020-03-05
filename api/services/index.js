@@ -216,9 +216,9 @@ router.get('/:serviceId/transition', [
 
     recentInfoLogs.forEach(info => {
         const index = timetable.findIndex(e => e.timestamp === info.timestamp);
-        if(info.logName === LogName.INFO.CREDENTIAL_ISSUANCE_INFO)
+        if(index && info.logName === LogName.INFO.CREDENTIAL_ISSUANCE_INFO)
             timetable[index].issuance += 1;
-        if(info.logName === LogName.INFO.CREDENTIAL_VERIFICATION_INFO)
+        if(index && info.logName === LogName.INFO.CREDENTIAL_VERIFICATION_INFO)
             timetable[index].verification += 1;
     });
 

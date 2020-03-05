@@ -70,7 +70,7 @@ router.get('/info/apicall/transition', async (req, res, next) => {
 
     apicalls.forEach(apicall => {
         const index = timetable.findIndex(element => element.timestamp === apicall.timestamp);
-        timetable[index].count = apicall.count;
+        if(index) timetable[index].count = apicall.count;
     })
 
     res.json({

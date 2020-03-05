@@ -11,17 +11,17 @@ $ docker run -d \
     mariadb \
     --character-set-server=utf8 --collation-server=utf8_general_ci
 ```
-----
+---
 
 ## Test
 ```shell
 $ npm test
 ```
-----
+---
 
 ## Install Rest Client Plugin & Test
 - Local Server 실행 후, `http` 폴더 내부의 `*.http` 파일에서 `Send Request`를 통해 각 API 실행 가능
-----
+---
 
 ## Run Local Server
 ```shell
@@ -31,19 +31,19 @@ or
 ```shell
 $ npm run start:local
 ```
-----
+---
 
 ## Run Development Server
 ```shell
 $ npm run start:dev
 ```
-----
+---
 
 ## Run Production Server
 ```shell
 $ npm run start:prod
 ```
-----
+---
 
 ## Reference
 - [Sequelize](https://sequelize.org/v5/)
@@ -65,3 +65,4 @@ $ npm run start:prod
     - chore (maintain)
 - [Markdown](https://dooray.com/htmls/guides/markdown_ko_KR.html)
 - [MariaDB Docker](https://hub.docker.com/_/mariadb)
+- [환경변수 관리](https://velog.io/@public_danuel/process-env-on-node-js)

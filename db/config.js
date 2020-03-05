@@ -76,6 +76,7 @@ const config = {
     host: process.env.DB_HOSTNAME,
     dialect: 'mariadb',
     use_env_variable: 'DATABASE_URL',
+    timezone: '+09:00',
     define: {
       underscored: true,
       freezeTableName: true,
