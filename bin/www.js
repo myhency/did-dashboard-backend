@@ -5,7 +5,7 @@ import sequelize from '../db/models';
 import Log from '../db/models/Log';
 import mockLogs from '../test/mockData/mockLogs';
 
-const port = normalizePort(process.env.PORT || '3000');
+const port = normalizePort(process.env.PORT || '4000');
 app.set('port', port);
 
 const server = http.createServer(app);
