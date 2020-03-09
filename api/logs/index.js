@@ -10,19 +10,21 @@ const router = express.Router();
 router.get('/error/count', async (req, res, next) => {
     let count;
 
-    try {
-        count = await Log.count({
-            where: {
-                logLevel: LogLevel.ERROR,
-                timestamp: {
-                    [Op.gte]: subMinutes(new Date(), 60)
-                }
-            }
-        });
-    } catch (err) {
-        next(err);
-        return;
-    }
+    // try {
+    //     count = await Log.count({
+    //         where: {
+    //             logLevel: LogLevel.ERROR,
+    //             timestamp: {
+    //                 [Op.gte]: subMinutes(new Date(), 60)
+    //             }
+    //         }
+    //     });
+    // } catch (err) {
+    //     next(err);
+    //     return;
+    // }
+
+    count = Math.floor(Math.random() * (5 - 0 + 1)) + 0
 
     res.json({
         result: count
