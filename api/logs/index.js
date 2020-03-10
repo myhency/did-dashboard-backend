@@ -30,7 +30,7 @@ router.get('/error/count', async (req, res, next) => {
         result: count
     })
 });
-
+/*
 router.get('/info/apicall/transition', async (req, res, next) => {
     
     const now = new Date();
@@ -74,6 +74,31 @@ router.get('/info/apicall/transition', async (req, res, next) => {
         const index = timetable.findIndex(element => element.timestamp === apicall.timestamp);
         if(index) timetable[index].count = apicall.count;
     })
+
+    res.json({
+        result: timetable
+    })
+});
+*/
+
+let timetable = [];
+
+router.get('/info/apicall/transition', async (req, res, next) => {
+    
+    const now = new Date();
+    let newTimetable = timetable.filter(t => t.timestamp >= format(subMinutes(now, 59), 'HH:mm'));
+    console.log(newTimetable);
+    
+    for (let i = newTimetable.length; i <= 59; i++) {
+        newTimetable.push({
+            timestamp: format(subMinutes(now, 59-i), 'HH:mm'),
+            count: Math.floor(Math.random() * (50 - 5 + 1)) + 5
+        })
+    }
+
+    timetable = newTimetable;
+    console.log(timetable);
+  
 
     res.json({
         result: timetable
