@@ -160,7 +160,7 @@ describe('Services API', () => {
     });
   });
   
-  describe('GET /api/services/:serviceId/statistic 는', () => {
+  describe('GET /api/services/:id/statistic 는', () => {
     describe('성공 시', () => {
       it('서비스의 누적, 금일 통계를 리턴한다.', (done) => {
         request(app)
@@ -193,7 +193,7 @@ describe('Services API', () => {
     });
   });
   
-  describe('GET /api/services/:serviceId/transition 는', () => {
+  describe('GET /api/services/:id/transition 는', () => {
     describe('성공 시', () => {
       it('최근 24시간동안 서비스에서 발생한 발급/검증 카운트를 1시간 주기로하여 배열을 리턴한다.', (done) => {
         request(app)

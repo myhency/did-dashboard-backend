@@ -29,7 +29,6 @@ router.get('/', [
     }
 
     const { siteId, role, openDateStart, openDateEnd } = req.query;
-    console.log(req.query);
 
     const whereClause = {};
     if(siteId) {
@@ -91,15 +90,15 @@ router.get('/count', async (req, res, next) => {
     })
 });
 
-router.get('/:serviceId/statistic', [
-    param('serviceId').isNumeric().toInt()
+router.get('/:id/statistic', [
+    param('id').isNumeric().toInt()
 ], async (req, res, next) => {
     const errors = validationResult(req);
     if(!errors.isEmpty()) {
         return res.status(400).send();
     }
 
-    const { serviceId } = req.params;
+    const { id } = req.params;
 
     let cumulativeInfoLogs;
     let todayInfoLogs;
@@ -112,7 +111,7 @@ router.get('/:serviceId/statistic', [
                 [Sequelize.fn('count', 'logName'), 'count']
             ],
             where: {
-                serviceId: serviceId,
+                serviceId: id,
                 logLevel: LogLevel.INFO,
                 logName: {
                     [Op.in]: [
@@ -137,7 +136,7 @@ router.get('/:serviceId/statistic', [
                 [Sequelize.fn('count', 'logName'), 'count']
             ],
             where: {
-                serviceId: serviceId,
+                serviceId: id,
                 timestamp: {
                     [Op.gte]: startOfToday()
                 },
@@ -199,15 +198,15 @@ router.get('/:serviceId/statistic', [
 });
 
 
-router.get('/:serviceId/transition', [
-    param('serviceId').isNumeric().toInt()
+router.get('/:id/transition', [
+    param('id').isNumeric().toInt()
 ], async (req, res, next) => {
     const errors = validationResult(req);
     if(!errors.isEmpty()) {
         return res.status(400).send();
     }
 
-    const { serviceId } = req.params;
+    const { id } = req.params;
 
     const now = new Date();
     const timetable = _.range(23, -1).map(i => {
@@ -231,7 +230,7 @@ router.get('/:serviceId/transition', [
                 ]
             ],
             where: {
-                serviceId: serviceId,
+                serviceId: id,
                 timestamp: {
                     [Op.gte]: startOfHour(subHours(now, 23))
                 },
