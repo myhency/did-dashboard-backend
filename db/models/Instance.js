@@ -1,10 +1,9 @@
 import sequelize from './index';
 import Sequelize from 'sequelize';
-import Service from './Service';
 
 const Model = Sequelize.Model;
-class Site extends Model {}
-Site.init({
+class Instance extends Model {}
+Instance.init({
   id: {
     type: Sequelize.INTEGER,
     primaryKey: true,
@@ -14,17 +13,21 @@ Site.init({
     type: Sequelize.STRING(256),
     allowNull: false
   },
-  openDate: {
-    type: Sequelize.DATE,
+  endpoint: {
+    type: Sequelize.STRING(256),
     allowNull: false
   },
-  logoFileName: {
-    type: Sequelize.STRING(256),
-    allowNull: true
-  }
+  status: {
+    type: Sequelize.BOOLEAN,
+    allowNull: false
+  },
+  serviceId: {
+    type: Sequelize.INTEGER,
+    allowNull: false
+  },
 }, {
-  modelName: 'site',
+  modelName: 'instance',
   sequelize: sequelize
 });
 
-export default Site;
+export default Instance;

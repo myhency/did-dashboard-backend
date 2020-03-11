@@ -3,6 +3,7 @@ import should from 'should';
 import app from '../..';
 import Log from '../../db/models/Log';
 import mockLogs from '../mockData/mockLogs';
+import Constants from '../../constants';
 
 describe('Logs API', () => {
   before(() => Log.sync({force: true}))
@@ -37,7 +38,7 @@ describe('Logs API', () => {
             // console.log(res.body);
             res.body.result.should.be.instanceof(Array).and.have.lengthOf(60);
             res.body.result.forEach(e => {
-              e.timestamp.should.match(/^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$/);
+              e.timestamp.should.match(Constants.TIME_FORMAT_REGEX);
               e.count.should.be.instanceof(Number).and.aboveOrEqual(0);
             });
             done();

@@ -5,6 +5,7 @@ import Site from '../../db/models/Site';
 import Service from '../../db/models/Service';
 import mockSites from '../mockData/mockSites';
 import mockServices from '../mockData/mockServices';
+import Constants from '../../constants';
 
 describe('Sites API', () => {
 
@@ -41,9 +42,9 @@ describe('Sites API', () => {
             // console.log(res.body);
             res.body.result.should.be.instanceof(Array);
             res.body.result.forEach(e => {
-              e.siteId.should.be.instanceof(Number).and.aboveOrEqual(0);
+              e.id.should.be.instanceof(Number).and.aboveOrEqual(0);
               e.name.should.be.instanceof(String);
-              e.openDate.should.be.instanceof(String).and.match(/^[1-2][0-9][0-9][0-9]-[0-1][0-9]-[0-3][0-9]$/);
+              e.openDate.should.be.instanceof(String).and.match(Constants.DATE_FORMAT_REGEX);
               if(e.logoFileName) {
                 e.logoFileName.should.be.instanceof(String);
               }
@@ -67,9 +68,9 @@ describe('Sites API', () => {
             res.body.result.should.be.instanceof(Array);
             res.body.result.length.should.be.equal(1);
             res.body.result.forEach(e => {
-              e.siteId.should.be.instanceof(Number).and.aboveOrEqual(0);
+              e.id.should.be.instanceof(Number).and.aboveOrEqual(0);
               e.name.should.be.instanceof(String);
-              e.openDate.should.be.instanceof(String).and.match(/^[1-2][0-9][0-9][0-9]-[0-1][0-9]-[0-3][0-9]$/);
+              e.openDate.should.be.instanceof(String).and.match(Constants.DATE_FORMAT_REGEX);
               if(e.logoFileName) {
                 e.logoFileName.should.be.instanceof(String);
               }
@@ -81,7 +82,7 @@ describe('Sites API', () => {
     });
   });
 
-  describe('GET /api/sites/:siteId 는', () => {
+  describe('GET /api/sites/:id 는', () => {
     describe('성공 시', () => {
       it('사이트 상세 정보를 리턴한다.', (done) => {
         request(app)
@@ -91,9 +92,9 @@ describe('Sites API', () => {
             if(err) done(err);
 
             // console.log(res.body);
-            res.body.result.siteId.should.be.instanceof(Number).and.aboveOrEqual(0);
+            res.body.result.id.should.be.instanceof(Number).and.aboveOrEqual(0);
             res.body.result.name.should.be.instanceof(String);
-            res.body.result.openDate.should.be.instanceof(String).and.match(/^[1-2][0-9][0-9][0-9]-[0-1][0-9]-[0-3][0-9]$/);
+            res.body.result.openDate.should.be.instanceof(String).and.match(Constants.DATE_FORMAT_REGEX);
             if(res.body.result.logoFileName) {
               res.body.result.logoFileName.should.be.instanceof(String);
             }

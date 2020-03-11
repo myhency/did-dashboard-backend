@@ -5,9 +5,11 @@ import sequelize from '../db/models';
 import Log from '../db/models/Log';
 import Site from '../db/models/Site';
 import Service from '../db/models/Service';
+import Instance from '../db/models/Instance';
 import mockLogs from '../test/mockData/mockLogs';
 import mockSites from '../test/mockData/mockSites';
 import mockServices from '../test/mockData/mockServices';
+import mockInstances from '../test/mockData/mockInstances';
 
 const port = normalizePort(process.env.PORT || '4000');
 app.set('port', port);
@@ -29,6 +31,7 @@ sequelize.sync(options).then(() => {
         Log.bulkCreate(mockLogs, { logging: false });
         Site.bulkCreate(mockSites, { logging: false });
         Service.bulkCreate(mockServices, { logging: false });
+        Instance.bulkCreate(mockInstances, { logging: false });
         
         console.log('Bulk Data Created.')
     }

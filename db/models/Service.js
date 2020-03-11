@@ -4,7 +4,7 @@ import Sequelize from 'sequelize';
 const Model = Sequelize.Model;
 class Service extends Model {}
 Service.init({
-  serviceId: {
+  id: {
     type: Sequelize.INTEGER,
     primaryKey: true,
     autoIncrement: true

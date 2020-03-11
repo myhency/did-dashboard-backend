@@ -2,6 +2,7 @@ import express from 'express';
 import Site from '../../db/models/Site';
 import { validationResult, param, query } from 'express-validator';
 import { Sequelize, Op } from 'sequelize';
+import Constants from '../../constants';
 const router = express.Router();
 
 router.get('/count', async (req, res, next) => {
@@ -42,7 +43,7 @@ router.get('/', [
         sites = await Site.findAll({
             raw: true,
             attributes: [
-                'siteId',
+                'id',
                 'name',
                 [
                     Sequelize.fn('DATE_FORMAT', Sequelize.col('open_date'), '%Y-%m-%d')
@@ -50,7 +51,7 @@ router.get('/', [
                 ],
                 'logoFileName',
                 [
-                    Sequelize.literal('(SELECT COUNT(site_id) FROM service WHERE service.site_id = site.site_id)'),  'countOfServices'
+                    Sequelize.literal('(SELECT COUNT(site_id) FROM service WHERE service.site_id = site.id)'),  'countOfServices'
                 ]
             ],
             where: whereClause
@@ -70,15 +71,15 @@ router.get('/', [
     });
 });
 
-router.get('/:siteId', [
-    param('siteId').isNumeric().toInt()
+router.get('/:id', [
+    param('id').isNumeric().toInt()
 ], async (req, res, next) => {
     const errors = validationResult(req);
     if(!errors.isEmpty()) {
         return res.status(400).send();
     }
 
-    const { siteId } = req.params;
+    const { id } = req.params;
 
     let site;
 
@@ -86,7 +87,7 @@ router.get('/:siteId', [
         site = await Site.findOne({
             raw: true,
             attributes: [
-                'siteId',
+                'id',
                 'name',
                 [
                     Sequelize.fn('DATE_FORMAT', Sequelize.col('open_date'), '%Y-%m-%d')
@@ -95,7 +96,7 @@ router.get('/:siteId', [
                 'logoFileName'
             ],
             where: {
-                siteId: siteId
+                id: id
             }
         })
     } catch (err) {

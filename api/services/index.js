@@ -1,48 +1,87 @@
 import express from 'express';
 import Role from '../../enums/Role';
-import { validationResult, param } from 'express-validator';
+import { validationResult, param, query } from 'express-validator';
 import Log from '../../db/models/Log';
+import Service from '../../db/models/Service';
 import LogLevel from '../../enums/LogLevel';
 import LogName from '../../enums/LogName';
 import { Sequelize, Op } from 'sequelize';
-import { format, startOfToday, startOfHour, subHours } from 'date-fns';
+import { format, parse, startOfToday, startOfDay, endOfDay, startOfHour, subHours } from 'date-fns';
+import Constants from '../../constants';
 import _ from 'lodash';
 const router = express.Router();
 
-router.get('/', async (req, res, next) => {
-    
+router.get('/', [
+    query('siteId').isNumeric().toInt().optional(),
+    query('role').isString().isIn([Role.ISSUER, Role.VERIFIER, Role.VERISSUER]).optional(),
+    query('openDateStart').matches(Constants.DATE_FORMAT_REGEX).optional(),
+    query('openDateEnd').matches(Constants.DATE_FORMAT_REGEX).custom((openDateEnd, { req }) => {
+        if (openDateEnd < req.query.openDateStart) {
+            throw new Error();
+        } else {
+            return openDateEnd;
+        }
+    }).optional(),
+], async (req, res, next) => {
+    const errors = validationResult(req);
+    if(!errors.isEmpty()) {
+        return res.status(400).send();
+    }
+
+    const { siteId, role, openDateStart, openDateEnd } = req.query;
+    console.log(req.query);
+
+    const whereClause = {};
+    if(siteId) {
+        whereClause.siteId = siteId
+    }
+    if(role) {
+        whereClause.role = role
+    }
+    if(openDateStart) {
+        whereClause.openDate = {
+            [Op.gte]: startOfDay(parse(openDateStart, Constants.DATE_FORMAT, new Date()))
+        };
+    }
+    if(openDateEnd) {
+        whereClause.openDate = {
+            [Op.gte]: endOfDay(parse(openDateEnd, Constants.DATE_FORMAT, new Date()))
+        };
+    }
+    if(openDateStart && openDateEnd) {
+        whereClause.openDate = {
+            [Op.between]: [
+                startOfDay(parse(openDateStart, Constants.DATE_FORMAT, new Date())),
+                endOfDay(parse(openDateEnd, Constants.DATE_FORMAT, new Date()))
+            ]
+        };
+    }
+
+    let services;
+
+    try {
+        services = await Service.findAll({
+            raw: true,
+            attributes: [
+                'id',
+                'name',
+                'role',
+                [ Sequelize.fn('DATE_FORMAT', Sequelize.col('open_date'), '%Y-%m-%d'), 'openDate' ],
+                'endpoint',
+                'siteId',
+                [ Sequelize.literal('(SELECT site.name FROM site WHERE site.id = service.site_id)'),  'siteName' ],
+                [ Sequelize.literal('(SELECT COUNT(instance.service_id) FROM instance WHERE instance.service_id = service.id)'),  'countOfInstances' ]
+            ],
+            where: whereClause
+        });
+    } catch (err) {
+        next(err);
+        return;
+    }
+
     res.json({
-        result: [
-            {
-                siteId: 1,
-                siteName: "현대카드",
-                serviceId: 1,
-                serviceName: "재직증명서 발급 서비스",
-                role: Role.ISSUER
-            },
-            {
-                siteId: 1,
-                siteName: "현대카드",
-                serviceId: 2,
-                serviceName: "법인카드 발급 서비스",
-                role: Role.VERIFIER
-            },
-            {
-                siteId: 1,
-                siteName: "현대카드",
-                serviceId: 3,
-                serviceName: "전자사원증 발급 서비스",
-                role: Role.VERIFIER
-            },
-            {
-                siteId: 1,
-                siteName: "현대카드",
-                serviceId: 4,
-                serviceName: "갑근세영수증 발급 서비스",
-                role: Role.VERISSUER
-            }
-        ]
-    })
+        result: services
+    });
 });
 
 router.get('/count', async (req, res, next) => {
@@ -173,7 +212,7 @@ router.get('/:serviceId/transition', [
     const now = new Date();
     const timetable = _.range(23, -1).map(i => {
         return {
-            timestamp: format(startOfHour(subHours(now, i)), 'yyyy-MM-dd HH:mm'),
+            timestamp: format(startOfHour(subHours(now, i)), Constants.DATETIME_FORMAT),
             issuance: 0,
             verification: 0
         }

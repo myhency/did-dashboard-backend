@@ -4,7 +4,7 @@ import Sequelize from 'sequelize';
 const Model = Sequelize.Model;
 class Log extends Model {}
 Log.init({
-  logId: {
+  id: {
     type: Sequelize.INTEGER,
     primaryKey: true,
     autoIncrement: true

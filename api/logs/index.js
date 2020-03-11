@@ -5,6 +5,7 @@ import { format, subMinutes, startOfMinute } from 'date-fns';
 import _ from 'lodash';
 import LogLevel from '../../enums/LogLevel';
 import LogName from '../../enums/LogName';
+import Constants from '../../constants';
 const router = express.Router();
 
 router.get('/error/count', async (req, res, next) => {
@@ -36,7 +37,7 @@ router.get('/info/apicall/transition', async (req, res, next) => {
     const now = new Date();
     const timetable = _.range(59, -1).map(i => {
         return {
-            timestamp: format(subMinutes(now, i), 'HH:mm'),
+            timestamp: format(subMinutes(now, i), Constants.TIME_FORMAT),
             count: 0
         }
     });
@@ -86,11 +87,11 @@ let timetable = [];
 router.get('/info/apicall/transition', async (req, res, next) => {
     
     const now = new Date();
-    let newTimetable = timetable.filter(t => t.timestamp >= format(subMinutes(now, 59), 'HH:mm'));
+    let newTimetable = timetable.filter(t => t.timestamp >= format(subMinutes(now, 59), Constants.TIME_FORMAT));
     
     for (let i = newTimetable.length; i <= 59; i++) {
         newTimetable.push({
-            timestamp: format(subMinutes(now, 59-i), 'HH:mm'),
+            timestamp: format(subMinutes(now, 59-i), Constants.TIME_FORMAT),
             count: Math.floor(Math.random() * (50 - 5 + 1)) + 5
         })
     }

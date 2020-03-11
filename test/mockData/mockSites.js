@@ -1,11 +1,11 @@
 const sites = [];
 
-insertSite(1, "현대카드", new Date(2019, 3, 26), null);
-insertSite(2, "애플", new Date(2019, 2, 28), null);
+insertSite(1, "현대카드", new Date(2019, 2, 26), null);
+insertSite(2, "애플", new Date(2019, 1, 28), null);
 
-function insertSite(siteId, name, openDate, logoFileName) {
+function insertSite(id, name, openDate, logoFileName) {
   sites.push({
-    siteId,
+    id,
     name,
     openDate,
     logoFileName
