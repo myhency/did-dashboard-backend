@@ -18,7 +18,7 @@ Site.init({
     type: Sequelize.DATE,
     allowNull: false
   },
-  logoImageName: {
+  logoFileName: {
     type: Sequelize.STRING(256),
     allowNull: true
   }

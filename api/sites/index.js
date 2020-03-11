@@ -1,6 +1,6 @@
 import express from 'express';
 import Site from '../../db/models/Site';
-import Service from '../../db/models/Service';
+import { validationResult, param } from 'express-validator';
 import { Sequelize } from 'sequelize';
 const router = express.Router();
 
@@ -32,7 +32,7 @@ router.get('/', async (req, res, next) => {
                     Sequelize.fn('DATE_FORMAT', Sequelize.col('open_date'), '%Y-%m-%d')
                     , 'openDate'
                 ],
-                'logoImageName',
+                'logoFileName',
                 [
                     Sequelize.literal('(SELECT COUNT(site_id) FROM service WHERE service.site_id = site.site_id)'),  'countOfServices'
                 ]
@@ -45,11 +45,57 @@ router.get('/', async (req, res, next) => {
 
     res.json({
         result: sites.map(site => {
-            if(site.logoImageName === null) {
-                delete site['logoImageName'];
+            if(site.logoFileName === null) {
+                delete site['logoFileName'];
             } 
             return site;
         })
+    });
+});
+
+router.get('/:siteId', [
+    param('siteId').isNumeric().toInt()
+], async (req, res, next) => {
+    const errors = validationResult(req);
+    if(!errors.isEmpty()) {
+        return res.status(400).send();
+    }
+
+    const { siteId } = req.params;
+
+    let site;
+
+    try {
+        site = await Site.findOne({
+            raw: true,
+            attributes: [
+                'siteId',
+                'name',
+                [
+                    Sequelize.fn('DATE_FORMAT', Sequelize.col('open_date'), '%Y-%m-%d')
+                    , 'openDate'
+                ],
+                'logoFileName'
+            ],
+            where: {
+                siteId: siteId
+            }
+        })
+    } catch (err) {
+        next(err);
+        return;
+    }
+
+    if(!site) {
+        return res.status(404).send();
+    }
+
+    if(site.logoFileName === null) {
+        delete site['logoFileName'];
+    } 
+
+    res.json({
+        result: site
     });
 });
 
