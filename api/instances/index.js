@@ -3,24 +3,22 @@ import { validationResult, param } from 'express-validator';
 const router = express.Router();
 
 router.get('/health', async (req, res, next) => {
-    
-    const resultInstances = mockInstances.map(instance => {
-        return {
-            instanceId: instance.instanceId,
-            instanceName: instance.instanceName,
-            siteId: instance.siteId,
-            siteName: instance.siteName,
-            status: instance.status, 
-        }
-    });
 
     res.json({
-        result: resultInstances
+        result: mockInstances.map(instance => {
+            return {
+                instanceId: instance.instanceId,
+                instanceName: instance.instanceName,
+                siteId: instance.siteId,
+                siteName: instance.siteName,
+                status: instance.status, 
+            }
+        })
     });
 });
 
 router.get('/:instanceId', [
-    param('instanceId').isNumeric()
+    param('instanceId').isNumeric().toInt()
 ], async (req, res, next) => {
     const errors = validationResult(req);
     if(!errors.isEmpty()) {
@@ -30,7 +28,7 @@ router.get('/:instanceId', [
     // type casting 기능?
     const { instanceId } = req.params;
     
-    const foundInstance = mockInstances.find(instance => instance.instanceId == instanceId);
+    const foundInstance = mockInstances.find(instance => instance.instanceId === instanceId);
 
     if(!foundInstance) {
         return res.status(404).send();

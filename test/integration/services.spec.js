@@ -73,6 +73,11 @@ describe('Services API', () => {
           .get('/api/services/noNumber/statistic')
           .expect(400, done)
       });
+      it('존재하지 않는 service라면 404을 리턴한다.', (done) => {
+        request(app)
+          .get('/api/services/100/statistic')
+          .expect(404, done)
+      });
     });
   });
   
@@ -101,6 +106,11 @@ describe('Services API', () => {
         request(app)
           .get('/api/services/noNumber/transition')
           .expect(400, done)
+      });
+      it('존재하지 않는 service라면 404을 리턴한다.', (done) => {
+        request(app)
+          .get('/api/services/100/transition')
+          .expect(404, done)
       });
     });
   });

@@ -2,3 +2,6 @@
 
 GET {{host}}/api/sites/count
 ###
+
+GET {{host}}/api/sites
+###

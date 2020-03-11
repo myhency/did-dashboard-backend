@@ -41,7 +41,7 @@ Log.init({
     allowNull: false
   }
 }, {
-  modelName: 'LOG',
+  modelName: 'log',
   indexes: [
     {
       using: 'BTREE',

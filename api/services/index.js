@@ -53,7 +53,7 @@ router.get('/count', async (req, res, next) => {
 });
 
 router.get('/:serviceId/statistic', [
-    param('serviceId').isNumeric()
+    param('serviceId').isNumeric().toInt()
 ], async (req, res, next) => {
     const errors = validationResult(req);
     if(!errors.isEmpty()) {
@@ -161,7 +161,7 @@ router.get('/:serviceId/statistic', [
 
 
 router.get('/:serviceId/transition', [
-    param('serviceId').isNumeric()
+    param('serviceId').isNumeric().toInt()
 ], async (req, res, next) => {
     const errors = validationResult(req);
     if(!errors.isEmpty()) {

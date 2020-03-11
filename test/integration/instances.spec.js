@@ -3,7 +3,7 @@ import should from 'should';
 import app from '../..';
 import Role from '../../enums/Role';
 
-describe.only('Instances API', () => {
+describe('Instances API', () => {
   describe('GET /api/instances/health 는', () => {
       describe('성공 시', () => {
         it('전체 인스턴스 리스트와 각각의 health를 리턴한다.', (done) => {

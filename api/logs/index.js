@@ -87,7 +87,6 @@ router.get('/info/apicall/transition', async (req, res, next) => {
     
     const now = new Date();
     let newTimetable = timetable.filter(t => t.timestamp >= format(subMinutes(now, 59), 'HH:mm'));
-    console.log(newTimetable);
     
     for (let i = newTimetable.length; i <= 59; i++) {
         newTimetable.push({
