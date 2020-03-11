@@ -97,7 +97,7 @@ router.get('/info/apicall/transition', async (req, res, next) => {
     }
 
     timetable = newTimetable;
-    console.log(timetable);
+    // console.log(timetable);
   
 
     res.json({

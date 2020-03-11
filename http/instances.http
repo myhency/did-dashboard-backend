@@ -2,3 +2,6 @@
 
 GET {{host}}/api/instances/health
 ###
+
+GET {{host}}/api/instances/3
+###
