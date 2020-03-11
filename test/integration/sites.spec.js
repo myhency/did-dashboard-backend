@@ -52,6 +52,32 @@ describe('Sites API', () => {
             done();
           })
       });
+
+      it('사이트명으로 검색 시 해당하는 사이트 리스트를 리턴한다.', (done) => {
+        request(app)
+          .get('/api/sites')
+          .query({
+            name: ' 현대 '
+          })
+          .expect(200)
+          .end((err, res) => {
+            if(err) done(err);
+
+            // console.log(res.body);
+            res.body.result.should.be.instanceof(Array);
+            res.body.result.length.should.be.equal(1);
+            res.body.result.forEach(e => {
+              e.siteId.should.be.instanceof(Number).and.aboveOrEqual(0);
+              e.name.should.be.instanceof(String);
+              e.openDate.should.be.instanceof(String).and.match(/^[1-2][0-9][0-9][0-9]-[0-1][0-9]-[0-3][0-9]$/);
+              if(e.logoFileName) {
+                e.logoFileName.should.be.instanceof(String);
+              }
+              e.countOfServices.should.be.instanceof(Number).and.aboveOrEqual(0);
+            })
+            done();
+          })
+      });
     });
   });
 

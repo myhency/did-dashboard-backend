@@ -1,7 +1,7 @@
 import express from 'express';
 import Site from '../../db/models/Site';
-import { validationResult, param } from 'express-validator';
-import { Sequelize } from 'sequelize';
+import { validationResult, param, query } from 'express-validator';
+import { Sequelize, Op } from 'sequelize';
 const router = express.Router();
 
 router.get('/count', async (req, res, next) => {
@@ -19,8 +19,24 @@ router.get('/count', async (req, res, next) => {
     })
 });
 
-router.get('/', async (req, res, next) => {
+router.get('/', [
+    query('name').isString().trim().customSanitizer(value => value.toUpperCase()).optional()
+], async (req, res, next) => {
+    const errors = validationResult(req);
+    if(!errors.isEmpty()) {
+        return res.status(400).send();
+    }
+
+    const { name } = req.query;
+
     let sites;
+
+    const whereClause = {};
+    if(name) {
+        whereClause.name = {
+            [Op.like]: '%' + name + '%'
+        };
+    }
 
     try {
         sites = await Site.findAll({
@@ -36,7 +52,8 @@ router.get('/', async (req, res, next) => {
                 [
                     Sequelize.literal('(SELECT COUNT(site_id) FROM service WHERE service.site_id = site.site_id)'),  'countOfServices'
                 ]
-            ]
+            ],
+            where: whereClause
         })
     } catch (err) {
         next(err);
