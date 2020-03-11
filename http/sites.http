@@ -6,7 +6,7 @@ GET {{host}}/api/sites/count
 GET {{host}}/api/sites
 ###
 
-GET {{host}}/api/sites?name=현대
+GET {{host}}/api/sites?name=대카
 ###
 
 GET {{host}}/api/sites/1
