@@ -1,24 +1,41 @@
 import express from 'express';
 import { validationResult, param } from 'express-validator';
+import Instance from '../../db/models/Instance';
+import { Sequelize } from 'sequelize';
 const router = express.Router();
 
 router.get('/health', async (req, res, next) => {
+    
+    let instances;
+
+    try {
+        instances = await Instance.findAll({
+            attributes: [
+                'id',
+                'name',
+                // 'endpoint',
+                'status',
+                // 'serviceId',
+                // [ Sequelize.literal('(SELECT service.name FROM service WHERE service.id = instance.service_id)'),  'serviceName' ],
+                [ Sequelize.literal('(SELECT service.site_id FROM service WHERE service.id = instance.service_id)'),  'siteId' ],
+                [ Sequelize.literal('(SELECT site.name FROM site WHERE site.id = (SELECT service.site_id FROM service WHERE service.id = instance.service_id))'),  'siteName' ],
+            ],
+            order: [
+                ['status', 'ASC']
+            ]
+        })
+    } catch (err) {
+        next(err);
+        return;
+    }
 
     res.json({
-        result: mockInstances.map(instance => {
-            return {
-                instanceId: instance.instanceId,
-                instanceName: instance.instanceName,
-                siteId: instance.siteId,
-                siteName: instance.siteName,
-                status: instance.status, 
-            }
-        })
+        result: instances
     });
 });
 
-router.get('/:instanceId', [
-    param('instanceId').isNumeric().toInt()
+router.get('/:id', [
+    param('id').isNumeric().toInt()
 ], async (req, res, next) => {
     const errors = validationResult(req);
     if(!errors.isEmpty()) {
@@ -26,9 +43,9 @@ router.get('/:instanceId', [
     }
 
     // type casting 기능?
-    const { instanceId } = req.params;
+    const { id } = req.params;
     
-    const foundInstance = mockInstances.find(instance => instance.instanceId === instanceId);
+    const foundInstance = mockInstances.find(instance => instance.id === id);
 
     if(!foundInstance) {
         return res.status(404).send();
@@ -36,8 +53,8 @@ router.get('/:instanceId', [
 
     res.json({
         result: {
-            instanceId: foundInstance.instanceId,
-            instanceName: foundInstance.instanceName,
+            id: foundInstance.id,
+            name: foundInstance.name,
             siteId: foundInstance.siteId,
             siteName: foundInstance.siteName,
             serviceId: foundInstance.serviceId,
