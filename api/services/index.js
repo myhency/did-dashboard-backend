@@ -69,7 +69,7 @@ router.get('/', [
                 'endpoint',
                 'siteId',
                 [ Sequelize.literal('(SELECT site.name FROM site WHERE site.id = service.site_id)'),  'siteName' ],
-                [ Sequelize.literal('(SELECT COUNT(instance.service_id) FROM instance WHERE instance.service_id = service.id)'),  'countOfInstances' ]
+                [ Sequelize.literal('(SELECT COUNT(instance.service_id) FROM instance WHERE instance.service_id = service.id)'),  'numberOfInstances' ]
             ],
             where: whereClause
         });
@@ -85,8 +85,17 @@ router.get('/', [
 
 router.get('/count', async (req, res, next) => {
     
+    let count;
+
+    try {
+        count = await Service.count();
+    } catch (err) {
+        next(err);
+        return;
+    }
+
     res.json({
-        result: 4
+        result: count
     })
 });
 

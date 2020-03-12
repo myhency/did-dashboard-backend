@@ -51,7 +51,7 @@ router.get('/', [
                 ],
                 'logoFileName',
                 [
-                    Sequelize.literal('(SELECT COUNT(site_id) FROM service WHERE service.site_id = site.id)'),  'countOfServices'
+                    Sequelize.literal('(SELECT COUNT(site_id) FROM service WHERE service.site_id = site.id)'),  'numberOfServices'
                 ]
             ],
             where: whereClause

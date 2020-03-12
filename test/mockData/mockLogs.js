@@ -10,7 +10,7 @@ const startDate = subDays(endDate, 30);
 [1].forEach(siteId => { // siteId
   [1, 2, 3, 4].forEach(serviceId => { // serviceId
     [1, 2].forEach(instanceId => { // instanceId
-      _.times(500, () => { // instance 별 로그 수
+      _.times(100, () => { // instance 별 로그 수
         insertLegacyErrorLog(siteId, serviceId, (serviceId-1)*2 + instanceId, randomDate(startDate, endDate));
         insertLedgerErrorLog(siteId, serviceId, (serviceId-1)*2 + instanceId, randomDate(startDate, endDate));
         insertInternalErrorLog(siteId, serviceId, (serviceId-1)*2 + instanceId, randomDate(startDate, endDate));

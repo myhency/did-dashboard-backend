@@ -37,7 +37,7 @@ describe('Services API', () => {
               e.openDate.should.be.instanceOf(String).and.match(Constants.DATE_FORMAT_REGEX);
               e.siteId.should.be.instanceOf(Number).and.aboveOrEqual(0);
               e.siteName.should.be.instanceOf(String);
-              e.countOfInstances.should.be.instanceOf(Number).and.aboveOrEqual(0);
+              e.numberOfInstances.should.be.instanceOf(Number).and.aboveOrEqual(0);
             });
             done();
           })
@@ -64,7 +64,7 @@ describe('Services API', () => {
               e.openDate.should.be.instanceOf(String).and.match(Constants.DATE_FORMAT_REGEX);
               e.siteId.should.be.instanceOf(Number).and.equal(searchSiteId);
               e.siteName.should.be.instanceOf(String);
-              e.countOfInstances.should.be.instanceOf(Number).and.aboveOrEqual(0);
+              e.numberOfInstances.should.be.instanceOf(Number).and.aboveOrEqual(0);
             });
             done();
           })
@@ -91,7 +91,7 @@ describe('Services API', () => {
               e.openDate.should.be.instanceOf(String).and.match(Constants.DATE_FORMAT_REGEX);
               e.siteId.should.be.instanceOf(Number).and.aboveOrEqual(0);
               e.siteName.should.be.instanceOf(String);
-              e.countOfInstances.should.be.instanceOf(Number).and.aboveOrEqual(0);
+              e.numberOfInstances.should.be.instanceOf(Number).and.aboveOrEqual(0);
             });
             done();
           })
@@ -122,7 +122,7 @@ describe('Services API', () => {
                 .and.lessThanOrEqual(searchOpenDateEnd);
               e.siteId.should.be.instanceOf(Number).and.aboveOrEqual(0);
               e.siteName.should.be.instanceOf(String);
-              e.countOfInstances.should.be.instanceOf(Number).and.aboveOrEqual(0);
+              e.numberOfInstances.should.be.instanceOf(Number).and.aboveOrEqual(0);
             });
             done();
           })
@@ -180,7 +180,7 @@ describe('Services API', () => {
       });
     });
     describe('실패 시', () => {
-      it('serviceId 파라미터가 잘못된 형식이면 400을 리턴한다.', (done) => {
+      it('id 파라미터가 잘못된 형식이면 400을 리턴한다.', (done) => {
         request(app)
           .get('/api/services/noNumber/statistic')
           .expect(400, done)
@@ -214,7 +214,7 @@ describe('Services API', () => {
     });
     
     describe('실패 시', () => {
-      it('serviceId 파라미터가 잘못된 형식이면 400을 리턴한다.', (done) => {
+      it('id 파라미터가 잘못된 형식이면 400을 리턴한다.', (done) => {
         request(app)
           .get('/api/services/noNumber/transition')
           .expect(400, done)

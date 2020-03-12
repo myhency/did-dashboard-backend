@@ -48,7 +48,7 @@ describe('Sites API', () => {
               if(e.logoFileName) {
                 e.logoFileName.should.be.instanceof(String);
               }
-              e.countOfServices.should.be.instanceof(Number).and.aboveOrEqual(0);
+              e.numberOfServices.should.be.instanceof(Number).and.aboveOrEqual(0);
             })
             done();
           })
@@ -74,7 +74,7 @@ describe('Sites API', () => {
               if(e.logoFileName) {
                 e.logoFileName.should.be.instanceof(String);
               }
-              e.countOfServices.should.be.instanceof(Number).and.aboveOrEqual(0);
+              e.numberOfServices.should.be.instanceof(Number).and.aboveOrEqual(0);
             })
             done();
           })
