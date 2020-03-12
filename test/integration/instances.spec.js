@@ -11,7 +11,7 @@ import mockServices from '../mockData/mockServices';
 import mockInstances from '../mockData/mockInstances';
 import mockLogs from '../mockData/mockLogs';
 
-describe.only('Instances API', () => {
+describe('Instances API', () => {
   before(() => Site.sync({force: true}))
   before(() => Service.sync({force: true}))
   before(() => Instance.sync({force: true}))
@@ -58,12 +58,12 @@ describe.only('Instances API', () => {
             
             res.body.result.id.should.be.instanceOf(Number).and.aboveOrEqual(0);
             res.body.result.name.should.be.instanceOf(String);
-            res.body.result.siteId.should.be.instanceOf(Number).and.aboveOrEqual(0);
-            res.body.result.siteName.should.be.instanceOf(String);
-            res.body.result.serviceId.should.be.instanceOf(Number).and.aboveOrEqual(0);
-            res.body.result.serviceName.should.be.instanceOf(String);
             res.body.result.endpoint.should.be.instanceOf(String);
             res.body.result.status.should.be.oneOf(true, false);
+            res.body.result.serviceId.should.be.instanceOf(Number).and.aboveOrEqual(0);
+            res.body.result.serviceName.should.be.instanceOf(String);
+            res.body.result.siteId.should.be.instanceOf(Number).and.aboveOrEqual(0);
+            res.body.result.siteName.should.be.instanceOf(String);
             done();
           })
       });
