@@ -81,5 +81,148 @@ describe('Instances API', () => {
           .expect(404, done)
       });
     });
-});
+  });
+
+  describe('GET /api/instances 는', () => {
+    describe('성공 시', () => {
+      it('전체 인스턴스 리스트를 리턴한다.', (done) => {
+        request(app)
+          .get('/api/instances')
+          .expect(200)
+          .end((err, res) => {
+            if(err) done(err);
+
+            // console.log(res.body.result);
+            res.body.result.should.be.instanceOf(Array);
+            res.body.result.forEach(e => {
+              e.id.should.be.instanceOf(Number).and.aboveOrEqual(0);
+              e.name.should.be.instanceOf(String);
+              e.endpoint.should.be.instanceOf(String);
+              e.status.should.be.oneOf(true, false);
+              e.serviceId.should.be.instanceOf(Number).and.aboveOrEqual(0);
+              e.serviceName.should.be.instanceOf(String);
+              e.siteId.should.be.instanceOf(Number).and.aboveOrEqual(0);
+              e.siteName.should.be.instanceOf(String);
+            });
+            done();
+          })
+      });
+
+      it('사이트로 검색 시, 사이트에 속한 인스턴스 리스트를 리턴한다.', (done) => {
+        const searchSiteId = 1;
+
+        request(app)
+          .get('/api/instances')
+          .query({
+            siteId: searchSiteId
+          })
+          .expect(200)
+          .end((err, res) => {
+            if(err) done(err);
+
+            // console.log(res.body.result);
+            res.body.result.should.be.instanceOf(Array);
+            res.body.result.forEach(e => {
+              e.id.should.be.instanceOf(Number).and.aboveOrEqual(0);
+              e.name.should.be.instanceOf(String);
+              e.endpoint.should.be.instanceOf(String);
+              e.status.should.be.oneOf(true, false);
+              e.serviceId.should.be.instanceOf(Number).and.aboveOrEqual(0);
+              e.serviceName.should.be.instanceOf(String);
+              e.siteId.should.be.instanceOf(Number).and.equal(searchSiteId);
+              e.siteName.should.be.instanceOf(String);
+            });
+            done();
+          })
+      });
+
+      it('서비스로 검색 시, 서비스에 속한 인스턴스 리스트를 리턴한다.', (done) => {
+        const searchServiceId = 1;
+        
+        request(app)
+          .get('/api/instances')
+          .query({
+            serviceId: searchServiceId
+          })
+          .expect(200)
+          .end((err, res) => {
+            if(err) done(err);
+
+            // console.log(res.body.result);
+            res.body.result.should.be.instanceOf(Array);
+            res.body.result.forEach(e => {
+              e.id.should.be.instanceOf(Number).and.aboveOrEqual(0);
+              e.name.should.be.instanceOf(String);
+              e.endpoint.should.be.instanceOf(String);
+              e.status.should.be.oneOf(true, false);
+              e.serviceId.should.be.instanceOf(Number).and.equal(searchServiceId);
+              e.serviceName.should.be.instanceOf(String);
+              e.siteId.should.be.instanceOf(Number).and.aboveOrEqual(0);
+              e.siteName.should.be.instanceOf(String);
+            });
+            done();
+          })
+      });
+
+      it('상태로 검색 시, 해당 상태를 가진 인스턴스 리스트를 리턴한다.', (done) => {
+        const searchStatus = false;
+        
+        request(app)
+          .get('/api/instances')
+          .query({
+            status: searchStatus
+          })
+          .expect(200)
+          .end((err, res) => {
+            if(err) done(err);
+
+            // console.log(res.body.result);
+            res.body.result.should.be.instanceOf(Array);
+            res.body.result.forEach(e => {
+              e.id.should.be.instanceOf(Number).and.aboveOrEqual(0);
+              e.name.should.be.instanceOf(String);
+              e.endpoint.should.be.instanceOf(String);
+              e.status.should.be.equal(searchStatus);
+              e.serviceId.should.be.instanceOf(Number).and.aboveOrEqual(0);
+              e.serviceName.should.be.instanceOf(String);
+              e.siteId.should.be.instanceOf(Number).and.aboveOrEqual(0);
+              e.siteName.should.be.instanceOf(String);
+            });
+            done();
+          })
+        });
+      });
+
+    describe('실패 시', () => {
+      it('잘못된 포맷의 사이트로 검색 시, 400을 리턴한다.', (done) => {
+        request(app)
+          .get('/api/instances')
+          .query({
+            siteId: 'noSiteId'
+          })
+          .expect(400)
+          .end(done);
+      });
+
+      it('잘못된 포맷의 서비스로 검색 시, 400을 리턴한다.', (done) => {
+        request(app)
+          .get('/api/instances')
+          .query({
+            serviceId: 'noServiceId'
+          })
+          .expect(400)
+          .end(done);
+      });
+
+      it('잘못된 포맷의 상태로 검색 시, 400을 리턴한다.', (done) => {
+        request(app)
+          .get('/api/instances')
+          .query({
+            status: 'noStatus'
+          })
+          .expect(400)
+          .end(done);
+      });
+    });
+  });
 });

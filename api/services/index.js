@@ -31,23 +31,23 @@ router.get('/', [
     const { siteId, role, openDateStart, openDateEnd } = req.query;
 
     const whereClause = {};
-    if(siteId) {
+    if(siteId !== undefined) {
         whereClause.siteId = siteId
     }
-    if(role) {
+    if(role !== undefined) {
         whereClause.role = role
     }
-    if(openDateStart) {
+    if(openDateStart !== undefined) {
         whereClause.openDate = {
             [Op.gte]: startOfDay(parse(openDateStart, Constants.DATE_FORMAT, new Date()))
         };
     }
-    if(openDateEnd) {
+    if(openDateEnd !== undefined) {
         whereClause.openDate = {
             [Op.gte]: endOfDay(parse(openDateEnd, Constants.DATE_FORMAT, new Date()))
         };
     }
-    if(openDateStart && openDateEnd) {
+    if(openDateStart !== undefined && openDateEnd !== undefined) {
         whereClause.openDate = {
             [Op.between]: [
                 startOfDay(parse(openDateStart, Constants.DATE_FORMAT, new Date())),

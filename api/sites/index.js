@@ -33,7 +33,7 @@ router.get('/', [
     let sites;
 
     const whereClause = {};
-    if(name) {
+    if(name !== undefined) {
         whereClause.name = {
             [Op.like]: '%' + name + '%'
         };

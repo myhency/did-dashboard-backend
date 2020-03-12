@@ -129,18 +129,42 @@ describe('Services API', () => {
               e.numberOfInstances.should.be.instanceOf(Number).and.aboveOrEqual(0);
             });
             done();
-          })
+        })
       });
     });
 
     describe('실패 시', () => {
-      it('잘못된 Role로 검색 시, 400을 리턴한다.', (done) => {
+      it('잘못된 포맷의 사이트로 검색 시, 400을 리턴한다.', (done) => {
+        request(app)
+          .get('/api/services')
+          .query({
+            siteId: 'noId'
+          })
+          .expect(400)
+          .end(done);
+      });
+
+      it('잘못된 포맷의 Role로 검색 시, 400을 리턴한다.', (done) => {
         const searchRole = 'NoRole';
 
         request(app)
           .get('/api/services')
           .query({
             role: searchRole
+          })
+          .expect(400)
+          .end(done);
+      });
+
+      it('잘못된 Open Date로 검색 시, 400을 리턴한다.', (done) => {
+        const searchOpenDateStart = format(new Date(2018, 0, 1), Constants.DATETIME_FORMAT);
+        const searchOpenDateEnd = format(new Date(2019, 1, 28), Constants.DATETIME_FORMAT);
+
+        request(app)
+          .get('/api/services')
+          .query({
+            openDateStart: searchOpenDateStart,
+            openDateEnd: searchOpenDateEnd
           })
           .expect(400)
           .end(done);

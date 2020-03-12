@@ -5,3 +5,15 @@ GET {{host}}/api/instances/health
 
 GET {{host}}/api/instances/3
 ###
+
+GET {{host}}/api/instances
+###
+
+GET {{host}}/api/instances?siteId=1
+###
+
+GET {{host}}/api/instances?serviceId=4
+###
+
+GET {{host}}/api/instances?status=false
+###
