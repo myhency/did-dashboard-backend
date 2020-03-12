@@ -12,6 +12,9 @@ GET {{host}}/api/services?role=ISSUER
 GET {{host}}/api/services?openDateStart=2018-01-01&openDateEnd=2019-02-28
 ###
 
+GET {{host}}/api/services/4
+###
+
 GET {{host}}/api/services/count
 ###
 

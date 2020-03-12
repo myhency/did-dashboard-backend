@@ -35,6 +35,7 @@ describe('Services API', () => {
               e.name.should.be.instanceOf(String);
               e.role.should.be.oneOf(Role.ISSUER, Role.VERIFIER, Role.VERISSUER);
               e.openDate.should.be.instanceOf(String).and.match(Constants.DATE_FORMAT_REGEX);
+              e.endpoint.should.be.instanceOf(String);
               e.siteId.should.be.instanceOf(Number).and.aboveOrEqual(0);
               e.siteName.should.be.instanceOf(String);
               e.numberOfInstances.should.be.instanceOf(Number).and.aboveOrEqual(0);
@@ -62,6 +63,7 @@ describe('Services API', () => {
               e.name.should.be.instanceOf(String);
               e.role.should.be.oneOf(Role.ISSUER, Role.VERIFIER, Role.VERISSUER);
               e.openDate.should.be.instanceOf(String).and.match(Constants.DATE_FORMAT_REGEX);
+              e.endpoint.should.be.instanceOf(String);
               e.siteId.should.be.instanceOf(Number).and.equal(searchSiteId);
               e.siteName.should.be.instanceOf(String);
               e.numberOfInstances.should.be.instanceOf(Number).and.aboveOrEqual(0);
@@ -89,6 +91,7 @@ describe('Services API', () => {
               e.name.should.be.instanceOf(String);
               e.role.should.be.equal(searchRole);
               e.openDate.should.be.instanceOf(String).and.match(Constants.DATE_FORMAT_REGEX);
+              e.endpoint.should.be.instanceOf(String);
               e.siteId.should.be.instanceOf(Number).and.aboveOrEqual(0);
               e.siteName.should.be.instanceOf(String);
               e.numberOfInstances.should.be.instanceOf(Number).and.aboveOrEqual(0);
@@ -120,6 +123,7 @@ describe('Services API', () => {
               e.openDate.should.be.instanceOf(String).and.match(Constants.DATE_FORMAT_REGEX)
                 .and.greaterThanOrEqual(searchOpenDateStart)
                 .and.lessThanOrEqual(searchOpenDateEnd);
+              e.endpoint.should.be.instanceOf(String);
               e.siteId.should.be.instanceOf(Number).and.aboveOrEqual(0);
               e.siteName.should.be.instanceOf(String);
               e.numberOfInstances.should.be.instanceOf(Number).and.aboveOrEqual(0);
@@ -144,6 +148,44 @@ describe('Services API', () => {
     });
   });
   
+  describe('GET /api/services/:id 는', () => {
+    describe('성공 시', () => {
+      it('서비스 상세 정보를 리턴한다.', (done) => {
+        request(app)
+          .get('/api/services/1')
+          .expect(200)
+          .end((err, res) => {
+            if(err) done(err);
+            // console.log(res.body);
+            res.body.result.id.should.be.instanceOf(Number).and.aboveOrEqual(0);
+            res.body.result.name.should.be.instanceOf(String);
+            res.body.result.role.should.be.oneOf(Role.ISSUER, Role.VERIFIER, Role.VERISSUER);
+            res.body.result.openDate.should.be.instanceOf(String).and.match(Constants.DATE_FORMAT_REGEX);
+            res.body.result.endpoint.should.be.instanceOf(String);
+            res.body.result.siteId.should.be.instanceOf(Number).and.aboveOrEqual(0);
+            res.body.result.siteName.should.be.instanceOf(String);
+            done();
+          })
+      });
+    });
+
+    describe('실패 시', () => {
+      it('id 포맷이 잘못된 경우, 400을 리턴한다.', (done) => {
+        request(app)
+          .get('/api/services/noNumber')
+          .expect(400)
+          .end(done);
+      });
+
+      it('존재하지 않는 서비스일 경우, 404를 리턴한다.', (done) => {
+        request(app)
+          .get('/api/services/1000')
+          .expect(404)
+          .end(done);
+      });
+    });
+  });
+
   describe('GET /api/services/count 는', () => {
     describe('성공 시', () => {
       it('전체 서비스 카운트를 리턴한다.', (done) => {
@@ -152,7 +194,7 @@ describe('Services API', () => {
           .expect(200)
           .end((err, res) => {
             if(err) done(err);
-            // console.log(res.body);
+          // console.log(res.body);
             res.body.result.should.be.instanceOf(Number).and.aboveOrEqual(0);
             done();
           })

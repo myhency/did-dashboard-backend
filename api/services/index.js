@@ -99,6 +99,48 @@ router.get('/count', async (req, res, next) => {
     })
 });
 
+router.get('/:id', [
+    param('id').isNumeric().toInt()
+], async (req, res, next) => {
+    const errors = validationResult(req);
+    if(!errors.isEmpty()) {
+        return res.status(400).send();
+    }
+
+    const { id } = req.params;
+
+    let service;
+
+    try {
+        service = await Service.findOne({
+            raw: true,
+            attributes: [
+                'id',
+                'name',
+                'role',
+                [ Sequelize.fn('DATE_FORMAT', Sequelize.col('open_date'), '%Y-%m-%d'), 'openDate' ],
+                'endpoint',
+                'siteId',
+                [ Sequelize.literal('(SELECT site.name FROM site WHERE site.id = service.site_id)'),  'siteName' ],
+            ],
+            where: {
+                id: id
+            }
+        })
+    } catch (err) {
+        next(err);
+        return;
+    }
+
+    if(!service) {
+        return res.status(404).send();
+    }
+
+    res.json({
+        result: service
+    })
+});
+
 router.get('/:id/statistic', [
     param('id').isNumeric().toInt()
 ], async (req, res, next) => {
@@ -108,6 +150,23 @@ router.get('/:id/statistic', [
     }
 
     const { id } = req.params;
+
+    let service;
+
+    try {
+        service = await Service.findOne({
+            where: {
+                id: id
+            }
+        })
+    } catch (err) {
+        next(err);
+        return;
+    }
+
+    if(!service) {
+        return res.status(404).send();
+    }
 
     let cumulativeInfoLogs;
     let todayInfoLogs;
@@ -217,6 +276,23 @@ router.get('/:id/transition', [
 
     const { id } = req.params;
 
+    let service;
+
+    try {
+        service = await Service.findOne({
+            where: {
+                id: id
+            }
+        })
+    } catch (err) {
+        next(err);
+        return;
+    }
+
+    if(!service) {
+        return res.status(404).send();
+    }
+    
     const now = new Date();
     const timetable = _.range(23, -1).map(i => {
         return {
