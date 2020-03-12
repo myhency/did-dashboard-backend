@@ -7,4 +7,6 @@ export default {
 
     TIME_FORMAT: 'HH:mm',
     TIME_FORMAT_REGEX: /^([0-1]?[0-9]|2[0-3]):[0-5][0-9]$/,
+
+    PAGE_SIZE: 10,
 };
