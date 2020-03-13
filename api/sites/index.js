@@ -10,7 +10,7 @@ router.get('/count', async (req, res, next) => {
 
     try {
         result = await Site.count();
-    } catch(err) {
+    } catch (err) {
         next(err);
         return;
     }
@@ -24,7 +24,7 @@ router.get('/', [
     query('name').isString().trim().customSanitizer(value => value.toUpperCase()).optional()
 ], async (req, res, next) => {
     const errors = validationResult(req);
-    if(!errors.isEmpty()) {
+    if (!errors.isEmpty()) {
         return res.status(400).send();
     }
 
@@ -33,7 +33,7 @@ router.get('/', [
     let sites;
 
     const whereClause = {};
-    if(name !== undefined) {
+    if (name !== undefined) {
         whereClause.name = {
             [Op.like]: '%' + name + '%'
         };
@@ -51,7 +51,7 @@ router.get('/', [
                 ],
                 'logoFileName',
                 [
-                    Sequelize.literal('(SELECT COUNT(site_id) FROM service WHERE service.site_id = site.id)'),  'numberOfServices'
+                    Sequelize.literal('(SELECT COUNT(site_id) FROM service WHERE service.site_id = site.id)'), 'numberOfServices'
                 ]
             ],
             where: whereClause
@@ -63,9 +63,9 @@ router.get('/', [
 
     res.json({
         result: sites.map(site => {
-            if(site.logoFileName === null) {
+            if (site.logoFileName === null) {
                 delete site['logoFileName'];
-            } 
+            }
             return site;
         })
     });
@@ -75,7 +75,7 @@ router.get('/:id', [
     param('id').isNumeric().toInt()
 ], async (req, res, next) => {
     const errors = validationResult(req);
-    if(!errors.isEmpty()) {
+    if (!errors.isEmpty()) {
         return res.status(400).send();
     }
 
@@ -104,13 +104,13 @@ router.get('/:id', [
         return;
     }
 
-    if(!site) {
+    if (!site) {
         return res.status(404).send();
     }
 
-    if(site.logoFileName === null) {
+    if (site.logoFileName === null) {
         delete site['logoFileName'];
-    } 
+    }
 
     res.json({
         result: site

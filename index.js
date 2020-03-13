@@ -8,8 +8,8 @@ import instances from './api/instances';
 
 const app = express();
 
-if(process.env.NODE_ENV !== 'test') {
-  app.use(morgan('dev'));
+if (process.env.NODE_ENV !== 'test') {
+    app.use(morgan('dev'));
 }
 
 app.use(bodyParser.json());
@@ -25,8 +25,8 @@ app.use('/api/instances', instances);
 // });
 
 app.use((err, req, res, next) => { // 에러 처리 부분
-  console.error(err.stack); // 에러 메시지 표시
-  res.status(500).send(); // 500 상태 표시 후 에러 메시지 전송
+    console.error(err.stack); // 에러 메시지 표시
+    res.status(500).send(); // 500 상태 표시 후 에러 메시지 전송
 });
 
 module.exports = app;

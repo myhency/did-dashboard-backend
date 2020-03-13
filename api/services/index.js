@@ -8,6 +8,7 @@ import LogName from '../../enums/LogName';
 import { Sequelize, Op } from 'sequelize';
 import { format, parse, startOfToday, startOfDay, endOfDay, startOfHour, subHours } from 'date-fns';
 import Constants from '../../constants';
+import pagingMiddleware from '../../common/middleware/pagingMiddleware';
 import _ from 'lodash';
 const router = express.Router();
 
@@ -22,32 +23,34 @@ router.get('/', [
             return openDateEnd;
         }
     }).optional(),
+    pagingMiddleware(Constants.PER_PAGE, ['name', 'role', 'numberOfInstances', 'openDate', 'endpoint'])
 ], async (req, res, next) => {
     const errors = validationResult(req);
-    if(!errors.isEmpty()) {
+    if (!errors.isEmpty()) {
         return res.status(400).send();
     }
 
+    const { perPage, page, sort, offset, limit } = req.paging;
     const { siteId, role, openDateStart, openDateEnd } = req.query;
 
     const whereClause = {};
-    if(siteId !== undefined) {
+    if (siteId !== undefined) {
         whereClause.siteId = siteId
     }
-    if(role !== undefined) {
+    if (role !== undefined) {
         whereClause.role = role
     }
-    if(openDateStart !== undefined) {
+    if (openDateStart !== undefined) {
         whereClause.openDate = {
             [Op.gte]: startOfDay(parse(openDateStart, Constants.DATE_FORMAT, new Date()))
         };
     }
-    if(openDateEnd !== undefined) {
+    if (openDateEnd !== undefined) {
         whereClause.openDate = {
-            [Op.gte]: endOfDay(parse(openDateEnd, Constants.DATE_FORMAT, new Date()))
+            [Op.lte]: endOfDay(parse(openDateEnd, Constants.DATE_FORMAT, new Date()))
         };
     }
-    if(openDateStart !== undefined && openDateEnd !== undefined) {
+    if (openDateStart !== undefined && openDateEnd !== undefined) {
         whereClause.openDate = {
             [Op.between]: [
                 startOfDay(parse(openDateStart, Constants.DATE_FORMAT, new Date())),
@@ -56,22 +59,39 @@ router.get('/', [
         };
     }
 
+    let orderClause = [ 
+        ['name', 'asc']
+    ];
+    if(sort.length > 0) {
+        orderClause = sort.map(s => {
+            switch (s.key) {
+                case 'numberOfInstances':
+                    return [Sequelize.literal('(SELECT COUNT(instance.service_id) FROM instance WHERE instance.service_id = service.id)'), s.value];
+                default:
+                    return [s.key, s.value];
+            }
+        });
+    }
+
     let services;
 
     try {
-        services = await Service.findAll({
+        services = await Service.findAndCountAll({
             raw: true,
             attributes: [
                 'id',
                 'name',
                 'role',
-                [ Sequelize.fn('DATE_FORMAT', Sequelize.col('open_date'), '%Y-%m-%d'), 'openDate' ],
+                [Sequelize.fn('DATE_FORMAT', Sequelize.col('open_date'), '%Y-%m-%d'), 'openDate'],
                 'endpoint',
                 'siteId',
-                [ Sequelize.literal('(SELECT site.name FROM site WHERE site.id = service.site_id)'),  'siteName' ],
-                [ Sequelize.literal('(SELECT COUNT(instance.service_id) FROM instance WHERE instance.service_id = service.id)'),  'numberOfInstances' ]
+                [Sequelize.literal('(SELECT site.name FROM site WHERE site.id = service.site_id)'), 'siteName'],
+                [Sequelize.literal('(SELECT COUNT(instance.service_id) FROM instance WHERE instance.service_id = service.id)'), 'numberOfInstances']
             ],
-            where: whereClause
+            where: whereClause,
+            order: orderClause,
+            offset: offset,
+            limit: limit,
         });
     } catch (err) {
         next(err);
@@ -79,12 +99,18 @@ router.get('/', [
     }
 
     res.json({
-        result: services
+        result: services.rows,
+
+        perPage,
+        page,
+        sort,
+        totalPage: Math.ceil(services.count / perPage),
+        totalCount: services.count
     });
 });
 
 router.get('/count', async (req, res, next) => {
-    
+
     let count;
 
     try {
@@ -103,7 +129,7 @@ router.get('/:id', [
     param('id').isNumeric().toInt()
 ], async (req, res, next) => {
     const errors = validationResult(req);
-    if(!errors.isEmpty()) {
+    if (!errors.isEmpty()) {
         return res.status(400).send();
     }
 
@@ -118,10 +144,10 @@ router.get('/:id', [
                 'id',
                 'name',
                 'role',
-                [ Sequelize.fn('DATE_FORMAT', Sequelize.col('open_date'), '%Y-%m-%d'), 'openDate' ],
+                [Sequelize.fn('DATE_FORMAT', Sequelize.col('open_date'), '%Y-%m-%d'), 'openDate'],
                 'endpoint',
                 'siteId',
-                [ Sequelize.literal('(SELECT site.name FROM site WHERE site.id = service.site_id)'),  'siteName' ],
+                [Sequelize.literal('(SELECT site.name FROM site WHERE site.id = service.site_id)'), 'siteName'],
             ],
             where: {
                 id: id
@@ -132,7 +158,7 @@ router.get('/:id', [
         return;
     }
 
-    if(!service) {
+    if (!service) {
         return res.status(404).send();
     }
 
@@ -145,7 +171,7 @@ router.get('/:id/statistic', [
     param('id').isNumeric().toInt()
 ], async (req, res, next) => {
     const errors = validationResult(req);
-    if(!errors.isEmpty()) {
+    if (!errors.isEmpty()) {
         return res.status(400).send();
     }
 
@@ -164,7 +190,7 @@ router.get('/:id/statistic', [
         return;
     }
 
-    if(!service) {
+    if (!service) {
         return res.status(404).send();
     }
 
@@ -183,7 +209,7 @@ router.get('/:id/statistic', [
                 logLevel: LogLevel.INFO,
                 logName: {
                     [Op.in]: [
-                        LogName.INFO.NEW_PAIRWISEDID_INFO, 
+                        LogName.INFO.NEW_PAIRWISEDID_INFO,
                         LogName.INFO.CREDENTIAL_ISSUANCE_INFO,
                         LogName.INFO.CREDENTIAL_VERIFICATION_INFO
                     ]
@@ -205,13 +231,13 @@ router.get('/:id/statistic', [
             ],
             where: {
                 serviceId: id,
-                timestamp: {
+                occurredDate: {
                     [Op.gte]: startOfToday()
                 },
                 logLevel: LogLevel.INFO,
                 logName: {
                     [Op.in]: [
-                        LogName.INFO.NEW_PAIRWISEDID_INFO, 
+                        LogName.INFO.NEW_PAIRWISEDID_INFO,
                         LogName.INFO.CREDENTIAL_ISSUANCE_INFO,
                         LogName.INFO.CREDENTIAL_VERIFICATION_INFO
                     ]
@@ -236,7 +262,7 @@ router.get('/:id/statistic', [
     const cumulativePairwisedid = cumulativeInfosLogsJson[LogName.INFO.NEW_PAIRWISEDID_INFO]
     const cumulativeCredentialIssuance = cumulativeInfosLogsJson[LogName.INFO.CREDENTIAL_ISSUANCE_INFO];
     const cumulativeCredentialVerification = cumulativeInfosLogsJson[LogName.INFO.CREDENTIAL_VERIFICATION_INFO];
-    
+
 
     const todayInfoLogsJson = todayInfoLogs.reduce((acc, element) => {
         acc[element.logName] = element.count;
@@ -251,7 +277,7 @@ router.get('/:id/statistic', [
     const todayCredentialIssuance = todayInfoLogsJson[LogName.INFO.CREDENTIAL_ISSUANCE_INFO];
     const todayCredentialVerification = todayInfoLogsJson[LogName.INFO.CREDENTIAL_VERIFICATION_INFO];
 
-    
+
 
     res.json({
         result: {
@@ -270,7 +296,7 @@ router.get('/:id/transition', [
     param('id').isNumeric().toInt()
 ], async (req, res, next) => {
     const errors = validationResult(req);
-    if(!errors.isEmpty()) {
+    if (!errors.isEmpty()) {
         return res.status(400).send();
     }
 
@@ -289,14 +315,14 @@ router.get('/:id/transition', [
         return;
     }
 
-    if(!service) {
+    if (!service) {
         return res.status(404).send();
     }
-    
+
     const now = new Date();
     const timetable = _.range(23, -1).map(i => {
         return {
-            timestamp: format(startOfHour(subHours(now, i)), Constants.DATETIME_FORMAT),
+            date: format(startOfHour(subHours(now, i)), Constants.DATETIME_FORMAT),
             issuance: 0,
             verification: 0
         }
@@ -310,13 +336,13 @@ router.get('/:id/transition', [
             attributes: [
                 'logName',
                 [
-                    Sequelize.fn('DATE_FORMAT', Sequelize.col('timestamp'), '%Y-%m-%d %H:00')
-                    , 'timestamp'
+                    Sequelize.fn('DATE_FORMAT', Sequelize.col('occurred_date'), '%Y-%m-%d %H:00')
+                    , 'occurredDate'
                 ]
             ],
             where: {
                 serviceId: id,
-                timestamp: {
+                occurredDate: {
                     [Op.gte]: startOfHour(subHours(now, 23))
                 },
                 logLevel: LogLevel.INFO,
@@ -327,8 +353,8 @@ router.get('/:id/transition', [
                     ]
                 }
             },
-            group: [    
-                Sequelize.fn('DATE_FORMAT', Sequelize.col('timestamp'), '%Y-%m-%d %H:00'),
+            group: [
+                Sequelize.fn('DATE_FORMAT', Sequelize.col('occurred_date'), '%Y-%m-%d %H:00'),
                 'logName'
             ]
         });
@@ -338,10 +364,10 @@ router.get('/:id/transition', [
     }
 
     recentInfoLogs.forEach(info => {
-        const index = timetable.findIndex(e => e.timestamp === info.timestamp);
-        if(index && info.logName === LogName.INFO.CREDENTIAL_ISSUANCE_INFO)
+        const index = timetable.findIndex(e => e.date === info.occurredDate);
+        if (index && info.logName === LogName.INFO.CREDENTIAL_ISSUANCE_INFO)
             timetable[index].issuance += 1;
-        if(index && info.logName === LogName.INFO.CREDENTIAL_VERIFICATION_INFO)
+        if (index && info.logName === LogName.INFO.CREDENTIAL_VERIFICATION_INFO)
             timetable[index].verification += 1;
     });
 

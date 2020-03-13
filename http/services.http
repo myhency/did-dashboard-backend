@@ -1,6 +1,6 @@
 @host = http://localhost:4000
 
-GET {{host}}/api/services
+GET {{host}}/api/services?perPage=10&page=1&sort=name+asc,role+asc,numberOfInstances+desc,openDate+asc,endpoint+asc
 ###
 
 GET {{host}}/api/services?siteId=1

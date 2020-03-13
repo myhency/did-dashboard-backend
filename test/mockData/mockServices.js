@@ -8,14 +8,14 @@ insertService(3, "전자사원증 발급", Role.VERIFIER, new Date(2017, 10, 4),
 insertService(4, "갑근세영수증 발급", Role.VERISSUER, new Date(2019, 1, 28), "http://", 1);
 
 function insertService(id, name, role, openDate, endpoint, siteId) {
-  services.push({
-    id,
-    name,
-    role,
-    openDate,
-    endpoint,
-    siteId
-  })
+    services.push({
+        id,
+        name,
+        role,
+        openDate,
+        endpoint,
+        siteId
+    })
 }
 
 export default services;

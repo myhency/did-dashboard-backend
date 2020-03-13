@@ -2,10 +2,12 @@ import express from 'express';
 import { validationResult, param, query } from 'express-validator';
 import Instance from '../../db/models/Instance';
 import { Sequelize } from 'sequelize';
+import pagingMiddleware from '../../common/middleware/pagingMiddleware';
+import Constants from '../../constants';
 const router = express.Router();
 
 router.get('/health', async (req, res, next) => {
-    
+
     let instances;
 
     try {
@@ -17,8 +19,8 @@ router.get('/health', async (req, res, next) => {
                 'status',
                 // 'serviceId',
                 // [ Sequelize.literal('(SELECT service.name FROM service WHERE service.id = instance.service_id)'),  'serviceName' ],
-                [ Sequelize.literal('(SELECT service.site_id FROM service WHERE service.id = instance.service_id)'),  'siteId' ],
-                [ Sequelize.literal('(SELECT site.name FROM site WHERE site.id = (SELECT service.site_id FROM service WHERE service.id = instance.service_id))'),  'siteName' ],
+                [Sequelize.literal('(SELECT service.site_id FROM service WHERE service.id = instance.service_id)'), 'siteId'],
+                [Sequelize.literal('(SELECT site.name FROM site WHERE site.id = (SELECT service.site_id FROM service WHERE service.id = instance.service_id))'), 'siteName'],
             ],
             order: [
                 ['status', 'ASC']
@@ -38,7 +40,7 @@ router.get('/:id', [
     param('id').isNumeric().toInt()
 ], async (req, res, next) => {
     const errors = validationResult(req);
-    if(!errors.isEmpty()) {
+    if (!errors.isEmpty()) {
         return res.status(400).send();
     }
 
@@ -54,9 +56,9 @@ router.get('/:id', [
                 'endpoint',
                 'status',
                 'serviceId',
-                [ Sequelize.literal('(SELECT service.name FROM service WHERE service.id = instance.service_id)'),  'serviceName' ],
-                [ Sequelize.literal('(SELECT service.site_id FROM service WHERE service.id = instance.service_id)'),  'siteId' ],
-                [ Sequelize.literal('(SELECT site.name FROM site WHERE site.id = (SELECT service.site_id FROM service WHERE service.id = instance.service_id))'),  'siteName' ],
+                [Sequelize.literal('(SELECT service.name FROM service WHERE service.id = instance.service_id)'), 'serviceName'],
+                [Sequelize.literal('(SELECT service.site_id FROM service WHERE service.id = instance.service_id)'), 'siteId'],
+                [Sequelize.literal('(SELECT site.name FROM site WHERE site.id = (SELECT service.site_id FROM service WHERE service.id = instance.service_id))'), 'siteName'],
             ],
             where: {
                 id: id
@@ -66,9 +68,9 @@ router.get('/:id', [
         next(err);
         return;
     }
-    
 
-    if(!instance) {
+
+    if (!instance) {
         return res.status(404).send();
     }
 
@@ -80,44 +82,62 @@ router.get('/:id', [
 router.get('/', [
     query('siteId').isNumeric().toInt().optional(),
     query('serviceId').isNumeric().toInt().optional(),
-    query('status').isBoolean().toBoolean().optional()
+    query('status').isBoolean().toBoolean().optional(),
+    pagingMiddleware(Constants.PER_PAGE, ['siteName', 'serviceName', 'name', 'endpoint', 'status'])
 ], async (req, res, next) => {
     const errors = validationResult(req);
-    if(!errors.isEmpty()) {
+    if (!errors.isEmpty()) {
         return res.status(400).send();
     }
 
+    const { perPage, page, sort, offset, limit } = req.paging;
     const { siteId, serviceId, status } = req.query;
 
     const whereClause = {};
-    if(siteId !== undefined) {
+    if (siteId !== undefined) {
         whereClause.serviceId = Sequelize.literal(`service_id IN (SELECT service.id FROM service WHERE service.site_id = ${siteId})`)
     }
-    if(serviceId !== undefined) {
+    if (serviceId !== undefined) {
         whereClause.serviceId = serviceId
     }
-    if(status !== undefined) {
+    if (status !== undefined) {
         whereClause.status = status
+    }
+
+    let orderClause = [ 
+        ['id', 'asc']
+    ];
+    if(sort.length > 0) {
+        orderClause = sort.map(s => {
+            switch (s.key) {
+                case 'siteName':
+                    return [Sequelize.literal('(SELECT service.name FROM service WHERE service.id = instance.service_id)'), s.value];
+                case 'serviceName':
+                    return [Sequelize.literal('(SELECT site.name FROM site WHERE site.id = (SELECT service.site_id FROM service WHERE service.id = instance.service_id))'), s.value];
+                default:
+                    return [s.key, s.value];
+            }
+        });
     }
 
     let instances;
 
     try {
-        instances = await Instance.findAll({
+        instances = await Instance.findAndCountAll({
             attributes: [
                 'id',
                 'name',
                 'endpoint',
                 'status',
                 'serviceId',
-                [ Sequelize.literal('(SELECT service.name FROM service WHERE service.id = instance.service_id)'),  'serviceName' ],
-                [ Sequelize.literal('(SELECT service.site_id FROM service WHERE service.id = instance.service_id)'),  'siteId' ],
-                [ Sequelize.literal('(SELECT site.name FROM site WHERE site.id = (SELECT service.site_id FROM service WHERE service.id = instance.service_id))'),  'siteName' ],
+                [Sequelize.literal('(SELECT service.name FROM service WHERE service.id = instance.service_id)'), 'serviceName'],
+                [Sequelize.literal('(SELECT service.site_id FROM service WHERE service.id = instance.service_id)'), 'siteId'],
+                [Sequelize.literal('(SELECT site.name FROM site WHERE site.id = (SELECT service.site_id FROM service WHERE service.id = instance.service_id))'), 'siteName'],
             ],
             where: whereClause,
-            order: [
-                ['id', 'ASC']
-            ]
+            order: orderClause,
+            offset: offset,
+            limit: limit,
         })
     } catch (err) {
         next(err);
@@ -125,7 +145,13 @@ router.get('/', [
     }
 
     res.json({
-        result: instances
+        result: instances.rows,
+
+        perPage,
+        page,
+        sort,
+        totalPage: Math.ceil(instances.count / perPage),
+        totalCount: instances.count
     });
 });
 

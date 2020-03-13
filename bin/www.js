@@ -26,32 +26,32 @@ sequelize.sync(options).then(() => {
     server.on('error', onError);
     server.on('listening', onListening);
 
-    if(process.env.NODE_ENV === 'local') {
+    if (process.env.NODE_ENV === 'local') {
         console.log('Creating Bulk Data ...')
         Log.bulkCreate(mockLogs, { logging: false });
         Site.bulkCreate(mockSites, { logging: false });
         Service.bulkCreate(mockServices, { logging: false });
         Instance.bulkCreate(mockInstances, { logging: false });
-        
+
         console.log('Bulk Data Created.')
     }
 });
 
 function normalizePort(val) {
     const port = parseInt(val, 10);
-  
+
     if (isNaN(port)) {
-      // named pipe
-      return val;
+        // named pipe
+        return val;
     }
-  
+
     if (port >= 0) {
-      // port number
-      return port;
+        // port number
+        return port;
     }
-  
+
     return false;
-  }
+}
 
 /**
  * Event listener for HTTP server "error" event.
@@ -61,11 +61,11 @@ function onError(error) {
     if (error.syscall !== 'listen') {
         throw error;
     }
-  
+
     const bind = typeof port === 'string'
         ? 'Pipe ' + port
         : 'Port ' + port;
-  
+
     // handle specific listen errors with friendly messages
     switch (error.code) {
         case 'EACCES':
@@ -79,8 +79,8 @@ function onError(error) {
         default:
             throw error;
     }
-  }
-  
+}
+
 /**
  * Event listener for HTTP server "listening" event.
  */

@@ -10,13 +10,13 @@ insertInstance(7, "갑근세영수증 발급 서비스 인스턴스 #1", "http:/
 insertInstance(8, "갑근세영수증 발급 서비스 인스턴스 #2", "http://10.10.101.8:8080", false, 4);
 
 function insertInstance(id, name, endpoint, status, serviceId) {
-  instances.push({
-    id,
-    name,
-    endpoint,
-    status,
-    serviceId
-  })
+    instances.push({
+        id,
+        name,
+        endpoint,
+        status,
+        serviceId
+    })
 }
 
 export default instances;

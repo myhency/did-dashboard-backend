@@ -1,44 +1,44 @@
 {
-  "name": "did-dashboard-backend",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
-  "scripts": {
-    "start": "npm run start:local",
-    "start:local": "cross-env NODE_ENV=local ./node_modules/babel-cli/bin/babel-node.js bin/www.js",
-    "start:dev": "cross-env NODE_ENV=dev ./node_modules/babel-cli/bin/babel-node.js bin/www.js",
-    "start:prod": "cross-env NODE_ENV=prod ./node_modules/babel-cli/bin/babel-node.js bin/www.js",
-    "test": "npm run test-integration",
-    "test-unit": "cross-env NODE_ENV=test ./node_modules/.bin/mocha --require babel-register --recursive test/unit/*.spec.js",
-    "test-integration": "cross-env NODE_ENV=test ./node_modules/.bin/mocha --require babel-register --recursive test/integration/*.spec.js -w",
-    "migrate-dev": "node_modules/.bin/sequelize db:migrate --env dev",
-    "migrate-prod": "node_modules/.bin/sequelize db:migrate --env prod"
-  },
-  "author": "Tom",
-  "license": "ISC",
-  "dependencies": {
-    "body-parser": "^1.19.0",
-    "date-fns": "^2.10.0",
-    "express": "^4.17.1",
-    "express-validator": "^6.4.0",
-    "lodash": "^4.17.15",
-    "mariadb": "^2.2.0",
-    "morgan": "^1.9.1",
-    "multer": "^1.4.2",
-    "mysql2": "^2.1.0",
-    "sequelize": "^5.21.5",
-    "sequelize-cli": "^5.5.1",
-    "sharp": "^0.25.1",
-    "sqlite3": "^4.1.0",
-    "uuid": "^7.0.2"
-  },
-  "devDependencies": {
-    "babel-cli": "^6.26.0",
-    "babel-preset-node6": "^11.0.0",
-    "babel-register": "^6.26.0",
-    "cross-env": "^6.0.0",
-    "mocha": "^6.2.0",
-    "should": "^13.2.3",
-    "supertest": "^4.0.2"
-  }
+    "name": "did-dashboard-backend",
+    "version": "1.0.0",
+    "description": "",
+    "main": "index.js",
+    "scripts": {
+        "start": "npm run start:local",
+        "start:local": "cross-env NODE_ENV=local ./node_modules/babel-cli/bin/babel-node.js bin/www.js",
+        "start:dev": "cross-env NODE_ENV=dev ./node_modules/babel-cli/bin/babel-node.js bin/www.js",
+        "start:prod": "cross-env NODE_ENV=prod ./node_modules/babel-cli/bin/babel-node.js bin/www.js",
+        "test": "npm run test-integration",
+        "test-unit": "cross-env NODE_ENV=test ./node_modules/.bin/mocha --require babel-register --recursive test/unit/*.spec.js",
+        "test-integration": "cross-env NODE_ENV=test ./node_modules/.bin/mocha --require babel-register --recursive test/integration/*.spec.js -w",
+        "migrate-dev": "node_modules/.bin/sequelize db:migrate --env dev",
+        "migrate-prod": "node_modules/.bin/sequelize db:migrate --env prod"
+    },
+    "author": "Tom",
+    "license": "ISC",
+    "dependencies": {
+        "body-parser": "^1.19.0",
+        "date-fns": "^2.10.0",
+        "express": "^4.17.1",
+        "express-validator": "^6.4.0",
+        "lodash": "^4.17.15",
+        "mariadb": "^2.2.0",
+        "morgan": "^1.9.1",
+        "multer": "^1.4.2",
+        "mysql2": "^2.1.0",
+        "sequelize": "^5.21.5",
+        "sequelize-cli": "^5.5.1",
+        "sharp": "^0.25.1",
+        "sqlite3": "^4.1.0",
+        "uuid": "^7.0.2"
+    },
+    "devDependencies": {
+        "babel-cli": "^6.26.0",
+        "babel-preset-node6": "^11.0.0",
+        "babel-register": "^6.26.0",
+        "cross-env": "^6.0.0",
+        "mocha": "^6.2.0",
+        "should": "^13.2.3",
+        "supertest": "^4.0.2"
+    }
 }

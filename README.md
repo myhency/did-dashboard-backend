@@ -67,3 +67,6 @@ $ npm run start:prod
 - [Express file upload #2](https://stackoverflow.com/questions/39265838/express-js-image-upload-and-text-inputs-using-post-method)
 - [Express file upload #3](https://appdividend.com/2019/02/14/node-express-image-upload-and-resize-tutorial-example/)
 - [Express file upload #4](https://www.tutsmake.com/node-js-express-upload-file-image-example/)
+- [express-validator](https://express-validator.github.io/docs/index.html)
+- [validator.js](https://github.com/validatorjs/validator.js)
+- [Node.js를 ES6 문법으로 써보자](https://jeff-til.tistory.com/entry/Nodejs를-ES6-문법으로-써보자)

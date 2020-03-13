@@ -5,3 +5,27 @@ GET {{host}}/api/logs/error/count
 
 GET {{host}}/api/logs/info/apicall/transition
 ###
+
+GET {{host}}/api/logs?perPage=10&page=2&sort=occurredDate+desc,siteName+asc,serviceName+desc,instanceName+asc,logLevel+desc,logName+asc
+###
+
+GET {{host}}/api/logs?occurredDateStart=2019-01-01+00:00&occurredDateEnd=2020-02-12+23:43
+###
+
+GET {{host}}/api/logs?siteId=1
+###
+
+GET {{host}}/api/logs?serviceId=1
+###
+
+GET {{host}}/api/logs?instanceId=1
+###
+
+GET {{host}}/api/logs?logLevel=ERROR
+###
+
+GET {{host}}/api/logs?logName=NEW_PAIRWISEDID_INFO
+###
+
+GET {{host}}/api/logs?logDetail=+LeGa+++
+###

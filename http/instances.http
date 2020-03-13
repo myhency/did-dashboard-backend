@@ -6,7 +6,7 @@ GET {{host}}/api/instances/health
 GET {{host}}/api/instances/3
 ###
 
-GET {{host}}/api/instances
+GET {{host}}/api/instances?perPage=10&page=1&sort=siteName+asc,serviceName+desc,name+asc,endpoint+desc,status+asc
 ###
 
 GET {{host}}/api/instances?siteId=1
