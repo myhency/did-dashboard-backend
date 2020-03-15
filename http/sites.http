@@ -1,13 +1,16 @@
 @host = http://localhost:4000
 
 GET {{host}}/api/sites/count
-###
+### 전체 사이트 수 조회
 
 GET {{host}}/api/sites
-###
+### 사이트 리스트 조회
 
 GET {{host}}/api/sites?name=대카
-###
+### 사이트 리스트 조회 - 사이트명 검색
 
 GET {{host}}/api/sites/1
-###
+### 사이트 상세 조회
+
+DELETE {{host}}/api/sites/1
+### 사이트 삭제

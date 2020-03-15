@@ -117,4 +117,34 @@ router.get('/:id', [
     });
 });
 
+router.delete('/:id', [
+    param('id').isNumeric().toInt()
+], async (req, res, next) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        return res.status(400).send();
+    }
+
+    const { id } = req.params;
+
+    let count;
+
+    try {
+        count = await Site.destroy({
+            where: {
+                id: id
+            }
+        })
+    } catch (err) {
+        next(err);
+        return;
+    }
+
+    if (count === 0) {
+        return res.status(404).send();
+    }
+
+    return res.status(204).send();
+});
+
 module.exports = router;

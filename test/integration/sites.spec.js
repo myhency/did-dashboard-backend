@@ -103,14 +103,38 @@ describe('Sites API', () => {
             });
         });
         describe('실패 시', () => {
-            it('serviceId 파라미터가 잘못된 형식이면 400을 리턴한다.', (done) => {
+            it('siteId 파라미터가 잘못된 형식이면 400을 리턴한다.', (done) => {
                 request(app)
                     .get('/api/sites/noNumber')
                     .expect(400, done)
             });
-            it('존재하지 않는 service라면 404을 리턴한다.', (done) => {
+            it('존재하지 않는 사이트라면 404을 리턴한다.', (done) => {
                 request(app)
                     .get('/api/sites/100')
+                    .expect(404, done)
+            });
+        });
+    });
+
+    describe.only('DELETE /api/sites/:id 는', () => {
+        describe('성공 시', () => {
+            it('사이트를 삭제하고, 204를 리턴한다.', (done) => {
+                request(app)
+                    .delete('/api/sites/1')
+                    .expect(204)
+                    .end(done);
+            });
+        });
+
+        describe('실패 시', () => {
+            it('siteId 파라미터가 잘못된 형식이면 400을 리턴한다.', (done) => {
+                request(app)
+                    .delete('/api/sites/noNumber')
+                    .expect(400, done)
+            });
+            it('존재하지 않는 사이트라면 404을 리턴한다.', (done) => {
+                request(app)
+                    .delete('/api/sites/100')
                     .expect(404, done)
             });
         });
