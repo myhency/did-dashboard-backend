@@ -102,8 +102,8 @@ describe('Logs API', () => {
             it('발생시각 시작/끝으로 검색 시, 해당 기간 내 포함된 로그 리스트를 리턴한다. ', (done) => {
                 const searchOccurredDateStart = format(new Date(2019, 0, 1, 0, 0, 0, 0), Constants.DATETIME_FORMAT);
                 const searchOccurredDateEnd =  format(new Date(2020, 0, 1, 0, 0, 0, 0), Constants.DATETIME_FORMAT);
-                console.log(searchOccurredDateStart);
-                console.log(searchOccurredDateEnd);
+                // console.log(searchOccurredDateStart);
+                // console.log(searchOccurredDateEnd);
 
                 request(app)
                     .get('/api/logs')

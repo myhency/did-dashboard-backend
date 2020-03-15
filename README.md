@@ -70,3 +70,4 @@ $ npm run start:prod
 - [express-validator](https://express-validator.github.io/docs/index.html)
 - [validator.js](https://github.com/validatorjs/validator.js)
 - [Node.js를 ES6 문법으로 써보자](https://jeff-til.tistory.com/entry/Nodejs를-ES6-문법으로-써보자)
+- [RESTful API 설계 가이드](https://sanghaklee.tistory.com/57)

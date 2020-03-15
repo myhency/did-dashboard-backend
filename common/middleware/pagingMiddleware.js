@@ -19,7 +19,7 @@ export default (defaultPerPage = 10, sortTargets = []) => {
             let sortArray = [];
             if(sortTargets.length > 0 && sort !== undefined) {
                 sort = sort.trim();
-                console.log(sort);
+                // console.log(sort);
                 sortArray = sort.split(",").map(e => {
                     const parsed = e.split(" ");
                     parsed.length.should.be.equal(2);
