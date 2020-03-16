@@ -121,13 +121,18 @@ describe('Sites API', () => {
         describe('성공 시', () => {
             it('사이트를 삭제하고, 204를 리턴한다.', (done) => {
                 request(app)
-                    .delete('/api/sites/1')
+                    .delete('/api/sites/4')
                     .expect(204)
                     .end(done);
             });
         });
 
         describe('실패 시', () => {
+            it('사이트에 속한 서비스가 있으면 409을 리턴한다.', (done) => {
+                request(app)
+                    .delete('/api/sites/1')
+                    .expect(409, done)
+            });
             it('siteId 파라미터가 잘못된 형식이면 400을 리턴한다.', (done) => {
                 request(app)
                     .delete('/api/sites/noNumber')
@@ -141,7 +146,7 @@ describe('Sites API', () => {
         });
     });
 
-    describe.only('POST /api/sites 는', () => {
+    describe('POST /api/sites 는', () => {
         describe('성공 시', () => {
             it('사이트를 추가하고, 201을 리턴한다.', (done) => {
                 request(app)
@@ -206,6 +211,90 @@ describe('Sites API', () => {
                     .post('/api/sites')
                     .set('Content-Type', 'multipart/form-data')
                     .field('name', '새로운사이트')
+                    .field('openDate', format(new Date(), Constants.DATETIME_FORMAT))
+                    .attach('logoFile', 'test/file/logo-hyundaicard.jpg')
+                    .expect(400)
+                    .end(done);
+            });
+        });
+    });
+
+    describe('PUT /api/sites 는', () => {
+        describe('성공 시', () => {
+            it('사이트를 수정하고, 201을 리턴한다.', (done) => {
+                request(app)
+                    .put('/api/sites/2')
+                    .set('Content-Type', 'multipart/form-data')
+                    .field('name', '수정사이트1')
+                    .field('openDate', format(new Date(), Constants.DATE_FORMAT))
+                    // .attach('logoFile', 'test/file/logo-hyundaicard.jpg')
+                    .expect(201)
+                    .end((err, res) => {
+                        if (err) return done(err);
+                        // console.log(res.body);
+                        res.body.result.id.should.be.instanceof(Number).and.aboveOrEqual(0);
+
+                        done();
+                    });
+            });
+
+            it('사이트를 수정하고 (로고 첨부), 201을 리턴한다.', (done) => {
+                request(app)
+                    .put('/api/sites/3')
+                    .set('Content-Type', 'multipart/form-data')
+                    .field('name', '수정사이트2')
+                    .field('openDate', format(new Date(), Constants.DATE_FORMAT))
+                    .attach('logoFile', 'test/file/logo-hyundaicard.jpg')
+                    .expect(201)
+                    .end((err, res) => {
+                        if (err) return done(err);
+                        // console.log(res.body);
+                        res.body.result.id.should.be.instanceof(Number).and.aboveOrEqual(0);
+
+                        done();
+                    });
+            });
+        });
+
+        describe('실패 시', () => {
+            it('존재하지 않는 사이트일 시, 404을 리턴한다.', (done) => {
+                request(app)
+                    .put('/api/sites/100')
+                    .set('Content-Type', 'multipart/form-data')
+                    .field('name', '수정사이트')
+                    .field('openDate', format(new Date(), Constants.DATE_FORMAT))
+                    .attach('logoFile', 'test/file/logo-hyundaicard.jpg')
+                    .expect(404)
+                    .end(done);
+            });
+
+            it('사이트명 누락 시, 400을 리턴한다.', (done) => {
+                request(app)
+                    .put('/api/sites/2')
+                    .set('Content-Type', 'multipart/form-data')
+                    // .field('name', '수정사이트')
+                    .field('openDate', format(new Date(), Constants.DATE_FORMAT))
+                    .attach('logoFile', 'test/file/logo-hyundaicard.jpg')
+                    .expect(400)
+                    .end(done);
+            });
+
+            it('Open Date 누락 시, 400을 리턴한다.', (done) => {
+                request(app)
+                    .put('/api/sites/2')
+                    .set('Content-Type', 'multipart/form-data')
+                    .field('name', '수정사이트')
+                    // .field('openDate', format(new Date(), Constants.DATE_FORMAT))
+                    .attach('logoFile', 'test/file/logo-hyundaicard.jpg')
+                    .expect(400)
+                    .end(done);
+            });
+
+            it('잘못된 포맷의 Open Date 입력 시, 400을 리턴한다.', (done) => {
+                request(app)
+                    .put('/api/sites/2')
+                    .set('Content-Type', 'multipart/form-data')
+                    .field('name', '수정사이트')
                     .field('openDate', format(new Date(), Constants.DATETIME_FORMAT))
                     .attach('logoFile', 'test/file/logo-hyundaicard.jpg')
                     .expect(400)

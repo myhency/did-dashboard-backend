@@ -1,5 +1,6 @@
 import express from 'express';
 import Site from '../../db/models/Site';
+import Service from '../../db/models/Service';
 import { validationResult, param, query, body } from 'express-validator';
 import { Sequelize, Op } from 'sequelize';
 import Constants from '../../constants';
@@ -156,10 +157,27 @@ router.delete('/:id', [
 
     const { id } = req.params;
 
-    let count;
+    let serviceCount;
 
     try {
-        count = await Site.destroy({
+        serviceCount = await Service.count({
+            where: {
+                siteId: id
+            }
+        });
+    } catch(err) {
+        next(err);
+        return;
+    }
+
+    if(serviceCount > 0) {
+        return res.status(409).send();
+    }
+
+    let deletedCount;
+
+    try {
+        deletedCount = await Site.destroy({
             where: {
                 id: id
             }
@@ -169,11 +187,67 @@ router.delete('/:id', [
         return;
     }
 
-    if (count === 0) {
+    if (deletedCount === 0) {
         return res.status(404).send();
     }
 
     return res.status(204).send();
+});
+
+router.put('/:id', [
+    param('id').isNumeric().toInt(),
+    upload.single('logoFile'),
+
+    body('name').isString().trim().notEmpty(),
+    body('openDate').matches(Constants.DATE_FORMAT_REGEX),
+], async (req, res, next) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        return res.status(400).send();
+    }
+
+    if (req.fileValidationError) {
+        return res.status(400).send();
+    }
+
+    const { id } = req.params;
+    const { name, openDate } = req.body;
+    const logoFile = req.file;
+
+    let site;
+
+    try {
+        site = await Site.findOne({
+            where: {
+                id: id
+            }
+        })
+    } catch (err) {
+        next(err);
+        return;
+    }
+
+    if (!site) {
+        return res.status(404).send();
+    }
+
+    try {
+        site.name = name;
+        site.openDate = parse(openDate, Constants.DATE_FORMAT, new Date());
+        if(logoFile) {
+            site.logoFileName = logoFile.path;
+        }
+        site = await site.save();
+    } catch(err) {
+        next(err);
+        return;
+    }
+
+    return res.status(201).send({
+        result: {
+            id: site.id
+        }
+    });
 });
 
 router.post('/', [
@@ -189,11 +263,9 @@ router.post('/', [
     if (req.fileValidationError) {
         return res.status(400).send();
     }
-
-    // console.log('req body:', req.body);
-    // console.log('req.file:', req.file)
     
     const { name, openDate } = req.body;
+    const logoFile = req.file;
 
     let site;
 
@@ -201,7 +273,7 @@ router.post('/', [
         site = await Site.create({
             name,
             openDate: parse(openDate, Constants.DATE_FORMAT, new Date()),
-            logoFileName: (req.file ? req.file.path : null)
+            logoFileName: (logoFile ? logoFile.path : null)
         });
     } catch(err) {
         next(err);
