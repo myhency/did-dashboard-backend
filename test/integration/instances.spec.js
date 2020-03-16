@@ -28,7 +28,7 @@ describe('Instances API', () => {
                     .get('/api/instances/health')
                     .expect(200)
                     .end((err, res) => {
-                        if (err) done(err);
+                        if (err) return done(err);
                         // console.log(res.body);
                         res.body.result.should.be.instanceOf(Array);
                         res.body.result.forEach(e => {
@@ -54,7 +54,7 @@ describe('Instances API', () => {
                     .get('/api/instances/1')
                     .expect(200)
                     .end((err, res) => {
-                        if (err) done(err);
+                        if (err) return done(err);
 
                         res.body.result.id.should.be.instanceOf(Number).and.aboveOrEqual(0);
                         res.body.result.name.should.be.instanceOf(String);
@@ -95,7 +95,7 @@ describe('Instances API', () => {
                     })
                     .expect(200)
                     .end((err, res) => {
-                        if (err) done(err);
+                        if (err) return done(err);
 
                         // console.log(res.body);
                         res.body.result.should.be.instanceOf(Array);
@@ -123,7 +123,7 @@ describe('Instances API', () => {
                     })
                     .expect(200)
                     .end((err, res) => {
-                        if (err) done(err);
+                        if (err) return done(err);
 
                         // console.log(res.body);
                         res.body.result.should.be.instanceOf(Array);
@@ -151,7 +151,7 @@ describe('Instances API', () => {
                     })
                     .expect(200)
                     .end((err, res) => {
-                        if (err) done(err);
+                        if (err) return done(err);
 
                         // console.log(res.body);
                         res.body.result.should.be.instanceOf(Array);
@@ -179,7 +179,7 @@ describe('Instances API', () => {
                     })
                     .expect(200)
                     .end((err, res) => {
-                        if (err) done(err);
+                        if (err) return done(err);
 
                         // console.log(res.body);
                         res.body.result.should.be.instanceOf(Array);

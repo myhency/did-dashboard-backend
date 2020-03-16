@@ -31,7 +31,7 @@ describe('Logs API', () => {
                     .get('/api/logs/error/count')
                     .expect(200)
                     .end((err, res) => {
-                        if (err) done(err);
+                        if (err) return done(err);
 
                         // console.log(res.body);
                         res.body.result.should.be.instanceof(Number).and.aboveOrEqual(0);
@@ -48,7 +48,7 @@ describe('Logs API', () => {
                     .get('/api/logs/info/apicall/transition')
                     .expect(200)
                     .end((err, res) => {
-                        if (err) done(err);
+                        if (err) return done(err);
 
                         // console.log(res.body);
                         res.body.result.should.be.instanceof(Array).and.have.lengthOf(60);
@@ -74,7 +74,7 @@ describe('Logs API', () => {
                     })
                     .expect(200)
                     .end((err, res) => {
-                        if (err) done(err);
+                        if (err) return done(err);
 
                         // console.log(res.body);
                         res.body.result.should.be.instanceof(Array);
@@ -113,7 +113,7 @@ describe('Logs API', () => {
                     })
                     .expect(200)
                     .end((err, res) => {
-                        if (err) done(err);
+                        if (err) return done(err);
 
                         // console.log(res.body);
                         res.body.result.should.be.instanceof(Array);
@@ -150,7 +150,7 @@ describe('Logs API', () => {
                     })
                     .expect(200)
                     .end((err, res) => {
-                        if (err) done(err);
+                        if (err) return done(err);
 
                         // console.log(res.body);
                         res.body.result.should.be.instanceof(Array);
@@ -185,7 +185,7 @@ describe('Logs API', () => {
                     })
                     .expect(200)
                     .end((err, res) => {
-                        if (err) done(err);
+                        if (err) return done(err);
 
                         // console.log(res.body);
                         res.body.result.should.be.instanceof(Array);
@@ -220,7 +220,7 @@ describe('Logs API', () => {
                     })
                     .expect(200)
                     .end((err, res) => {
-                        if (err) done(err);
+                        if (err) return done(err);
 
                         // console.log(res.body);
                         res.body.result.should.be.instanceof(Array);
@@ -255,7 +255,7 @@ describe('Logs API', () => {
                     })
                     .expect(200)
                     .end((err, res) => {
-                        if (err) done(err);
+                        if (err) return done(err);
 
                         // console.log(res.body);
                         res.body.result.should.be.instanceof(Array);
@@ -290,7 +290,7 @@ describe('Logs API', () => {
                     })
                     .expect(200)
                     .end((err, res) => {
-                        if (err) done(err);
+                        if (err) return done(err);
 
                         // console.log(res.body);
                         res.body.result.should.be.instanceof(Array);
@@ -321,7 +321,7 @@ describe('Logs API', () => {
                     })
                     .expect(200)
                     .end((err, res) => {
-                        if (err) done(err);
+                        if (err) return done(err);
 
                         // console.log(res.body);
                         res.body.result.should.be.instanceof(Array);
@@ -422,14 +422,14 @@ describe('Logs API', () => {
         });
     });
 
-    describe.only('GET /api/logs/:id 는', () => {
+    describe('GET /api/logs/:id 는', () => {
         describe('성공 시', () => {
             it('로그 상세 정보를 리턴한다.', (done) => {
                 request(app)
                     .get('/api/logs/1')
                     .expect(200)
                     .end((err, res) => {
-                        if (err) done(err);
+                        if (err) return done(err);
                         // console.log(res.body);
                         res.body.result.id.should.be.instanceof(Number).and.aboveOrEqual(0);
                         res.body.result.occurredDate.should.match(Constants.DATETIME_FORMAT_REGEX);

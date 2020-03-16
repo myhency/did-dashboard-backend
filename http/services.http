@@ -1,16 +1,23 @@
 @host = http://localhost:4000
 
-GET {{host}}/api/services?perPage=10&page=1&sort=name+asc,role+asc,numberOfInstances+desc,openDate+asc,endpoint+asc
+GET {{host}}/api/services
+    ?perPage=10
+    &page=1
+    &sort=name+asc,role+asc,numberOfInstances+desc,openDate+asc,endpoint+asc
 # 서비스 리스트 조회 - paging, sort 예제
 ###
 
-GET {{host}}/api/services?siteId=1
+GET {{host}}/api/services
+    ?siteId=1
 ### 서비스 리스트 조회 - 사이트 검색
 
-GET {{host}}/api/services?role=ISSUER
+GET {{host}}/api/services
+    ?role=ISSUER
 ### 서비스 리스트 조회 - Role 검색
 
-GET {{host}}/api/services?openDateStart=2018-01-01&openDateEnd=2019-02-28
+GET {{host}}/api/services
+    ?openDateStart=2018-01-01
+    &openDateEnd=2019-02-28
 ### 서비스 리스트 조회 - Open Date 검색
 
 GET {{host}}/api/services/4

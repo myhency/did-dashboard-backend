@@ -6,6 +6,7 @@ import Service from '../../db/models/Service';
 import mockSites from '../mockData/mockSites';
 import mockServices from '../mockData/mockServices';
 import Constants from '../../constants';
+import { format } from 'date-fns';
 
 describe('Sites API', () => {
 
@@ -21,7 +22,7 @@ describe('Sites API', () => {
                     .get('/api/sites/count')
                     .expect(200)
                     .end((err, res) => {
-                        if (err) done(err);
+                        if (err) return done(err);
 
                         res.body.result.should.be.instanceof(Number).and.aboveOrEqual(0);
                         done();
@@ -37,7 +38,7 @@ describe('Sites API', () => {
                     .get('/api/sites')
                     .expect(200)
                     .end((err, res) => {
-                        if (err) done(err);
+                        if (err) return done(err);
 
                         // console.log(res.body);
                         res.body.result.should.be.instanceof(Array);
@@ -62,7 +63,7 @@ describe('Sites API', () => {
                     })
                     .expect(200)
                     .end((err, res) => {
-                        if (err) done(err);
+                        if (err) return done(err);
 
                         // console.log(res.body);
                         res.body.result.should.be.instanceof(Array);
@@ -89,7 +90,7 @@ describe('Sites API', () => {
                     .get('/api/sites/1')
                     .expect(200)
                     .end((err, res) => {
-                        if (err) done(err);
+                        if (err) return done(err);
 
                         // console.log(res.body);
                         res.body.result.id.should.be.instanceof(Number).and.aboveOrEqual(0);
@@ -136,6 +137,79 @@ describe('Sites API', () => {
                 request(app)
                     .delete('/api/sites/100')
                     .expect(404, done)
+            });
+        });
+    });
+
+    describe.only('POST /api/sites 는', () => {
+        describe('성공 시', () => {
+            it('사이트를 추가하고, 201을 리턴한다.', (done) => {
+                request(app)
+                    .post('/api/sites')
+                    .set('Content-Type', 'multipart/form-data')
+                    .field('name', '새로운사이트')
+                    .field('openDate', format(new Date(), Constants.DATE_FORMAT))
+                    // .attach('logoFile', 'test/file/logo-hyundaicard.jpg')
+                    .expect(201)
+                    .end((err, res) => {
+                        if (err) return done(err);
+                        // console.log(res.body);
+                        res.body.result.id.should.be.instanceof(Number).and.aboveOrEqual(0);
+
+                        done();
+                    });
+            });
+
+            it('사이트를 추가하고 (로고 첨부), 201을 리턴한다.', (done) => {
+                request(app)
+                    .post('/api/sites')
+                    .set('Content-Type', 'multipart/form-data')
+                    .field('name', '새로운사이트')
+                    .field('openDate', format(new Date(), Constants.DATE_FORMAT))
+                    .attach('logoFile', 'test/file/logo-hyundaicard.jpg')
+                    .expect(201)
+                    .end((err, res) => {
+                        if (err) return done(err);
+                        // console.log(res.body);
+                        res.body.result.id.should.be.instanceof(Number).and.aboveOrEqual(0);
+
+                        done();
+                    });
+            });
+        });
+
+        describe('실패 시', () => {
+            it('사이트명 누락 시, 400을 리턴한다.', (done) => {
+                request(app)
+                    .post('/api/sites')
+                    .set('Content-Type', 'multipart/form-data')
+                    // .field('name', '새로운사이트')
+                    .field('openDate', format(new Date(), Constants.DATE_FORMAT))
+                    .attach('logoFile', 'test/file/logo-hyundaicard.jpg')
+                    .expect(400)
+                    .end(done);
+            });
+
+            it('Open Date 누락 시, 400을 리턴한다.', (done) => {
+                request(app)
+                    .post('/api/sites')
+                    .set('Content-Type', 'multipart/form-data')
+                    .field('name', '새로운사이트')
+                    // .field('openDate', format(new Date(), Constants.DATE_FORMAT))
+                    .attach('logoFile', 'test/file/logo-hyundaicard.jpg')
+                    .expect(400)
+                    .end(done);
+            });
+
+            it('잘못된 포맷의 Open Date 입력 시, 400을 리턴한다.', (done) => {
+                request(app)
+                    .post('/api/sites')
+                    .set('Content-Type', 'multipart/form-data')
+                    .field('name', '새로운사이트')
+                    .field('openDate', format(new Date(), Constants.DATETIME_FORMAT))
+                    .attach('logoFile', 'test/file/logo-hyundaicard.jpg')
+                    .expect(400)
+                    .end(done);
             });
         });
     });

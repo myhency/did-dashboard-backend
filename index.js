@@ -19,6 +19,7 @@ app.use('/api/logs', logs);
 app.use('/api/sites', sites);
 app.use('/api/services', services);
 app.use('/api/instances', instances);
+app.use('/uploads', express.static('uploads'));
 
 // app.use((req, res, next) => { // 404 처리 부분
 //   res.status(404).send();

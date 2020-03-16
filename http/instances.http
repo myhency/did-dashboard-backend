@@ -6,14 +6,20 @@ GET {{host}}/api/instances/health
 GET {{host}}/api/instances/3
 ### 인스턴스 상세 조회
 
-GET {{host}}/api/instances?perPage=10&page=1&sort=siteName+asc,serviceName+desc,name+asc,endpoint+desc,status+asc
+GET {{host}}/api/instances
+    ?perPage=10
+    &page=1
+    &sort=siteName+asc,serviceName+desc,name+asc,endpoint+desc,status+asc
 ### 인스턴스 리스트 조회 - paging, sort 예제
 
-GET {{host}}/api/instances?siteId=1
+GET {{host}}/api/instances
+    ?siteId=1
 ### 인스턴스 리스트 조회 - 사이트 검색
 
-GET {{host}}/api/instances?serviceId=4
+GET {{host}}/api/instances
+    ?serviceId=4
 ### 인스턴스 리스트 조회 - 서비스 검색
 
-GET {{host}}/api/instances?status=false
+GET {{host}}/api/instances
+    ?status=false
 ### 인스턴스 리스트 조회 - 인스턴스 상태 검색

@@ -124,7 +124,7 @@ router.get('/', [
         ...Object.values(LogName.INFO).map(value => value), 
         ...Object.values(LogName.ERROR).map(value => value)
     ]).optional(),
-    query('logDetail').isString().trim().isLength({ max: 20 }).customSanitizer(value => value.toLowerCase()).optional(),
+    query('logDetail').isString().trim().notEmpty().isLength({ max: 20 }).customSanitizer(value => value.toLowerCase()).optional(),
     pagingMiddleware(Constants.PER_PAGE, ['occurredDate', 'siteName', 'serviceName', 'instanceName', 'logLevel', 'logName'])
 ], async (req, res, next) => {
     const errors = validationResult(req);

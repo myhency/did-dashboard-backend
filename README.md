@@ -71,3 +71,5 @@ $ npm run start:prod
 - [validator.js](https://github.com/validatorjs/validator.js)
 - [Node.js를 ES6 문법으로 써보자](https://jeff-til.tistory.com/entry/Nodejs를-ES6-문법으로-써보자)
 - [RESTful API 설계 가이드](https://sanghaklee.tistory.com/57)
+- [Multer](https://github.com/expressjs/multer/blob/master/doc/README-ko.md)
+- [File Upload란?](http://egloos.zum.com/kaludin/v/2270972)

@@ -31,7 +31,7 @@ describe('Services API', () => {
                     })
                     .expect(200)
                     .end((err, res) => {
-                        if (err) done(err);
+                        if (err) return done(err);
 
                         // console.log(res.body);
                         res.body.result.should.be.instanceOf(Array);
@@ -59,7 +59,7 @@ describe('Services API', () => {
                     })
                     .expect(200)
                     .end((err, res) => {
-                        if (err) done(err);
+                        if (err) return done(err);
 
                         // console.log(res.body);
                         res.body.result.should.be.instanceOf(Array);
@@ -87,7 +87,7 @@ describe('Services API', () => {
                     })
                     .expect(200)
                     .end((err, res) => {
-                        if (err) done(err);
+                        if (err) return done(err);
 
                         // console.log(res.body);
                         res.body.result.should.be.instanceOf(Array);
@@ -117,7 +117,7 @@ describe('Services API', () => {
                     })
                     .expect(200)
                     .end((err, res) => {
-                        if (err) done(err);
+                        if (err) return done(err);
 
                         // console.log(res.body);
                         res.body.result.should.be.instanceOf(Array);
@@ -184,7 +184,7 @@ describe('Services API', () => {
                     .get('/api/services/1')
                     .expect(200)
                     .end((err, res) => {
-                        if (err) done(err);
+                        if (err) return done(err);
                         // console.log(res.body);
                         res.body.result.id.should.be.instanceOf(Number).and.aboveOrEqual(0);
                         res.body.result.name.should.be.instanceOf(String);
@@ -222,7 +222,7 @@ describe('Services API', () => {
                     .get('/api/services/count')
                     .expect(200)
                     .end((err, res) => {
-                        if (err) done(err);
+                        if (err) return done(err);
                         // console.log(res.body);
                         res.body.result.should.be.instanceOf(Number).and.aboveOrEqual(0);
                         done();
@@ -238,7 +238,7 @@ describe('Services API', () => {
                     .get('/api/services/1/statistic')
                     .expect(200)
                     .end((err, res) => {
-                        if (err) done(err);
+                        if (err) return done(err);
                         // console.log(res.body);
                         res.body.result.cumulativePairwisedid.should.be.instanceOf(Number).and.aboveOrEqual(0);
                         res.body.result.cumulativeCredentialIssuance.should.be.instanceOf(Number).and.aboveOrEqual(0);
@@ -271,7 +271,7 @@ describe('Services API', () => {
                     .get('/api/services/1/transition')
                     .expect(200)
                     .end((err, res) => {
-                        if (err) done(err);
+                        if (err) return done(err);
                         // console.log(res.body);
                         res.body.result.should.be.instanceOf(Array).and.have.lengthOf(24);
                         res.body.result.forEach(e => {

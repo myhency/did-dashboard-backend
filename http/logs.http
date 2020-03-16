@@ -6,28 +6,39 @@ GET {{host}}/api/logs/error/count
 GET {{host}}/api/logs/info/apicall/transition
 ### 최근 60분 동안의 api call 추이 조회 (분단위)
 
-GET {{host}}/api/logs?perPage=10&page=2&sort=occurredDate+desc,siteName+asc,serviceName+desc,instanceName+asc,logLevel+desc,logName+asc
+GET {{host}}/api/logs
+    ?perPage=10
+    &page=2
+    &sort=occurredDate+desc,siteName+asc,serviceName+desc,instanceName+asc,logLevel+desc,logName+asc
 ### 로그 리스트 조회 - paging, sort 예제
 
-GET {{host}}/api/logs?occurredDateStart=2019-01-01+00:00&occurredDateEnd=2020-02-12+23:43
+GET {{host}}/api/logs
+    ?occurredDateStart=2019-01-01+00:00
+    &occurredDateEnd=2020-02-12+23:43
 ### 로그 리스트 조회 - Open Date 검색
 
-GET {{host}}/api/logs?siteId=1
+GET {{host}}/api/logs
+    ?siteId=1
 ### 로그 리스트 조회 - 사이트 검색
 
-GET {{host}}/api/logs?serviceId=1
+GET {{host}}/api/logs
+    ?serviceId=1
 ### 로그 리스트 조회 - 서비스 검색
 
-GET {{host}}/api/logs?instanceId=1
+GET {{host}}/api/logs
+    ?instanceId=1
 ### 로그 리스트 조회 - 인스턴스 검색
 
-GET {{host}}/api/logs?logLevel=ERROR
+GET {{host}}/api/logs
+    ?logLevel=ERROR
 ### 로그 리스트 조회 - 로그레벨 검색
 
-GET {{host}}/api/logs?logName=NEW_PAIRWISEDID_INFO
+GET {{host}}/api/logs
+    ?logName=NEW_PAIRWISEDID_INFO
 ### 로그 리스트 조회 - 로그명 검색
 
-GET {{host}}/api/logs?logDetail=+LeGa+++
+GET {{host}}/api/logs
+    ?logDetail=+LeGa+++
 ### 로그 리스트 조회 - 로그디테일 검색
 
 GET {{host}}/api/logs/500
