@@ -29,3 +29,6 @@ GET {{host}}/api/logs?logName=NEW_PAIRWISEDID_INFO
 
 GET {{host}}/api/logs?logDetail=+LeGa+++
 ### 로그 리스트 조회 - 로그디테일 검색
+
+GET {{host}}/api/logs/500
+### 로그 상세 조회

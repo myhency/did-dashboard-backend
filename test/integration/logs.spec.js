@@ -421,4 +421,47 @@ describe('Logs API', () => {
             });
         });
     });
+
+    describe.only('GET /api/logs/:id 는', () => {
+        describe('성공 시', () => {
+            it('로그 상세 정보를 리턴한다.', (done) => {
+                request(app)
+                    .get('/api/logs/1')
+                    .expect(200)
+                    .end((err, res) => {
+                        if (err) done(err);
+                        // console.log(res.body);
+                        res.body.result.id.should.be.instanceof(Number).and.aboveOrEqual(0);
+                        res.body.result.occurredDate.should.match(Constants.DATETIME_FORMAT_REGEX);
+                        res.body.result.siteId.should.be.instanceof(Number).and.aboveOrEqual(0);
+                        res.body.result.siteName.should.be.instanceof(String);
+                        res.body.result.serviceId.should.be.instanceof(Number).and.aboveOrEqual(0);
+                        res.body.result.serviceName.should.be.instanceof(String);
+                        res.body.result.instanceId.should.be.instanceof(Number).and.aboveOrEqual(0);
+                        res.body.result.instanceName.should.be.instanceof(String);
+                        res.body.result.logLevel.should.be.oneOf(Object.values(LogLevel).map(logLevel => logLevel));
+                        if (res.body.result.logLevel === LogLevel.INFO) {
+                            res.body.result.logName.should.be.oneOf(Object.values(LogName.INFO).map(logName => logName));
+                        } else if (res.body.result.logLevel === LogLevel.ERROR) {
+                            res.body.result.logName.should.be.oneOf(Object.values(LogName.ERROR).map(logName => logName));
+                        }
+                        res.body.result.logDetail.should.be.instanceof(String);
+                        done();
+                    })
+            });
+        });
+
+        describe('실패 시', () => {
+            it('id 파라미터가 잘못된 형식이면 400을 리턴한다.', (done) => {
+                request(app)
+                    .get('/api/logs/noNumber')
+                    .expect(400, done)
+            });
+            it('존재하지 않는 로그라면 404을 리턴한다.', (done) => {
+                request(app)
+                    .get('/api/logs/10000')
+                    .expect(404, done)
+            });
+        });
+    });
 });

@@ -116,7 +116,7 @@ describe('Sites API', () => {
         });
     });
 
-    describe.only('DELETE /api/sites/:id 는', () => {
+    describe('DELETE /api/sites/:id 는', () => {
         describe('성공 시', () => {
             it('사이트를 삭제하고, 204를 리턴한다.', (done) => {
                 request(app)

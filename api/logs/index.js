@@ -1,7 +1,7 @@
 import express from 'express';
 import { Op, Sequelize } from 'sequelize';
 import Log from '../../db/models/Log';
-import { validationResult, query } from 'express-validator';
+import { validationResult, query, param } from 'express-validator';
 import { format, subMinutes, parse } from 'date-fns';
 import _ from 'lodash';
 import LogLevel from '../../enums/LogLevel';
@@ -232,5 +232,50 @@ router.get('/', [
     });
 });
 
+router.get('/:id', [
+    param('id').isNumeric().toInt()
+], async (req, res, next) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        return res.status(400).send();
+    }
+
+    const { id } = req.params;
+
+    let log;
+
+    try {
+        log = await Log.findOne({
+            raw: true,
+            attributes: [
+                'id',
+                [Sequelize.fn('DATE_FORMAT', Sequelize.col('occurred_date'), '%Y-%m-%d %H:%i'), 'occurredDate'],
+                'siteId',
+                [Sequelize.literal('(SELECT site.name FROM site WHERE site.id = log.site_id)'), 'siteName'],
+                'serviceId',
+                [Sequelize.literal('(SELECT service.name FROM service WHERE service.id = log.service_id)'), 'serviceName'],
+                'instanceId',
+                [Sequelize.literal('(SELECT instance.name FROM instance WHERE instance.id = log.instance_id)'), 'instanceName'],
+                'logLevel',
+                'logName',
+                'logDetail'
+            ],
+            where: {
+                id: id
+            }
+        })
+    } catch (err) {
+        next(err);
+        return;
+    }
+
+    if(!log) {
+        return res.status(404).send();
+    }
+
+    res.json({
+        result: log
+    });
+});
 
 module.exports = router;
