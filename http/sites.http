@@ -27,12 +27,10 @@ Content-Disposition: form-data; name="name"
 Content-Disposition: form-data; name="openDate"
 
 2020-03-26
---Boundary
-Content-Disposition: form-data; name="logoFile"; filename="file"
-Content-Type: image/jpg
+--Boundary--
+### 사이트 추가 로고 미첨부
 
---Boundary
-### 사이트 추가 로고 미첨부 (현재 rest-client 이슈로 동작 안함. Postman은 동작)
+
 
 POST {{host}}/api/sites
 Content-Type: multipart/form-data; boundary=Boundary
@@ -50,8 +48,10 @@ Content-Disposition: form-data; name="logoFile"; filename="logo-hyundaicard.jpg"
 Content-Type: image/jpg
 
 < ../test/file/logo-hyundaicard.jpg
---Boundary
-### 사이트 추가 로고 첨부 (현재 rest-client 이슈로 동작 안함. Postman은 동작)
+--Boundary--
+### 사이트 추가 로고 첨부
+
+
 
 PUT {{host}}/api/sites/2
 Content-Type: multipart/form-data; boundary=Boundary
@@ -64,12 +64,10 @@ Content-Disposition: form-data; name="name"
 Content-Disposition: form-data; name="openDate"
 
 2020-03-26
---Boundary
-Content-Disposition: form-data; name="logoFile"; filename="file"
-Content-Type: image/jpg
+--Boundary--
+### 사이트 수정 로고 미첨부
 
---Boundary
-### 사이트 수정 로고 미첨부 (현재 rest-client 이슈로 동작 안함. Postman은 동작)
+
 
 PUT {{host}}/api/sites/3
 Content-Type: multipart/form-data; boundary=Boundary
@@ -87,5 +85,5 @@ Content-Disposition: form-data; name="logoFile"; filename="logo-hyundaicard.jpg"
 Content-Type: image/jpg
 
 < ../test/file/logo-hyundaicard.jpg
---Boundary
-### 사이트 수정 로고 첨부 (현재 rest-client 이슈로 동작 안함. Postman은 동작)
+--Boundary--
+### 사이트 수정 로고 첨부
