@@ -5,7 +5,7 @@ import sequelize from '../db/models';
 import Log from '../db/models/Log';
 import mockLogs from '../test/mockData/mockLogs';
 
-const port = normalizePort(process.env.PORT || '3000');
+const port = normalizePort(process.env.PORT || '8080');
 app.set('port', port);
 
 const server = http.createServer(app);
@@ -20,7 +20,7 @@ sequelize.sync(options).then(() => {
     server.on('error', onError);
     server.on('listening', onListening);
 
-    if(process.env.NODE_ENV === 'local') {
+    if (process.env.NODE_ENV === 'local') {
         console.log('Creating Bulk Data ...')
         Log.bulkCreate(mockLogs, {
             logging: false
@@ -31,19 +31,19 @@ sequelize.sync(options).then(() => {
 
 function normalizePort(val) {
     const port = parseInt(val, 10);
-  
+
     if (isNaN(port)) {
-      // named pipe
-      return val;
+        // named pipe
+        return val;
     }
-  
+
     if (port >= 0) {
-      // port number
-      return port;
+        // port number
+        return port;
     }
-  
+
     return false;
-  }
+}
 
 /**
  * Event listener for HTTP server "error" event.
@@ -53,11 +53,11 @@ function onError(error) {
     if (error.syscall !== 'listen') {
         throw error;
     }
-  
+
     const bind = typeof port === 'string'
         ? 'Pipe ' + port
         : 'Port ' + port;
-  
+
     // handle specific listen errors with friendly messages
     switch (error.code) {
         case 'EACCES':
@@ -71,8 +71,8 @@ function onError(error) {
         default:
             throw error;
     }
-  }
-  
+}
+
 /**
  * Event listener for HTTP server "listening" event.
  */
