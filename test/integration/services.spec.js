@@ -298,4 +298,33 @@ describe('Services API', () => {
         });
     });
 
+    describe('DELETE /api/services/:id 는', () => {
+        describe('성공 시', () => {
+            it('서비스를 삭제하고, 204를 리턴한다.', (done) => {
+                request(app)
+                    .delete('/api/services/5')
+                    .expect(204)
+                    .end(done);
+            });
+        });
+
+        describe('실패 시', () => {
+            it('서비스에 속한 인스턴스가 있으면 409을 리턴한다.', (done) => {
+                request(app)
+                    .delete('/api/services/1')
+                    .expect(409, done)
+            });
+            it('id 파라미터가 잘못된 형식이면 400을 리턴한다.', (done) => {
+                request(app)
+                    .delete('/api/services/noNumber')
+                    .expect(400, done)
+            });
+            it('존재하지 않는 서비스라면 404을 리턴한다.', (done) => {
+                request(app)
+                    .delete('/api/services/100')
+                    .expect(404, done)
+            });
+        });
+    });
+    
 })

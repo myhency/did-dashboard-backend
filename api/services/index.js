@@ -3,6 +3,7 @@ import Role from '../../enums/Role';
 import { validationResult, param, query } from 'express-validator';
 import Log from '../../db/models/Log';
 import Service from '../../db/models/Service';
+import Instance from '../../db/models/Instance';
 import LogLevel from '../../enums/LogLevel';
 import LogName from '../../enums/LogName';
 import { Sequelize, Op } from 'sequelize';
@@ -374,6 +375,53 @@ router.get('/:id/transition', [
     res.json({
         result: timetable
     })
+});
+
+router.delete('/:id', [
+    param('id').isNumeric().toInt()
+], async (req, res, next) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        return res.status(400).send();
+    }
+
+    const { id } = req.params;
+
+    let instanceCount;
+
+    try {
+        instanceCount = await Instance.count({
+            where: {
+                serviceId: id
+            }
+        });
+    } catch(err) {
+        next(err);
+        return;
+    }
+
+    if(instanceCount > 0) {
+        return res.status(409).send();
+    }
+
+    let deletedCount;
+
+    try {
+        deletedCount = await Service.destroy({
+            where: {
+                id: id
+            }
+        })
+    } catch (err) {
+        next(err);
+        return;
+    }
+
+    if (deletedCount === 0) {
+        return res.status(404).send();
+    }
+
+    return res.status(204).send();
 });
 
 module.exports = router;
