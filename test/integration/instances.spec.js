@@ -230,4 +230,29 @@ describe('Instances API', () => {
             });
         });
     });
+
+    describe('DELETE /api/instances/:id 는', () => {
+        describe('성공 시', () => {
+            it('인스턴스를 삭제하고, 204를 리턴한다.', (done) => {
+                request(app)
+                    .delete('/api/instances/5')
+                    .expect(204)
+                    .end(done);
+            });
+        });
+
+        describe('실패 시', () => {
+            it('id 파라미터가 잘못된 형식이면 400을 리턴한다.', (done) => {
+                request(app)
+                    .delete('/api/instances/noNumber')
+                    .expect(400, done)
+            });
+            it('존재하지 않는 인스턴스라면 404을 리턴한다.', (done) => {
+                request(app)
+                    .delete('/api/instances/100')
+                    .expect(404, done)
+            });
+        });
+    });
+
 });

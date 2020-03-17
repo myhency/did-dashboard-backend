@@ -62,4 +62,4 @@ Content-Type: application/json
     "openDate": "2020-03-27",
     "endpoint": "http://modifytest.endpoint.com/"
 }
-### 서비스 추가
+### 서비스 수정

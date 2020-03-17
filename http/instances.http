@@ -23,3 +23,6 @@ GET {{host}}/api/instances
 GET {{host}}/api/instances
     ?status=false
 ### 인스턴스 리스트 조회 - 인스턴스 상태 검색
+
+DELETE {{host}}/api/instances/5
+### 인스턴스 삭제

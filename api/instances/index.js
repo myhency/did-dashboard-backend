@@ -1,7 +1,9 @@
 import express from 'express';
 import { validationResult, param, query } from 'express-validator';
 import Instance from '../../db/models/Instance';
+import Log from '../../db/models/Log';
 import { Sequelize } from 'sequelize';
+import sequelize from '../../db/models';
 import pagingMiddleware from '../../common/middleware/pagingMiddleware';
 import Constants from '../../constants';
 const router = express.Router();
@@ -153,6 +155,45 @@ router.get('/', [
         totalPage: Math.ceil(instances.count / perPage),
         totalCount: instances.count
     });
+});
+
+router.delete('/:id', [
+    param('id').isNumeric().toInt()
+], async (req, res, next) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        return res.status(400).send();
+    }
+
+    const { id } = req.params;
+
+    try {
+        await sequelize.transaction(async (t) => {
+            const deletedCount = await Instance.destroy({
+                where: {
+                    id: id
+                }
+            })
+    
+            if (deletedCount === 0) {
+                throw new Error('not found');
+            }
+
+            await Log.destroy({
+                where: {
+                    instanceId: id
+                }
+            });
+        });
+    } catch (err) {
+        if(err.message === 'not found') {
+            return res.status(404).send();
+        }
+        next(err);
+        return;
+    }
+
+    return res.status(204).send();
 });
 
 module.exports = router;
