@@ -49,6 +49,17 @@ Content-Type: application/json
     "name": "새로운 서비스",
     "role": "ISSUER",
     "openDate": "2020-03-26",
-    "endpoint": "http://test.endpoint.com/"
+    "endpoint": "http://addtest.endpoint.com/"
+}
+### 서비스 추가
+
+PUT {{host}}/api/services/4
+Content-Type: application/json
+
+{
+    "name": "수정 서비스",
+    "role": "VERISSUER",
+    "openDate": "2020-03-27",
+    "endpoint": "http://modifytest.endpoint.com/"
 }
 ### 서비스 추가

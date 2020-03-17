@@ -484,7 +484,129 @@ describe('Services API', () => {
             });
         });
     });
+
+    describe('PUT /api/services/:id 는', () => {
+        describe('성공 시', () => {
+            it('서비스를 수정하고, 서비스 id와 함께 201를 리턴한다.', (done) => {
+                request(app)
+                    .put('/api/services/3')
+                    .send({
+                        name: '수정 서비스',
+                        role: Role.ISSUER,
+                        openDate: format(new Date(), Constants.DATE_FORMAT),
+                        endpoint: 'http://test.endpoint.com/'
+                    })
+                    .expect(201)
+                    .end((err, res) => {
+                        if(err) return done(err);
+                        // console.log(res.body);
+                        res.body.result.id.should.be.instanceOf(Number).and.aboveOrEqual(0);
+                        done();
+                    });
+            });
+        });
+
+        describe('실패 시', () => {
+            it('존재하지 않는 서비스일 시, 404을 리턴한다.', (done) => {
+                request(app)
+                    .put('/api/services/100')
+                    .send({ 
+                        name: '수정 서비스', 
+                        role: Role.ISSUER, 
+                        openDate: format(new Date(), Constants.DATE_FORMAT), 
+                        endpoint: 'http://test.endpoint.com/' 
+                    })
+                    .expect(404, done)
+            });
+            it('서비스명 파라미터 누락 시, 400을 리턴한다.', (done) => {
+                request(app)
+                    .put('/api/services/3')
+                    .send({ 
+                        // name: '새로운 서비스', 
+                        role: Role.ISSUER, 
+                        openDate: format(new Date(), Constants.DATE_FORMAT), 
+                        endpoint: 'http://test.endpoint.com/' 
+                    })
+                    .expect(400, done)
+            });
+            it('Role 파라미터 누락 시, 400을 리턴한다.', (done) => {
+                request(app)
+                    .put('/api/services/3')
+                    .send({ 
+                        name: '수정 서비스', 
+                        // role: Role.ISSUER, 
+                        openDate: format(new Date(), Constants.DATE_FORMAT), 
+                        endpoint: 'http://test.endpoint.com/' 
+                    })
+                    .expect(400, done)
+            });
+            it('Open Date 파라미터 누락 시, 400을 리턴한다.', (done) => {
+                request(app)
+                    .put('/api/services/3')
+                    .send({ 
+                        name: '수정 서비스', 
+                        role: Role.ISSUER, 
+                        // openDate: format(new Date(), Constants.DATE_FORMAT), 
+                        endpoint: 'http://test.endpoint.com/' 
+                    })
+                    .expect(400, done)
+            });
+            it('Endpoint 파라미터 누락 시, 400을 리턴한다.', (done) => {
+                request(app)
+                    .put('/api/services/3')
+                    .send({ 
+                        name: '수정 서비스', 
+                        role: Role.ISSUER, 
+                        openDate: format(new Date(), Constants.DATE_FORMAT), 
+                        // endpoint: 'http://test.endpoint.com/' 
+                    })
+                    .expect(400, done)
+            });
+            it('잘못된 포맷의 서비스명일 시, 400을 리턴한다.', (done) => {
+                request(app)
+                    .put('/api/services/3')
+                    .send({ 
+                        name: '   ', 
+                        role: Role.ISSUER, 
+                        openDate: format(new Date(), Constants.DATE_FORMAT), 
+                        endpoint: 'http://test.endpoint.com/' 
+                    })
+                    .expect(400, done)
+            });
+            it('잘못된 포맷의 Role일 시, 400을 리턴한다.', (done) => {
+                request(app)
+                    .put('/api/services/3')
+                    .send({ 
+                        name: '수정 서비스', 
+                        role: 'notRole', 
+                        openDate: format(new Date(), Constants.DATE_FORMAT), 
+                        endpoint: 'http://test.endpoint.com/' 
+                    })
+                    .expect(400, done)
+            });
+            it('잘못된 포맷의 Open Date일 시, 400을 리턴한다.', (done) => {
+                request(app)
+                    .put('/api/services/3')
+                    .send({ 
+                        name: '수정 서비스', 
+                        role: Role.ISSUER, 
+                        openDate: format(new Date(), Constants.DATETIME_FORMAT), 
+                        endpoint: 'http://test.endpoint.com/' 
+                    })
+                    .expect(400, done)
+            });
+            it('잘못된 포맷의 Endpoint일 시, 400을 리턴한다.', (done) => {
+                request(app)
+                    .put('/api/services/3')
+                    .send({ 
+                        name: '수정 서비스', 
+                        role: Role.ISSUER, 
+                        openDate: format(new Date(), Constants.DATE_FORMAT), 
+                        endpoint: '    ' 
+                    })
+                    .expect(400, done)
+            });
+        });
+    });
     
 });
-
-

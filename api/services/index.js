@@ -479,4 +479,56 @@ router.post('/', [
     });
 });
 
+router.put('/:id', [
+    param('id').isNumeric().toInt(),
+
+    body('name').isString().trim().notEmpty(),
+    body('role').isIn(Object.values(Role).map(role => role)),
+    body('openDate').matches(Constants.DATE_FORMAT_REGEX),
+    body('endpoint').isString().trim().notEmpty()
+], async (req, res, next) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        return res.status(400).send();
+    }
+
+    const { id } = req.params;
+    const { name, role, openDate, endpoint } = req.body;
+
+    let service; 
+
+    try {
+        service = await Service.findOne({
+            where: {
+                id: id
+            }
+        });
+    } catch(err) {
+        next(err);
+        return;
+    }
+
+    if(!service) {
+        return res.status(404).send();    
+    }
+
+    try {
+        service.name = name;
+        service.role = role;
+        service.openDate = parse(openDate, Constants.DATE_FORMAT, new Date());
+        service.endpoint = endpoint;
+
+        service = await service.save();
+    } catch(err) {
+        next(err);
+        return;
+    }
+
+    return res.status(201).send({
+        result: {
+            id: service.id
+        }
+    });
+});
+
 module.exports = router;
