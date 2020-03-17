@@ -4,17 +4,17 @@ const config = {
         password: "root",
         database: "did_dashboard",
         host: "localhost",
-
         dialect: "mariadb",
+        dialectOptions: {
+            timezone: 'Etc/GMT+9'
+        },
         timezone: '+09:00',
         define: {
             underscored: true,
             freezeTableName: true,
             charset: 'utf8',
-            dialectOptions: {
-                collate: 'utf8_general_ci'
-            },
-            timestamps: false
+            collate: 'utf8_general_ci',
+            timestamps: false,
         },
         pool: {
             max: 5,
@@ -29,16 +29,16 @@ const config = {
         password: "root",
         database: "did_dashboard",
         host: "localhost",
-
         dialect: "mariadb",
+        dialectOptions: {
+            timezone: 'Etc/GMT+9'
+        },
         timezone: '+09:00',
         define: {
             underscored: true,
             freezeTableName: true,
             charset: 'utf8',
-            dialectOptions: {
-                collate: 'utf8_general_ci'
-            },
+            collate: 'utf8_general_ci',
             timestamps: false
         },
         pool: {
@@ -55,14 +55,15 @@ const config = {
         host: "localhost",
 
         dialect: "mariadb",
+        dialectOptions: {
+            timezone: 'Etc/GMT+9'
+        },
         timezone: '+09:00',
         define: {
             underscored: true,
             freezeTableName: true,
             charset: 'utf8',
-            dialectOptions: {
-                collate: 'utf8_general_ci'
-            },
+            collate: 'utf8_general_ci',
             timestamps: false
         },
         pool: {
@@ -80,14 +81,15 @@ const config = {
         use_env_variable: 'DATABASE_URL',
 
         dialect: 'mariadb',
+        dialectOptions: {
+            timezone: 'Etc/GMT+9'
+        },
         timezone: '+09:00',
         define: {
             underscored: true,
             freezeTableName: true,
             charset: 'utf8',
-            dialectOptions: {
-                collate: 'utf8_general_ci'
-            },
+            collate: 'utf8_general_ci',
             timestamps: false
         },
         pool: {
