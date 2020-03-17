@@ -148,7 +148,7 @@ describe('Sites API', () => {
 
     describe('POST /api/sites 는', () => {
         describe('성공 시', () => {
-            it('사이트를 추가하고, 201을 리턴한다.', (done) => {
+            it('사이트를 추가하고, 사이트 id와 함께 201을 리턴한다.', (done) => {
                 request(app)
                     .post('/api/sites')
                     .set('Content-Type', 'multipart/form-data')
@@ -221,7 +221,7 @@ describe('Sites API', () => {
 
     describe('PUT /api/sites 는', () => {
         describe('성공 시', () => {
-            it('사이트를 수정하고, 201을 리턴한다.', (done) => {
+            it('사이트를 수정하고, 사이트 id와 함께 201을 리턴한다.', (done) => {
                 request(app)
                     .put('/api/sites/2')
                     .set('Content-Type', 'multipart/form-data')

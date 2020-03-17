@@ -1,7 +1,8 @@
 import express from 'express';
 import Role from '../../enums/Role';
-import { validationResult, param, query } from 'express-validator';
+import { validationResult, param, query, body } from 'express-validator';
 import Log from '../../db/models/Log';
+import Site from '../../db/models/Site';
 import Service from '../../db/models/Service';
 import Instance from '../../db/models/Instance';
 import LogLevel from '../../enums/LogLevel';
@@ -422,6 +423,60 @@ router.delete('/:id', [
     }
 
     return res.status(204).send();
+});
+
+router.post('/', [
+    body('siteId').isNumeric().toInt(),
+    body('name').isString().trim().notEmpty(),
+    body('role').isIn(Object.values(Role).map(role => role)),
+    body('openDate').matches(Constants.DATE_FORMAT_REGEX),
+    body('endpoint').isString().trim().notEmpty()
+], async (req, res, next) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        return res.status(400).send();
+    }
+
+    const { siteId, name, role, openDate, endpoint } = req.body;
+
+    let siteCount; 
+
+    try {
+        siteCount = await Site.count({
+            where: {
+                id: siteId
+            }
+        });
+    } catch(err) {
+        next(err);
+        return;
+    }
+
+    // 존재하지 않는 사이트라면 400을 리턴한다.
+    if(siteCount === 0) {
+        return res.status(400).send();    
+    }
+
+    let service;
+
+    try {
+        service = await Service.create({
+            name,
+            role,
+            openDate: parse(openDate, Constants.DATE_FORMAT, new Date()),
+            endpoint,
+            siteId
+        });
+    } catch(err) {
+        next(err);
+        return;
+    }
+
+    return res.status(201).send({
+        result: {
+            id: service.id
+        }
+    });
 });
 
 module.exports = router;

@@ -40,3 +40,15 @@ GET {{host}}/api/services/2/transition
 
 DELETE {{host}}/api/services/3
 ### 서비스 삭제
+
+POST {{host}}/api/services
+Content-Type: application/json
+
+{
+    "siteId": 2,
+    "name": "새로운 서비스",
+    "role": "ISSUER",
+    "openDate": "2020-03-26",
+    "endpoint": "http://test.endpoint.com/"
+}
+### 서비스 추가
