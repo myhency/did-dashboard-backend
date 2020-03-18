@@ -102,7 +102,7 @@ router.get('/', [
 });
 
 router.get('/:id', [
-    param('id').isNumeric().toInt()
+    param('id').isInt({ min: 1 }).toInt()
 ], async (req, res, next) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
@@ -148,7 +148,7 @@ router.get('/:id', [
 });
 
 router.delete('/:id', [
-    param('id').isNumeric().toInt()
+    param('id').isInt({ min: 1 }).toInt()
 ], async (req, res, next) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
@@ -195,7 +195,7 @@ router.delete('/:id', [
 });
 
 router.put('/:id', [
-    param('id').isNumeric().toInt(),
+    param('id').isInt({ min: 1 }).toInt(),
     upload.single('logoFile'),
 
     body('name').isString().trim().notEmpty(),

@@ -40,7 +40,7 @@ router.get('/health', async (req, res, next) => {
 });
 
 router.get('/:id', [
-    param('id').isNumeric().toInt()
+    param('id').isInt({ min: 1 }).toInt()
 ], async (req, res, next) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
@@ -83,8 +83,8 @@ router.get('/:id', [
 });
 
 router.get('/', [
-    query('siteId').isNumeric().toInt().optional(),
-    query('serviceId').isNumeric().toInt().optional(),
+    query('siteId').isInt({ min: 1 }).toInt().optional(),
+    query('serviceId').isInt({ min: 1 }).toInt().optional(),
     query('status').isBoolean().toBoolean().optional(),
     pagingMiddleware(Constants.PER_PAGE, ['siteName', 'serviceName', 'name', 'endpoint', 'status'])
 ], async (req, res, next) => {
@@ -159,7 +159,7 @@ router.get('/', [
 });
 
 router.delete('/:id', [
-    param('id').isNumeric().toInt()
+    param('id').isInt({ min: 1 }).toInt()
 ], async (req, res, next) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
@@ -198,7 +198,7 @@ router.delete('/:id', [
 });
 
 router.post('/', [
-    body('serviceId').isNumeric().toInt(),
+    body('serviceId').isInt({ min: 1 }).toInt(),
     body('name').isString().trim().notEmpty(),
     body('endpoint').isString().trim().notEmpty()
 ], async (req, res, next) => {
@@ -249,7 +249,7 @@ router.post('/', [
 });
 
 router.put('/:id', [
-    param('id').isNumeric().toInt(),
+    param('id').isInt({ min: 1 }).toInt(),
 
     body('name').isString().trim().notEmpty(),
     body('endpoint').isString().trim().notEmpty()

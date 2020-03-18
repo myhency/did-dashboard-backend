@@ -36,12 +36,12 @@ describe('Services API', () => {
                         // console.log(res.body);
                         res.body.result.should.be.instanceOf(Array);
                         res.body.result.forEach(e => {
-                            e.id.should.be.instanceOf(Number).and.aboveOrEqual(0);
+                            e.id.should.be.instanceOf(Number).and.aboveOrEqual(1);
                             e.name.should.be.instanceOf(String);
                             e.role.should.be.oneOf(Role.ISSUER, Role.VERIFIER, Role.VERISSUER);
                             e.openDate.should.be.instanceOf(String).and.match(Constants.DATE_FORMAT_REGEX);
                             e.endpoint.should.be.instanceOf(String);
-                            e.siteId.should.be.instanceOf(Number).and.aboveOrEqual(0);
+                            e.siteId.should.be.instanceOf(Number).and.aboveOrEqual(1);
                             e.siteName.should.be.instanceOf(String);
                             e.numberOfInstances.should.be.instanceOf(Number).and.aboveOrEqual(0);
                         });
@@ -64,7 +64,7 @@ describe('Services API', () => {
                         // console.log(res.body);
                         res.body.result.should.be.instanceOf(Array);
                         res.body.result.forEach(e => {
-                            e.id.should.be.instanceOf(Number).and.aboveOrEqual(0);
+                            e.id.should.be.instanceOf(Number).and.aboveOrEqual(1);
                             e.name.should.be.instanceOf(String);
                             e.role.should.be.oneOf(Role.ISSUER, Role.VERIFIER, Role.VERISSUER);
                             e.openDate.should.be.instanceOf(String).and.match(Constants.DATE_FORMAT_REGEX);
@@ -92,12 +92,12 @@ describe('Services API', () => {
                         // console.log(res.body);
                         res.body.result.should.be.instanceOf(Array);
                         res.body.result.forEach(e => {
-                            e.id.should.be.instanceOf(Number).and.aboveOrEqual(0);
+                            e.id.should.be.instanceOf(Number).and.aboveOrEqual(1);
                             e.name.should.be.instanceOf(String);
                             e.role.should.be.equal(searchRole);
                             e.openDate.should.be.instanceOf(String).and.match(Constants.DATE_FORMAT_REGEX);
                             e.endpoint.should.be.instanceOf(String);
-                            e.siteId.should.be.instanceOf(Number).and.aboveOrEqual(0);
+                            e.siteId.should.be.instanceOf(Number).and.aboveOrEqual(1);
                             e.siteName.should.be.instanceOf(String);
                             e.numberOfInstances.should.be.instanceOf(Number).and.aboveOrEqual(0);
                         });
@@ -122,14 +122,14 @@ describe('Services API', () => {
                         // console.log(res.body);
                         res.body.result.should.be.instanceOf(Array);
                         res.body.result.forEach(e => {
-                            e.id.should.be.instanceOf(Number).and.aboveOrEqual(0);
+                            e.id.should.be.instanceOf(Number).and.aboveOrEqual(1);
                             e.name.should.be.instanceOf(String);
                             e.role.should.be.oneOf(Role.ISSUER, Role.VERIFIER, Role.VERISSUER);
                             e.openDate.should.be.instanceOf(String).and.match(Constants.DATE_FORMAT_REGEX)
                                 .and.greaterThanOrEqual(searchOpenDateStart)
                                 .and.lessThanOrEqual(searchOpenDateEnd);
                             e.endpoint.should.be.instanceOf(String);
-                            e.siteId.should.be.instanceOf(Number).and.aboveOrEqual(0);
+                            e.siteId.should.be.instanceOf(Number).and.aboveOrEqual(1);
                             e.siteName.should.be.instanceOf(String);
                             e.numberOfInstances.should.be.instanceOf(Number).and.aboveOrEqual(0);
                         });
@@ -186,12 +186,12 @@ describe('Services API', () => {
                     .end((err, res) => {
                         if (err) return done(err);
                         // console.log(res.body);
-                        res.body.result.id.should.be.instanceOf(Number).and.aboveOrEqual(0);
+                        res.body.result.id.should.be.instanceOf(Number).and.aboveOrEqual(1);
                         res.body.result.name.should.be.instanceOf(String);
                         res.body.result.role.should.be.oneOf(Role.ISSUER, Role.VERIFIER, Role.VERISSUER);
                         res.body.result.openDate.should.be.instanceOf(String).and.match(Constants.DATE_FORMAT_REGEX);
                         res.body.result.endpoint.should.be.instanceOf(String);
-                        res.body.result.siteId.should.be.instanceOf(Number).and.aboveOrEqual(0);
+                        res.body.result.siteId.should.be.instanceOf(Number).and.aboveOrEqual(1);
                         res.body.result.siteName.should.be.instanceOf(String);
                         done();
                     })
@@ -343,7 +343,7 @@ describe('Services API', () => {
                     .end((err, res) => {
                         if(err) return done(err);
                         // console.log(res.body);
-                        res.body.result.id.should.be.instanceOf(Number).and.aboveOrEqual(0);
+                        res.body.result.id.should.be.instanceOf(Number).and.aboveOrEqual(1);
                         done();
                     });
             });
@@ -500,7 +500,7 @@ describe('Services API', () => {
                     .end((err, res) => {
                         if(err) return done(err);
                         // console.log(res.body);
-                        res.body.result.id.should.be.instanceOf(Number).and.aboveOrEqual(0);
+                        res.body.result.id.should.be.instanceOf(Number).and.aboveOrEqual(1);
                         done();
                     });
             });

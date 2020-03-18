@@ -116,9 +116,9 @@ router.get('/', [
         }
         return occurredDateEnd;
     }).optional(),
-    query('siteId').isNumeric().toInt().optional(),
-    query('serviceId').isNumeric().toInt().optional(),
-    query('instanceId').isNumeric().toInt().optional(),
+    query('siteId').isInt({ min: 1 }).toInt().optional(),
+    query('serviceId').isInt({ min: 1 }).toInt().optional(),
+    query('instanceId').isInt({ min: 1 }).toInt().optional(),
     query('logLevel').isString().isIn(Object.values(LogLevel).map(logLevel => logLevel)).optional(),
     query('logName').isString().isIn([
         ...Object.values(LogName.INFO).map(value => value), 
@@ -233,7 +233,7 @@ router.get('/', [
 });
 
 router.get('/:id', [
-    param('id').isNumeric().toInt()
+    param('id').isInt({ min: 1 }).toInt()
 ], async (req, res, next) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {

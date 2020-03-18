@@ -32,13 +32,13 @@ describe('Instances API', () => {
                         // console.log(res.body);
                         res.body.result.should.be.instanceOf(Array);
                         res.body.result.forEach(e => {
-                            e.id.should.be.instanceOf(Number).and.aboveOrEqual(0);
+                            e.id.should.be.instanceOf(Number).and.aboveOrEqual(1);
                             e.name.should.be.instanceOf(String);
                             // e.endpoint.should.be.instanceOf(String);
                             e.status.should.be.oneOf(true, false);
-                            // e.serviceId.should.be.instanceOf(Number).and.aboveOrEqual(0);
+                            // e.serviceId.should.be.instanceOf(Number).and.aboveOrEqual(1);
                             // e.serviceName.should.be.instanceOf(String);
-                            e.siteId.should.be.instanceOf(Number).and.aboveOrEqual(0);
+                            e.siteId.should.be.instanceOf(Number).and.aboveOrEqual(1);
                             e.siteName.should.be.instanceOf(String);
                         });
                         done();
@@ -56,13 +56,13 @@ describe('Instances API', () => {
                     .end((err, res) => {
                         if (err) return done(err);
 
-                        res.body.result.id.should.be.instanceOf(Number).and.aboveOrEqual(0);
+                        res.body.result.id.should.be.instanceOf(Number).and.aboveOrEqual(1);
                         res.body.result.name.should.be.instanceOf(String);
                         res.body.result.endpoint.should.be.instanceOf(String);
                         res.body.result.status.should.be.oneOf(true, false);
-                        res.body.result.serviceId.should.be.instanceOf(Number).and.aboveOrEqual(0);
+                        res.body.result.serviceId.should.be.instanceOf(Number).and.aboveOrEqual(1);
                         res.body.result.serviceName.should.be.instanceOf(String);
-                        res.body.result.siteId.should.be.instanceOf(Number).and.aboveOrEqual(0);
+                        res.body.result.siteId.should.be.instanceOf(Number).and.aboveOrEqual(1);
                         res.body.result.siteName.should.be.instanceOf(String);
                         done();
                     })
@@ -100,13 +100,13 @@ describe('Instances API', () => {
                         // console.log(res.body);
                         res.body.result.should.be.instanceOf(Array);
                         res.body.result.forEach(e => {
-                            e.id.should.be.instanceOf(Number).and.aboveOrEqual(0);
+                            e.id.should.be.instanceOf(Number).and.aboveOrEqual(1);
                             e.name.should.be.instanceOf(String);
                             e.endpoint.should.be.instanceOf(String);
                             e.status.should.be.oneOf(true, false);
-                            e.serviceId.should.be.instanceOf(Number).and.aboveOrEqual(0);
+                            e.serviceId.should.be.instanceOf(Number).and.aboveOrEqual(1);
                             e.serviceName.should.be.instanceOf(String);
-                            e.siteId.should.be.instanceOf(Number).and.aboveOrEqual(0);
+                            e.siteId.should.be.instanceOf(Number).and.aboveOrEqual(1);
                             e.siteName.should.be.instanceOf(String);
                         });
                         done();
@@ -128,11 +128,11 @@ describe('Instances API', () => {
                         // console.log(res.body);
                         res.body.result.should.be.instanceOf(Array);
                         res.body.result.forEach(e => {
-                            e.id.should.be.instanceOf(Number).and.aboveOrEqual(0);
+                            e.id.should.be.instanceOf(Number).and.aboveOrEqual(1);
                             e.name.should.be.instanceOf(String);
                             e.endpoint.should.be.instanceOf(String);
                             e.status.should.be.oneOf(true, false);
-                            e.serviceId.should.be.instanceOf(Number).and.aboveOrEqual(0);
+                            e.serviceId.should.be.instanceOf(Number).and.aboveOrEqual(1);
                             e.serviceName.should.be.instanceOf(String);
                             e.siteId.should.be.instanceOf(Number).and.equal(searchSiteId);
                             e.siteName.should.be.instanceOf(String);
@@ -156,13 +156,13 @@ describe('Instances API', () => {
                         // console.log(res.body);
                         res.body.result.should.be.instanceOf(Array);
                         res.body.result.forEach(e => {
-                            e.id.should.be.instanceOf(Number).and.aboveOrEqual(0);
+                            e.id.should.be.instanceOf(Number).and.aboveOrEqual(1);
                             e.name.should.be.instanceOf(String);
                             e.endpoint.should.be.instanceOf(String);
                             e.status.should.be.oneOf(true, false);
                             e.serviceId.should.be.instanceOf(Number).and.equal(searchServiceId);
                             e.serviceName.should.be.instanceOf(String);
-                            e.siteId.should.be.instanceOf(Number).and.aboveOrEqual(0);
+                            e.siteId.should.be.instanceOf(Number).and.aboveOrEqual(1);
                             e.siteName.should.be.instanceOf(String);
                         });
                         done();
@@ -184,13 +184,13 @@ describe('Instances API', () => {
                         // console.log(res.body);
                         res.body.result.should.be.instanceOf(Array);
                         res.body.result.forEach(e => {
-                            e.id.should.be.instanceOf(Number).and.aboveOrEqual(0);
+                            e.id.should.be.instanceOf(Number).and.aboveOrEqual(1);
                             e.name.should.be.instanceOf(String);
                             e.endpoint.should.be.instanceOf(String);
                             e.status.should.be.equal(searchStatus);
-                            e.serviceId.should.be.instanceOf(Number).and.aboveOrEqual(0);
+                            e.serviceId.should.be.instanceOf(Number).and.aboveOrEqual(1);
                             e.serviceName.should.be.instanceOf(String);
-                            e.siteId.should.be.instanceOf(Number).and.aboveOrEqual(0);
+                            e.siteId.should.be.instanceOf(Number).and.aboveOrEqual(1);
                             e.siteName.should.be.instanceOf(String);
                         });
                         done();

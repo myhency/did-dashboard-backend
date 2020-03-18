@@ -15,7 +15,7 @@ import _ from 'lodash';
 const router = express.Router();
 
 router.get('/', [
-    query('siteId').isNumeric().toInt().optional(),
+    query('siteId').isInt({ min: 1 }).toInt().optional(),
     query('role').isString().isIn([Role.ISSUER, Role.VERIFIER, Role.VERISSUER]).optional(),
     query('openDateStart').matches(Constants.DATE_FORMAT_REGEX).optional(),
     query('openDateEnd').matches(Constants.DATE_FORMAT_REGEX).custom((openDateEnd, { req }) => {
@@ -128,7 +128,7 @@ router.get('/count', async (req, res, next) => {
 });
 
 router.get('/:id', [
-    param('id').isNumeric().toInt()
+    param('id').isInt({ min: 1 }).toInt()
 ], async (req, res, next) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
@@ -170,7 +170,7 @@ router.get('/:id', [
 });
 
 router.get('/:id/statistic', [
-    param('id').isNumeric().toInt()
+    param('id').isInt({ min: 1 }).toInt()
 ], async (req, res, next) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
@@ -295,7 +295,7 @@ router.get('/:id/statistic', [
 
 
 router.get('/:id/transition', [
-    param('id').isNumeric().toInt()
+    param('id').isInt({ min: 1 }).toInt()
 ], async (req, res, next) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
@@ -379,7 +379,7 @@ router.get('/:id/transition', [
 });
 
 router.delete('/:id', [
-    param('id').isNumeric().toInt()
+    param('id').isInt({ min: 1 }).toInt()
 ], async (req, res, next) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
@@ -426,7 +426,7 @@ router.delete('/:id', [
 });
 
 router.post('/', [
-    body('siteId').isNumeric().toInt(),
+    body('siteId').isInt({ min: 1 }).toInt(),
     body('name').isString().trim().notEmpty(),
     body('role').isIn(Object.values(Role).map(role => role)),
     body('openDate').matches(Constants.DATE_FORMAT_REGEX),
@@ -480,7 +480,7 @@ router.post('/', [
 });
 
 router.put('/:id', [
-    param('id').isNumeric().toInt(),
+    param('id').isInt({ min: 1 }).toInt(),
 
     body('name').isString().trim().notEmpty(),
     body('role').isIn(Object.values(Role).map(role => role)),

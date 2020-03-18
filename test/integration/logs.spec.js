@@ -79,13 +79,13 @@ describe('Logs API', () => {
                         // console.log(res.body);
                         res.body.result.should.be.instanceof(Array);
                         res.body.result.forEach(e => {
-                            e.id.should.be.instanceof(Number).and.aboveOrEqual(0);
+                            e.id.should.be.instanceof(Number).and.aboveOrEqual(1);
                             e.occurredDate.should.match(Constants.DATETIME_FORMAT_REGEX);
-                            e.siteId.should.be.instanceof(Number).and.aboveOrEqual(0);
+                            e.siteId.should.be.instanceof(Number).and.aboveOrEqual(1);
                             e.siteName.should.be.instanceof(String);
-                            e.serviceId.should.be.instanceof(Number).and.aboveOrEqual(0);
+                            e.serviceId.should.be.instanceof(Number).and.aboveOrEqual(1);
                             e.serviceName.should.be.instanceof(String);
-                            e.instanceId.should.be.instanceof(Number).and.aboveOrEqual(0);
+                            e.instanceId.should.be.instanceof(Number).and.aboveOrEqual(1);
                             e.instanceName.should.be.instanceof(String);
                             e.logLevel.should.be.oneOf(Object.values(LogLevel).map(logLevel => logLevel));
                             if (e.logLevel === LogLevel.INFO) {
@@ -118,15 +118,15 @@ describe('Logs API', () => {
                         // console.log(res.body);
                         res.body.result.should.be.instanceof(Array);
                         res.body.result.forEach(e => {
-                            e.id.should.be.instanceof(Number).and.aboveOrEqual(0);
+                            e.id.should.be.instanceof(Number).and.aboveOrEqual(1);
                             e.occurredDate.should.match(Constants.DATETIME_FORMAT_REGEX)
                                 .and.greaterThanOrEqual(searchOccurredDateStart)
                                 .and.lessThanOrEqual(searchOccurredDateEnd);
-                            e.siteId.should.be.instanceof(Number).and.aboveOrEqual(0);
+                            e.siteId.should.be.instanceof(Number).and.aboveOrEqual(1);
                             e.siteName.should.be.instanceof(String);
-                            e.serviceId.should.be.instanceof(Number).and.aboveOrEqual(0);
+                            e.serviceId.should.be.instanceof(Number).and.aboveOrEqual(1);
                             e.serviceName.should.be.instanceof(String);
-                            e.instanceId.should.be.instanceof(Number).and.aboveOrEqual(0);
+                            e.instanceId.should.be.instanceof(Number).and.aboveOrEqual(1);
                             e.instanceName.should.be.instanceof(String);
                             e.logLevel.should.be.oneOf(Object.values(LogLevel).map(logLevel => logLevel));
                             if (e.logLevel === LogLevel.INFO) {
@@ -155,13 +155,13 @@ describe('Logs API', () => {
                         // console.log(res.body);
                         res.body.result.should.be.instanceof(Array);
                         res.body.result.forEach(e => {
-                            e.id.should.be.instanceof(Number).and.aboveOrEqual(0);
+                            e.id.should.be.instanceof(Number).and.aboveOrEqual(1);
                             e.occurredDate.should.match(Constants.DATETIME_FORMAT_REGEX);
                             e.siteId.should.be.instanceof(Number).and.equal(searchSiteId);
                             e.siteName.should.be.instanceof(String);
-                            e.serviceId.should.be.instanceof(Number).and.aboveOrEqual(0);
+                            e.serviceId.should.be.instanceof(Number).and.aboveOrEqual(1);
                             e.serviceName.should.be.instanceof(String);
-                            e.instanceId.should.be.instanceof(Number).and.aboveOrEqual(0);
+                            e.instanceId.should.be.instanceof(Number).and.aboveOrEqual(1);
                             e.instanceName.should.be.instanceof(String);
                             e.logLevel.should.be.oneOf(Object.values(LogLevel).map(logLevel => logLevel));
                             if (e.logLevel === LogLevel.INFO) {
@@ -190,13 +190,13 @@ describe('Logs API', () => {
                         // console.log(res.body);
                         res.body.result.should.be.instanceof(Array);
                         res.body.result.forEach(e => {
-                            e.id.should.be.instanceof(Number).and.aboveOrEqual(0);
+                            e.id.should.be.instanceof(Number).and.aboveOrEqual(1);
                             e.occurredDate.should.match(Constants.DATETIME_FORMAT_REGEX);
-                            e.siteId.should.be.instanceof(Number).and.aboveOrEqual(0);
+                            e.siteId.should.be.instanceof(Number).and.aboveOrEqual(1);
                             e.siteName.should.be.instanceof(String);
                             e.serviceId.should.be.instanceof(Number).and.equal(searchServiceId);
                             e.serviceName.should.be.instanceof(String);
-                            e.instanceId.should.be.instanceof(Number).and.aboveOrEqual(0);
+                            e.instanceId.should.be.instanceof(Number).and.aboveOrEqual(1);
                             e.instanceName.should.be.instanceof(String);
                             e.logLevel.should.be.oneOf(Object.values(LogLevel).map(logLevel => logLevel));
                             if (e.logLevel === LogLevel.INFO) {
@@ -225,11 +225,11 @@ describe('Logs API', () => {
                         // console.log(res.body);
                         res.body.result.should.be.instanceof(Array);
                         res.body.result.forEach(e => {
-                            e.id.should.be.instanceof(Number).and.aboveOrEqual(0);
+                            e.id.should.be.instanceof(Number).and.aboveOrEqual(1);
                             e.occurredDate.should.match(Constants.DATETIME_FORMAT_REGEX);
-                            e.siteId.should.be.instanceof(Number).and.aboveOrEqual(0);
+                            e.siteId.should.be.instanceof(Number).and.aboveOrEqual(1);
                             e.siteName.should.be.instanceof(String);
-                            e.serviceId.should.be.instanceof(Number).and.aboveOrEqual(0);
+                            e.serviceId.should.be.instanceof(Number).and.aboveOrEqual(1);
                             e.serviceName.should.be.instanceof(String);
                             e.instanceId.should.be.instanceof(Number).and.equal(searchInstanceId);
                             e.instanceName.should.be.instanceof(String);
@@ -260,13 +260,13 @@ describe('Logs API', () => {
                         // console.log(res.body);
                         res.body.result.should.be.instanceof(Array);
                         res.body.result.forEach(e => {
-                            e.id.should.be.instanceof(Number).and.aboveOrEqual(0);
+                            e.id.should.be.instanceof(Number).and.aboveOrEqual(1);
                             e.occurredDate.should.match(Constants.DATETIME_FORMAT_REGEX);
-                            e.siteId.should.be.instanceof(Number).and.aboveOrEqual(0);
+                            e.siteId.should.be.instanceof(Number).and.aboveOrEqual(1);
                             e.siteName.should.be.instanceof(String);
-                            e.serviceId.should.be.instanceof(Number).and.aboveOrEqual(0);
+                            e.serviceId.should.be.instanceof(Number).and.aboveOrEqual(1);
                             e.serviceName.should.be.instanceof(String);
-                            e.instanceId.should.be.instanceof(Number).and.aboveOrEqual(0)
+                            e.instanceId.should.be.instanceof(Number).and.aboveOrEqual(1);
                             e.instanceName.should.be.instanceof(String);
                             e.logLevel.should.be.equal(searchLogLevel);
                             if (e.logLevel === LogLevel.INFO) {
@@ -295,13 +295,13 @@ describe('Logs API', () => {
                         // console.log(res.body);
                         res.body.result.should.be.instanceof(Array);
                         res.body.result.forEach(e => {
-                            e.id.should.be.instanceof(Number).and.aboveOrEqual(0);
+                            e.id.should.be.instanceof(Number).and.aboveOrEqual(1);
                             e.occurredDate.should.match(Constants.DATETIME_FORMAT_REGEX);
-                            e.siteId.should.be.instanceof(Number).and.aboveOrEqual(0);
+                            e.siteId.should.be.instanceof(Number).and.aboveOrEqual(1);
                             e.siteName.should.be.instanceof(String);
-                            e.serviceId.should.be.instanceof(Number).and.aboveOrEqual(0);
+                            e.serviceId.should.be.instanceof(Number).and.aboveOrEqual(1);
                             e.serviceName.should.be.instanceof(String);
-                            e.instanceId.should.be.instanceof(Number).and.aboveOrEqual(0)
+                            e.instanceId.should.be.instanceof(Number).and.aboveOrEqual(1)
                             e.instanceName.should.be.instanceof(String);
                             e.logLevel.should.be.oneOf(Object.values(LogLevel).map(logLevel => logLevel));
                             e.logName.should.be.equal(searchLogName);
@@ -326,13 +326,13 @@ describe('Logs API', () => {
                         // console.log(res.body);
                         res.body.result.should.be.instanceof(Array);
                         res.body.result.forEach(e => {
-                            e.id.should.be.instanceof(Number).and.aboveOrEqual(0);
+                            e.id.should.be.instanceof(Number).and.aboveOrEqual(1);
                             e.occurredDate.should.match(Constants.DATETIME_FORMAT_REGEX);
-                            e.siteId.should.be.instanceof(Number).and.aboveOrEqual(0);
+                            e.siteId.should.be.instanceof(Number).and.aboveOrEqual(1);
                             e.siteName.should.be.instanceof(String);
-                            e.serviceId.should.be.instanceof(Number).and.aboveOrEqual(0);
+                            e.serviceId.should.be.instanceof(Number).and.aboveOrEqual(1);
                             e.serviceName.should.be.instanceof(String);
-                            e.instanceId.should.be.instanceof(Number).and.aboveOrEqual(0);
+                            e.instanceId.should.be.instanceof(Number).and.aboveOrEqual(1);
                             e.instanceName.should.be.instanceof(String);
                             e.logLevel.should.be.oneOf(Object.values(LogLevel).map(logLevel => logLevel));
                             if (e.logLevel === LogLevel.INFO) {
@@ -431,13 +431,13 @@ describe('Logs API', () => {
                     .end((err, res) => {
                         if (err) return done(err);
                         // console.log(res.body);
-                        res.body.result.id.should.be.instanceof(Number).and.aboveOrEqual(0);
+                        res.body.result.id.should.be.instanceof(Number).and.aboveOrEqual(1);
                         res.body.result.occurredDate.should.match(Constants.DATETIME_FORMAT_REGEX);
-                        res.body.result.siteId.should.be.instanceof(Number).and.aboveOrEqual(0);
+                        res.body.result.siteId.should.be.instanceof(Number).and.aboveOrEqual(1);
                         res.body.result.siteName.should.be.instanceof(String);
-                        res.body.result.serviceId.should.be.instanceof(Number).and.aboveOrEqual(0);
+                        res.body.result.serviceId.should.be.instanceof(Number).and.aboveOrEqual(1);
                         res.body.result.serviceName.should.be.instanceof(String);
-                        res.body.result.instanceId.should.be.instanceof(Number).and.aboveOrEqual(0);
+                        res.body.result.instanceId.should.be.instanceof(Number).and.aboveOrEqual(1);
                         res.body.result.instanceName.should.be.instanceof(String);
                         res.body.result.logLevel.should.be.oneOf(Object.values(LogLevel).map(logLevel => logLevel));
                         if (res.body.result.logLevel === LogLevel.INFO) {
