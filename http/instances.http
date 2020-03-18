@@ -26,3 +26,13 @@ GET {{host}}/api/instances
 
 DELETE {{host}}/api/instances/5
 ### 인스턴스 삭제
+
+POST {{host}}/api/instances
+Content-Type: application/json
+
+{
+    "serviceId": 4,
+    "name": "새로운 인스턴스",
+    "endpoint": "http://123.456.7.890:8080"
+}
+### 인스턴스 추가

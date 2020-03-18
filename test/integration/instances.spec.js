@@ -1,5 +1,5 @@
 import request from 'supertest';
-import should from 'should';
+import should, { fail } from 'should';
 import app from '../..';
 import Role from '../../enums/Role';
 import Site from '../../db/models/Site';
@@ -251,6 +251,70 @@ describe('Instances API', () => {
                 request(app)
                     .delete('/api/instances/100')
                     .expect(404, done)
+            });
+        });
+    });
+
+    describe('POST /api/instances 는', () => {
+        describe('성공 시', () => {
+            it('인스턴스를 추가하고, 인스턴스 id와 함께 201를 리턴한다.', (done) => {
+                request(app)
+                    .post('/api/instances')
+                    .send({
+                        serviceId: 4,
+                        name: '새로운 인스턴스',
+                        endpoint: 'http://123.456.7.890:8080'
+                    })
+                    .expect(201)
+                    .end((err, res) => {
+                        if(err) return done(err);
+
+                        res.body.result.id.should.be.instanceOf(Number).and.aboveOrEqual(1);
+                        done();
+                    });
+            });
+        });
+
+        describe('실패 시', () => {
+            it('잘못된 포맷의 서비스를 입력할 시, 400을 리턴한다.', (done) => {
+                request(app)
+                    .post('/api/instances')
+                    .send({
+                        serviceId: 'noServiceId',
+                        name: '새로운 인스턴스',
+                        endpoint: 'http://123.456.7.890:8080'
+                    })
+                    .expect(400, done)
+            });
+            it('잘못된 포맷의 인스턴스명을 입력할 시, 400을 리턴한다.', (done) => {
+                request(app)
+                    .post('/api/instances')
+                    .send({
+                        serviceId: 4,
+                        name: '   ',
+                        endpoint: 'http://123.456.7.890:8080'
+                    })
+                    .expect(400, done)
+            });
+            it('잘못된 포맷의 Endpoint를 입력할 시, 400을 리턴한다.', (done) => {
+                request(app)
+                    .post('/api/instances')
+                    .send({
+                        serviceId: 4,
+                        name: '새로운 인스턴스',
+                        endpoint: '    '
+                    })
+                    .expect(400, done)
+            });
+            it('존재하지 않는 서비스라면 400을 리턴한다.', (done) => {
+                request(app)
+                    .post('/api/instances')
+                    .send({
+                        serviceId: 100,
+                        name: '새로운 인스턴스',
+                        endpoint: 'http://123.456.7.890:8080'
+                    })
+                    .expect(400, done)
             });
         });
     });

@@ -1,6 +1,7 @@
 import express from 'express';
-import { validationResult, param, query } from 'express-validator';
+import { validationResult, param, query, body } from 'express-validator';
 import Instance from '../../db/models/Instance';
+import Service from '../../db/models/Service';
 import Log from '../../db/models/Log';
 import { Sequelize } from 'sequelize';
 import sequelize from '../../db/models';
@@ -194,6 +195,57 @@ router.delete('/:id', [
     }
 
     return res.status(204).send();
+});
+
+router.post('/', [
+    body('serviceId').isNumeric().toInt(),
+    body('name').isString().trim().notEmpty(),
+    body('endpoint').isString().trim().notEmpty()
+], async (req, res, next) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        return res.status(400).send();
+    }
+
+    const { serviceId, name, endpoint } = req.body;
+
+    let serviceCount; 
+
+    try {
+        serviceCount = await Service.count({
+            where: {
+                id: serviceId
+            }
+        });
+    } catch(err) {
+        next(err);
+        return;
+    }
+
+    // 존재하지 않는 사이트라면 400을 리턴한다.
+    if(serviceCount === 0) {
+        return res.status(400).send();    
+    }
+
+    let instance;
+
+    try {
+        instance = await Instance.create({
+            serviceId,
+            name,
+            endpoint,
+            status: true
+        });
+    } catch(err) {
+        next(err);
+        return;
+    }
+
+    return res.status(201).send({
+        result: {
+            id: instance.id
+        }
+    });
 });
 
 module.exports = router;
