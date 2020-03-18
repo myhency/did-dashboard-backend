@@ -319,4 +319,54 @@ describe('Instances API', () => {
         });
     });
 
+    describe('PUT /api/instances/:id 는', () => {
+        describe('성공 시', () => {
+            it('인스턴스를 수정하고, 인스턴스 id와 함께 201를 리턴한다.', (done) => {
+                request(app)
+                    .put('/api/instances/8')
+                    .send({
+                        name: '수정 인스턴스',
+                        endpoint: 'http://000.456.7.890:8080'
+                    })
+                    .expect(201)
+                    .end((err, res) => {
+                        if(err) return done(err);
+
+                        res.body.result.id.should.be.instanceOf(Number).and.aboveOrEqual(1);
+                        done();
+                    });
+            });
+        });
+
+        describe('실패 시', () => {
+            it('잘못된 포맷의 인스턴스명을 입력할 시, 400을 리턴한다.', (done) => {
+                request(app)
+                    .put('/api/instances/8')
+                    .send({
+                        name: '    ',
+                        endpoint: 'http://000.456.7.890:8080'
+                    })
+                    .expect(400, done)
+            });
+            it('잘못된 포맷의 Endpoint를 입력할 시, 400을 리턴한다.', (done) => {
+                request(app)
+                    .put('/api/instances/8')
+                    .send({
+                        name: '수정 인스턴스',
+                        endpoint: '    '
+                    })
+                    .expect(400, done)
+            });
+            it('존재하지 않는 인스턴스라면 404을 리턴한다.', (done) => {
+                request(app)
+                    .put('/api/instances/100')
+                    .send({
+                        name: '수정 인스턴스',
+                        endpoint: 'http://000.456.7.890:8080'
+                    })
+                    .expect(404, done)
+            });
+        });
+    });
+
 });

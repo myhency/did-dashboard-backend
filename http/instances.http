@@ -36,3 +36,12 @@ Content-Type: application/json
     "endpoint": "http://123.456.7.890:8080"
 }
 ### 인스턴스 추가
+
+PUT {{host}}/api/instances/8
+Content-Type: application/json
+
+{
+    "name": "수정 인스턴스",
+    "endpoint": "http://000.456.7.890:0000"
+}
+### 인스턴스 수정

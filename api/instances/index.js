@@ -248,4 +248,52 @@ router.post('/', [
     });
 });
 
+router.put('/:id', [
+    param('id').isNumeric().toInt(),
+
+    body('name').isString().trim().notEmpty(),
+    body('endpoint').isString().trim().notEmpty()
+], async (req, res, next) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        return res.status(400).send();
+    }
+
+    const { id } = req.params;
+    const { name, endpoint } = req.body;
+
+    let instance; 
+
+    try {
+        instance = await Instance.findOne({
+            where: {
+                id: id
+            }
+        });
+    } catch(err) {
+        next(err);
+        return;
+    }
+
+    // 존재하지 않는 인스턴스라면 404을 리턴한다.
+    if(!instance) {
+        return res.status(404).send();    
+    }
+
+    try {
+        instance.name = name;
+        instance.endpoint = endpoint;
+        instance = await instance.save();
+    } catch(err) {
+        next(err);
+        return;
+    }
+
+    return res.status(201).send({
+        result: {
+            id: instance.id
+        }
+    });
+});
+
 module.exports = router;
