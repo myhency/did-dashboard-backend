@@ -273,7 +273,7 @@ router.post('/', [
         site = await Site.create({
             name,
             openDate: parse(openDate, Constants.DATE_FORMAT, new Date()),
-            logoFileName: (logoFile ? logoFile.path : null)
+            logoFileName: (logoFile ? logoFile.path.replaceAll("\\", "/") : null)
         });
     } catch(err) {
         next(err);
