@@ -235,7 +235,7 @@ router.put('/:id', [
         site.name = name;
         site.openDate = parse(openDate, Constants.DATE_FORMAT, new Date());
         if(logoFile) {
-            site.logoFileName = logoFile.path;
+            site.logoFileName = logoFile.path.replaceAll("\\", "/");
         }
         site = await site.save();
     } catch(err) {
