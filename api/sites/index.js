@@ -235,7 +235,7 @@ router.put('/:id', [
         site.name = name;
         site.openDate = parse(openDate, Constants.DATE_FORMAT, new Date());
         if(logoFile) {
-            site.logoFileName = logoFile.path.replaceAll("\\", "/");
+            site.logoFileName = logoFile.path.replace(/\\/g,"/");
         }
         site = await site.save();
     } catch(err) {
@@ -273,7 +273,7 @@ router.post('/', [
         site = await Site.create({
             name,
             openDate: parse(openDate, Constants.DATE_FORMAT, new Date()),
-            logoFileName: (logoFile ? logoFile.path.replaceAll("\\", "/") : null)
+            logoFileName: (logoFile ? logoFile.path.replace(/\\/g,"/") : null)
         });
     } catch(err) {
         next(err);
