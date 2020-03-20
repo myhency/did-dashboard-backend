@@ -5,7 +5,7 @@ import { validationResult, param, query, body } from 'express-validator';
 import { Sequelize, Op } from 'sequelize';
 import Constants from '../../constants';
 import multer from 'multer';
-import { parse } from 'date-fns';
+import { parse, format } from 'date-fns';
 import { v4 as uuidv4 } from 'uuid';
 import path from 'path';
 
@@ -75,10 +75,7 @@ router.get('/', [
             attributes: [
                 'id',
                 'name',
-                [
-                    Sequelize.fn('DATE_FORMAT', Sequelize.col('open_date'), '%Y-%m-%d')
-                    , 'openDate'
-                ],
+                'openDate',
                 'logoFileName',
                 [
                     Sequelize.literal('(SELECT COUNT(site_id) FROM service WHERE service.site_id = site.id)'), 'numberOfServices'
@@ -93,6 +90,7 @@ router.get('/', [
 
     res.json({
         result: sites.map(site => {
+            site.openDate = format(site.openDate, Constants.DATE_FORMAT);
             if (site.logoFileName === null) {
                 delete site['logoFileName'];
             }
@@ -119,10 +117,7 @@ router.get('/:id', [
             attributes: [
                 'id',
                 'name',
-                [
-                    Sequelize.fn('DATE_FORMAT', Sequelize.col('open_date'), '%Y-%m-%d')
-                    , 'openDate'
-                ],
+                'openDate',
                 'logoFileName'
             ],
             where: {
@@ -138,6 +133,8 @@ router.get('/:id', [
         return res.status(404).send();
     }
 
+    site.openDate = format(site.openDate, Constants.DATE_FORMAT);
+    
     if (site.logoFileName === null) {
         delete site['logoFileName'];
     }

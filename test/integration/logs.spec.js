@@ -80,7 +80,7 @@ describe('Logs API', () => {
                         res.body.result.should.be.instanceof(Array);
                         res.body.result.forEach(e => {
                             e.id.should.be.instanceof(Number).and.aboveOrEqual(1);
-                            e.occurredDate.should.match(Constants.DATETIME_FORMAT_REGEX);
+                            e.occurredDate.should.match(Constants.DETAIL_DATETIME_FORMAT_REGEX);
                             e.siteId.should.be.instanceof(Number).and.aboveOrEqual(1);
                             e.siteName.should.be.instanceof(String);
                             e.serviceId.should.be.instanceof(Number).and.aboveOrEqual(1);
@@ -119,7 +119,7 @@ describe('Logs API', () => {
                         res.body.result.should.be.instanceof(Array);
                         res.body.result.forEach(e => {
                             e.id.should.be.instanceof(Number).and.aboveOrEqual(1);
-                            e.occurredDate.should.match(Constants.DATETIME_FORMAT_REGEX)
+                            e.occurredDate.should.match(Constants.DETAIL_DATETIME_FORMAT_REGEX)
                                 .and.greaterThanOrEqual(searchOccurredDateStart)
                                 .and.lessThanOrEqual(searchOccurredDateEnd);
                             e.siteId.should.be.instanceof(Number).and.aboveOrEqual(1);
@@ -156,7 +156,7 @@ describe('Logs API', () => {
                         res.body.result.should.be.instanceof(Array);
                         res.body.result.forEach(e => {
                             e.id.should.be.instanceof(Number).and.aboveOrEqual(1);
-                            e.occurredDate.should.match(Constants.DATETIME_FORMAT_REGEX);
+                            e.occurredDate.should.match(Constants.DETAIL_DATETIME_FORMAT_REGEX);
                             e.siteId.should.be.instanceof(Number).and.equal(searchSiteId);
                             e.siteName.should.be.instanceof(String);
                             e.serviceId.should.be.instanceof(Number).and.aboveOrEqual(1);
@@ -191,7 +191,7 @@ describe('Logs API', () => {
                         res.body.result.should.be.instanceof(Array);
                         res.body.result.forEach(e => {
                             e.id.should.be.instanceof(Number).and.aboveOrEqual(1);
-                            e.occurredDate.should.match(Constants.DATETIME_FORMAT_REGEX);
+                            e.occurredDate.should.match(Constants.DETAIL_DATETIME_FORMAT_REGEX);
                             e.siteId.should.be.instanceof(Number).and.aboveOrEqual(1);
                             e.siteName.should.be.instanceof(String);
                             e.serviceId.should.be.instanceof(Number).and.equal(searchServiceId);
@@ -226,7 +226,7 @@ describe('Logs API', () => {
                         res.body.result.should.be.instanceof(Array);
                         res.body.result.forEach(e => {
                             e.id.should.be.instanceof(Number).and.aboveOrEqual(1);
-                            e.occurredDate.should.match(Constants.DATETIME_FORMAT_REGEX);
+                            e.occurredDate.should.match(Constants.DETAIL_DATETIME_FORMAT_REGEX);
                             e.siteId.should.be.instanceof(Number).and.aboveOrEqual(1);
                             e.siteName.should.be.instanceof(String);
                             e.serviceId.should.be.instanceof(Number).and.aboveOrEqual(1);
@@ -261,7 +261,7 @@ describe('Logs API', () => {
                         res.body.result.should.be.instanceof(Array);
                         res.body.result.forEach(e => {
                             e.id.should.be.instanceof(Number).and.aboveOrEqual(1);
-                            e.occurredDate.should.match(Constants.DATETIME_FORMAT_REGEX);
+                            e.occurredDate.should.match(Constants.DETAIL_DATETIME_FORMAT_REGEX);
                             e.siteId.should.be.instanceof(Number).and.aboveOrEqual(1);
                             e.siteName.should.be.instanceof(String);
                             e.serviceId.should.be.instanceof(Number).and.aboveOrEqual(1);
@@ -296,7 +296,7 @@ describe('Logs API', () => {
                         res.body.result.should.be.instanceof(Array);
                         res.body.result.forEach(e => {
                             e.id.should.be.instanceof(Number).and.aboveOrEqual(1);
-                            e.occurredDate.should.match(Constants.DATETIME_FORMAT_REGEX);
+                            e.occurredDate.should.match(Constants.DETAIL_DATETIME_FORMAT_REGEX);
                             e.siteId.should.be.instanceof(Number).and.aboveOrEqual(1);
                             e.siteName.should.be.instanceof(String);
                             e.serviceId.should.be.instanceof(Number).and.aboveOrEqual(1);
@@ -327,7 +327,7 @@ describe('Logs API', () => {
                         res.body.result.should.be.instanceof(Array);
                         res.body.result.forEach(e => {
                             e.id.should.be.instanceof(Number).and.aboveOrEqual(1);
-                            e.occurredDate.should.match(Constants.DATETIME_FORMAT_REGEX);
+                            e.occurredDate.should.match(Constants.DETAIL_DATETIME_FORMAT_REGEX);
                             e.siteId.should.be.instanceof(Number).and.aboveOrEqual(1);
                             e.siteName.should.be.instanceof(String);
                             e.serviceId.should.be.instanceof(Number).and.aboveOrEqual(1);
@@ -432,7 +432,7 @@ describe('Logs API', () => {
                         if (err) return done(err);
                         // console.log(res.body);
                         res.body.result.id.should.be.instanceof(Number).and.aboveOrEqual(1);
-                        res.body.result.occurredDate.should.match(Constants.DATETIME_FORMAT_REGEX);
+                        res.body.result.occurredDate.should.match(Constants.DETAIL_DATETIME_FORMAT_REGEX);
                         res.body.result.siteId.should.be.instanceof(Number).and.aboveOrEqual(1);
                         res.body.result.siteName.should.be.instanceof(String);
                         res.body.result.serviceId.should.be.instanceof(Number).and.aboveOrEqual(1);

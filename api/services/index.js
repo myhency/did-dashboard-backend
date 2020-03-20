@@ -84,7 +84,7 @@ router.get('/', [
                 'id',
                 'name',
                 'role',
-                [Sequelize.fn('DATE_FORMAT', Sequelize.col('open_date'), '%Y-%m-%d'), 'openDate'],
+                'openDate',
                 'endpoint',
                 'siteId',
                 [Sequelize.literal('(SELECT site.name FROM site WHERE site.id = service.site_id)'), 'siteName'],
@@ -99,6 +99,10 @@ router.get('/', [
         next(err);
         return;
     }
+
+    services.rows.forEach(row => {
+        row.openDate = format(row.openDate, Constants.DATE_FORMAT);
+    })
 
     res.json({
         result: services.rows,
@@ -146,7 +150,7 @@ router.get('/:id', [
                 'id',
                 'name',
                 'role',
-                [Sequelize.fn('DATE_FORMAT', Sequelize.col('open_date'), '%Y-%m-%d'), 'openDate'],
+                'openDate',
                 'endpoint',
                 'siteId',
                 [Sequelize.literal('(SELECT site.name FROM site WHERE site.id = service.site_id)'), 'siteName'],
@@ -163,6 +167,9 @@ router.get('/:id', [
     if (!service) {
         return res.status(404).send();
     }
+
+    
+    service.openDate = format(service.openDate, Constants.DATE_FORMAT);
 
     res.json({
         result: service
@@ -336,11 +343,8 @@ router.get('/:id/transition', [
         recentInfoLogs = await Log.findAll({
             raw: true,
             attributes: [
+                [ Sequelize.fn('DATE_FORMAT', Sequelize.col('occurred_date'), '%Y-%m-%d %H:00'), 'occurredDate' ],
                 'logName',
-                [
-                    Sequelize.fn('DATE_FORMAT', Sequelize.col('occurred_date'), '%Y-%m-%d %H:00')
-                    , 'occurredDate'
-                ]
             ],
             where: {
                 serviceId: id,

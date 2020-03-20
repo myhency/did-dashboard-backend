@@ -2,7 +2,7 @@ import express from 'express';
 import { Op, Sequelize } from 'sequelize';
 import Log from '../../db/models/Log';
 import { validationResult, query, param } from 'express-validator';
-import { format, subMinutes, parse } from 'date-fns';
+import { format, startOfMinute, subMinutes, parse } from 'date-fns';
 import _ from 'lodash';
 import LogLevel from '../../enums/LogLevel';
 import LogName from '../../enums/LogName';
@@ -34,7 +34,7 @@ router.get('/error/count', async (req, res, next) => {
         result: count
     })
 });
-/*
+
 router.get('/info/apicall/transition', async (req, res, next) => {
     
     const now = new Date();
@@ -51,11 +51,8 @@ router.get('/info/apicall/transition', async (req, res, next) => {
         apicalls = await Log.findAll({
             raw: true,
             attributes: [
-                [
-                    Sequelize.fn('DATE_FORMAT', Sequelize.col('occurred_date'), '%H:%i')
-                    , 'occurredDate'
-                ],
-                [Sequelize.fn('count', 'occurred_date'), 'count']
+                [ Sequelize.fn('DATE_FORMAT', Sequelize.col('occurred_date'), '%H:%i'), 'occurredDate' ],
+                [ Sequelize.fn('count', 'occurred_date'), 'count' ]
             ],
             where: {
                 logLevel: LogLevel.INFO,
@@ -83,8 +80,8 @@ router.get('/info/apicall/transition', async (req, res, next) => {
         result: timetable
     })
 });
-*/
 
+/*
 let timetable = [];
 
 router.get('/info/apicall/transition', async (req, res, next) => {
@@ -107,7 +104,7 @@ router.get('/info/apicall/transition', async (req, res, next) => {
         result: timetable
     })
 });
-
+*/
 router.get('/', [
     query('occurredDateStart').matches(Constants.DATETIME_FORMAT_REGEX).optional(),
     query('occurredDateEnd').matches(Constants.DATETIME_FORMAT_REGEX).custom((occurredDateEnd, { req }) => {
@@ -200,7 +197,7 @@ router.get('/', [
             raw: true,
             attributes: [
                 'id',
-                [Sequelize.fn('DATE_FORMAT', Sequelize.col('occurred_date'), '%Y-%m-%d %H:%i'), 'occurredDate'],
+                'occurredDate',
                 'siteId',
                 [Sequelize.literal('(SELECT site.name FROM site WHERE site.id = log.site_id)'), 'siteName'],
                 'serviceId',
@@ -220,6 +217,10 @@ router.get('/', [
         next(err);
         return;
     }
+
+    logs.rows.forEach(row => {
+        row.occurredDate = format(row.occurredDate, Constants.DETAIL_DATETIME_FORMAT);
+    })
 
     res.json({
         result: logs.rows,
@@ -249,7 +250,7 @@ router.get('/:id', [
             raw: true,
             attributes: [
                 'id',
-                [Sequelize.fn('DATE_FORMAT', Sequelize.col('occurred_date'), '%Y-%m-%d %H:%i'), 'occurredDate'],
+                'occurredDate',
                 'siteId',
                 [Sequelize.literal('(SELECT site.name FROM site WHERE site.id = log.site_id)'), 'siteName'],
                 'serviceId',
@@ -272,6 +273,8 @@ router.get('/:id', [
     if(!log) {
         return res.status(404).send();
     }
+
+    log.occurredDate = format(log.occurredDate, Constants.DETAIL_DATETIME_FORMAT);
 
     res.json({
         result: log
