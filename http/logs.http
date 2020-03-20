@@ -14,7 +14,7 @@ GET {{host}}/api/logs
 
 GET {{host}}/api/logs
     ?occurredDateStart=2019-01-01+00:00
-    &occurredDateEnd=2020-02-12+23:43
+    &occurredDateEnd=2021-01-01+23:43
 ### 로그 리스트 조회 - Open Date 검색
 
 GET {{host}}/api/logs

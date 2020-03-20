@@ -14,27 +14,27 @@ const router = express.Router();
 router.get('/error/count', async (req, res, next) => {
     let count;
 
-    // try {
-    //     count = await Log.count({
-    //         where: {
-    //             logLevel: LogLevel.ERROR,
-    //             occurredDate: {
-    //                 [Op.gte]: subMinutes(new Date(), 60)
-    //             }
-    //         }
-    //     });
-    // } catch (err) {
-    //     next(err);
-    //     return;
-    // }
+    try {
+        count = await Log.count({
+            where: {
+                logLevel: LogLevel.ERROR,
+                occurredDate: {
+                    [Op.gte]: subMinutes(new Date(), 60)
+                }
+            }
+        });
+    } catch (err) {
+        next(err);
+        return;
+    }
 
-    count = Math.floor(Math.random() * (5 - 0 + 1)) + 0
+    // count = Math.floor(Math.random() * (5 - 0 + 1)) + 0
 
     res.json({
         result: count
     })
 });
-
+/*
 router.get('/info/apicall/transition', async (req, res, next) => {
     
     const now = new Date();
@@ -80,8 +80,8 @@ router.get('/info/apicall/transition', async (req, res, next) => {
         result: timetable
     })
 });
+*/
 
-/*
 let timetable = [];
 
 router.get('/info/apicall/transition', async (req, res, next) => {
@@ -104,7 +104,7 @@ router.get('/info/apicall/transition', async (req, res, next) => {
         result: timetable
     })
 });
-*/
+
 router.get('/', [
     query('occurredDateStart').matches(Constants.DATETIME_FORMAT_REGEX).optional(),
     query('occurredDateEnd').matches(Constants.DATETIME_FORMAT_REGEX).custom((occurredDateEnd, { req }) => {

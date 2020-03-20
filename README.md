@@ -10,7 +10,9 @@ $ docker run -d \
     -e MYSQL_DATABASE=did_dashboard \
     --name did-mariadb \
     mariadb \
-    --character-set-server=utf8 --collation-server=utf8_general_ci
+    --character-set-server=utf8 \
+    --collation-server=utf8_general_ci \
+    --default-time-zone=+09:00
 ```
 
 ### Test
