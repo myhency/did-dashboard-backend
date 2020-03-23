@@ -10,7 +10,9 @@ $ docker run -d \
     -e MYSQL_DATABASE=did_dashboard \
     --name did-mariadb \
     mariadb \
-    --character-set-server=utf8 --collation-server=utf8_general_ci
+    --character-set-server=utf8 \
+    --collation-server=utf8_general_ci \
+    --default-time-zone=+09:00
 ```
 
 ### Test
@@ -62,3 +64,16 @@ $ npm run start:prod
 - [MariaDB Docker](https://hub.docker.com/_/mariadb)
 - [환경변수 관리](https://velog.io/@public_danuel/process-env-on-node-js)
 - [Mocha tip](https://blog.outsider.ne.kr/1129)
+- [Express 304](https://huns.me/development/2306)
+- [Express file upload #1](https://wayhome25.github.io/nodejs/2017/02/21/nodejs-15-file-upload/)
+- [Express file upload #2](https://stackoverflow.com/questions/39265838/express-js-image-upload-and-text-inputs-using-post-method)
+- [Express file upload #3](https://appdividend.com/2019/02/14/node-express-image-upload-and-resize-tutorial-example/)
+- [Express file upload #4](https://www.tutsmake.com/node-js-express-upload-file-image-example/)
+- [express-validator](https://express-validator.github.io/docs/index.html)
+- [validator.js](https://github.com/validatorjs/validator.js)
+- [Node.js를 ES6 문법으로 써보자](https://jeff-til.tistory.com/entry/Nodejs를-ES6-문법으로-써보자)
+- [RESTful API 설계 가이드](https://sanghaklee.tistory.com/57)
+- [Multer](https://github.com/expressjs/multer/blob/master/doc/README-ko.md)
+- [File Upload란?](http://egloos.zum.com/kaludin/v/2270972)
+- [Mocha - Parameterized Test](https://github.com/mochajs/mocha/issues/1454)
+- [Sequelize Timezone Issue](https://lemontia.tistory.com/873)

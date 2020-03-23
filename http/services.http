@@ -1,17 +1,65 @@
-@host = http://localhost:3000
+@host = http://localhost:4000
 
 GET {{host}}/api/services
+    ?perPage=10
+    &page=1
+    &sort=name+asc,role+asc,numberOfInstances+desc,openDate+asc,endpoint+asc
+# 서비스 리스트 조회 - paging, sort 예제
 ###
+
+GET {{host}}/api/services
+    ?siteId=1
+### 서비스 리스트 조회 - 사이트 검색
+
+GET {{host}}/api/services
+    ?role=ISSUER
+### 서비스 리스트 조회 - Role 검색
+
+GET {{host}}/api/services
+    ?openDateStart=2018-01-01
+    &openDateEnd=2019-02-28
+### 서비스 리스트 조회 - Open Date 검색
+
+GET {{host}}/api/services/4
+### 서비스 상세 조회
 
 GET {{host}}/api/services/count
-###
+### 전체 서비스 수 조회
 
 GET {{host}}/api/services/1/statistic
-###
+### 서비스 통계 조회
+
 GET {{host}}/api/services/2/statistic
-###
+### 서비스 통계 조회
 
 GET {{host}}/api/services/1/transition
-###
+### 서비스 현황 조회
+
 GET {{host}}/api/services/2/transition
-###
+### 서비스 현황 조회
+
+DELETE {{host}}/api/services/3
+### 서비스 삭제
+
+POST {{host}}/api/services
+Content-Type: application/json
+
+{
+    "siteId": 2,
+    "name": "새로운 서비스",
+    "role": "ISSUER",
+    "openDate": "2020-03-26",
+    "endpoint": "http://addtest.endpoint.com/"
+}
+### 서비스 추가
+
+PUT {{host}}/api/services/4
+Content-Type: application/json
+
+{
+    "name": "수정 서비스",
+    "role": "VERISSUER",
+    "openDate": "2020-03-27",
+    "endpoint": "http://modifytest.endpoint.com/"
+}
+### 서비스 수정

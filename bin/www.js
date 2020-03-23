@@ -3,9 +3,15 @@ const debug = require('debug')('express-sequelize');
 import http from 'http';
 import sequelize from '../db/models';
 import Log from '../db/models/Log';
+import Site from '../db/models/Site';
+import Service from '../db/models/Service';
+import Instance from '../db/models/Instance';
 import mockLogs from '../test/mockData/mockLogs';
+import mockSites from '../test/mockData/mockSites';
+import mockServices from '../test/mockData/mockServices';
+import mockInstances from '../test/mockData/mockInstances';
 
-const port = normalizePort(process.env.PORT || '8080');
+const port = normalizePort(process.env.PORT || '4000');
 app.set('port', port);
 
 const server = http.createServer(app);
@@ -22,9 +28,11 @@ sequelize.sync(options).then(() => {
 
     if (process.env.NODE_ENV === 'local') {
         console.log('Creating Bulk Data ...')
-        Log.bulkCreate(mockLogs, {
-            logging: false
-        });
+        Log.bulkCreate(mockLogs, { logging: false });
+        Site.bulkCreate(mockSites, { logging: false });
+        Service.bulkCreate(mockServices, { logging: false });
+        Instance.bulkCreate(mockInstances, { logging: false });
+
         console.log('Bulk Data Created.')
     }
 });

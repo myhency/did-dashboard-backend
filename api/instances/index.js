@@ -1,61 +1,299 @@
 import express from 'express';
+import { validationResult, param, query, body } from 'express-validator';
+import Instance from '../../db/models/Instance';
+import Service from '../../db/models/Service';
+import Log from '../../db/models/Log';
+import { Sequelize } from 'sequelize';
+import sequelize from '../../db/models';
+import pagingMiddleware from '../../common/middleware/pagingMiddleware';
+import Constants from '../../constants';
 const router = express.Router();
 
 router.get('/health', async (req, res, next) => {
-    
+
+    let instances;
+
+    try {
+        instances = await Instance.findAll({
+            attributes: [
+                'id',
+                'name',
+                // 'endpoint',
+                'status',
+                // 'serviceId',
+                // [ Sequelize.literal('(SELECT service.name FROM service WHERE service.id = instance.service_id)'),  'serviceName' ],
+                [Sequelize.literal('(SELECT service.site_id FROM service WHERE service.id = instance.service_id)'), 'siteId'],
+                [Sequelize.literal('(SELECT site.name FROM site WHERE site.id = (SELECT service.site_id FROM service WHERE service.id = instance.service_id))'), 'siteName'],
+            ],
+            order: [
+                ['status', 'ASC']
+            ]
+        })
+    } catch (err) {
+        next(err);
+        return;
+    }
+
     res.json({
-        result: [
-            {
-                instanceId: 1,
-                instanceName: "재직증명서 발급 서비스 인스턴스 #1",
-                siteName: "현대카드",
-                status: true
-            },
-            {
-                instanceId: 2,
-                instanceName: "재직증명서 발급 서비스 인스턴스 #2",
-                siteName: "현대카드",
-                status: true
-            },
-            {
-                instanceId: 3,
-                instanceName: "법인카드 발급 서비스 인스턴스 #1",
-                siteName: "현대카드",
-                status: true
-            },
-            {
-                instanceId: 4,
-                instanceName: "법인카드 발급 서비스 인스턴스 #2",
-                siteName: "현대카드",
-                status: true
-            },
-            {
-                instanceId: 5,
-                instanceName: "전자사원증 발급 서비스 인스턴스 #1",
-                siteName: "현대카드",
-                status: true
-            },
-            {
-                instanceId: 6,
-                instanceName: "전자사원증 발급 서비스 인스턴스 #2",
-                siteName: "현대카드",
-                status: true
-            },
-            {
-                instanceId: 7,
-                instanceName: "갑근세영수증 발급 서비스 인스턴스 #1",
-                siteName: "현대카드",
-                status: true
-            },
-            {
-                instanceId: 8,
-                instanceName: "갑근세영수증 발급 서비스 인스턴스 #2",
-                siteName: "현대카드",
-                status: true
-            },
-            
-        ]
-    })
+        result: instances
+    });
+});
+
+router.get('/:id', [
+    param('id').isInt({ min: 1 }).toInt()
+], async (req, res, next) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        return res.status(400).send();
+    }
+
+    const { id } = req.params;
+
+    let instance;
+
+    try {
+        instance = await Instance.findOne({
+            attributes: [
+                'id',
+                'name',
+                'endpoint',
+                'status',
+                'serviceId',
+                [Sequelize.literal('(SELECT service.name FROM service WHERE service.id = instance.service_id)'), 'serviceName'],
+                [Sequelize.literal('(SELECT service.site_id FROM service WHERE service.id = instance.service_id)'), 'siteId'],
+                [Sequelize.literal('(SELECT site.name FROM site WHERE site.id = (SELECT service.site_id FROM service WHERE service.id = instance.service_id))'), 'siteName'],
+            ],
+            where: {
+                id: id
+            }
+        })
+    } catch (err) {
+        next(err);
+        return;
+    }
+
+
+    if (!instance) {
+        return res.status(404).send();
+    }
+
+    res.json({
+        result: instance
+    });
+});
+
+router.get('/', [
+    query('siteId').isInt({ min: 1 }).toInt().optional(),
+    query('serviceId').isInt({ min: 1 }).toInt().optional(),
+    query('status').isBoolean().toBoolean().optional(),
+    pagingMiddleware(Constants.PER_PAGE, ['siteName', 'serviceName', 'name', 'endpoint', 'status'])
+], async (req, res, next) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        return res.status(400).send();
+    }
+
+    const { perPage, page, sort, offset, limit } = req.paging;
+    const { siteId, serviceId, status } = req.query;
+
+    const whereClause = {};
+    if (siteId !== undefined) {
+        whereClause.serviceId = Sequelize.literal(`service_id IN (SELECT service.id FROM service WHERE service.site_id = ${siteId})`)
+    }
+    if (serviceId !== undefined) {
+        whereClause.serviceId = serviceId
+    }
+    if (status !== undefined) {
+        whereClause.status = status
+    }
+
+    let orderClause = [ 
+        ['id', 'asc']
+    ];
+    if(sort.length > 0) {
+        orderClause = sort.map(s => {
+            switch (s.key) {
+                case 'siteName':
+                    return [Sequelize.literal('(SELECT service.name FROM service WHERE service.id = instance.service_id)'), s.value];
+                case 'serviceName':
+                    return [Sequelize.literal('(SELECT site.name FROM site WHERE site.id = (SELECT service.site_id FROM service WHERE service.id = instance.service_id))'), s.value];
+                default:
+                    return [s.key, s.value];
+            }
+        });
+    }
+
+    let instances;
+
+    try {
+        instances = await Instance.findAndCountAll({
+            attributes: [
+                'id',
+                'name',
+                'endpoint',
+                'status',
+                'serviceId',
+                [Sequelize.literal('(SELECT service.name FROM service WHERE service.id = instance.service_id)'), 'serviceName'],
+                [Sequelize.literal('(SELECT service.site_id FROM service WHERE service.id = instance.service_id)'), 'siteId'],
+                [Sequelize.literal('(SELECT site.name FROM site WHERE site.id = (SELECT service.site_id FROM service WHERE service.id = instance.service_id))'), 'siteName'],
+            ],
+            where: whereClause,
+            order: orderClause,
+            offset: offset,
+            limit: limit,
+        })
+    } catch (err) {
+        next(err);
+        return;
+    }
+
+    res.json({
+        result: instances.rows,
+
+        perPage,
+        page,
+        sort,
+        totalPage: Math.ceil(instances.count / perPage),
+        totalCount: instances.count
+    });
+});
+
+router.delete('/:id', [
+    param('id').isInt({ min: 1 }).toInt()
+], async (req, res, next) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        return res.status(400).send();
+    }
+
+    const { id } = req.params;
+
+    try {
+        await sequelize.transaction(async (t) => {
+            const deletedCount = await Instance.destroy({
+                where: {
+                    id: id
+                }
+            })
+    
+            if (deletedCount === 0) {
+                throw new Error('not found');
+            }
+
+            await Log.destroy({
+                where: {
+                    instanceId: id
+                }
+            });
+        });
+    } catch (err) {
+        if(err.message === 'not found') {
+            return res.status(404).send();
+        }
+        next(err);
+        return;
+    }
+
+    return res.status(204).send();
+});
+
+router.post('/', [
+    body('serviceId').isInt({ min: 1 }).toInt(),
+    body('name').isString().trim().notEmpty(),
+    body('endpoint').isString().trim().notEmpty()
+], async (req, res, next) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        return res.status(400).send();
+    }
+
+    const { serviceId, name, endpoint } = req.body;
+
+    let serviceCount; 
+
+    try {
+        serviceCount = await Service.count({
+            where: {
+                id: serviceId
+            }
+        });
+    } catch(err) {
+        next(err);
+        return;
+    }
+
+    // 존재하지 않는 사이트라면 400을 리턴한다.
+    if(serviceCount === 0) {
+        return res.status(400).send();    
+    }
+
+    let instance;
+
+    try {
+        instance = await Instance.create({
+            serviceId,
+            name,
+            endpoint,
+            status: true
+        });
+    } catch(err) {
+        next(err);
+        return;
+    }
+
+    return res.status(201).send({
+        result: {
+            id: instance.id
+        }
+    });
+});
+
+router.put('/:id', [
+    param('id').isInt({ min: 1 }).toInt(),
+
+    body('name').isString().trim().notEmpty(),
+    body('endpoint').isString().trim().notEmpty()
+], async (req, res, next) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        return res.status(400).send();
+    }
+
+    const { id } = req.params;
+    const { name, endpoint } = req.body;
+
+    let instance; 
+
+    try {
+        instance = await Instance.findOne({
+            where: {
+                id: id
+            }
+        });
+    } catch(err) {
+        next(err);
+        return;
+    }
+
+    // 존재하지 않는 인스턴스라면 404을 리턴한다.
+    if(!instance) {
+        return res.status(404).send();    
+    }
+
+    try {
+        instance.name = name;
+        instance.endpoint = endpoint;
+        instance = await instance.save();
+    } catch(err) {
+        next(err);
+        return;
+    }
+
+    return res.status(201).send({
+        result: {
+            id: instance.id
+        }
+    });
 });
 
 module.exports = router;

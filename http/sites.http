@@ -1,4 +1,89 @@
-@host = http://localhost:3000
+@host = http://localhost:4000
 
 GET {{host}}/api/sites/count
-###
+### 전체 사이트 수 조회
+
+GET {{host}}/api/sites
+### 사이트 리스트 조회
+
+GET {{host}}/api/sites
+    ?name=대카
+### 사이트 리스트 조회 - 사이트명 검색
+
+GET {{host}}/api/sites/1
+### 사이트 상세 조회
+
+DELETE {{host}}/api/sites/1
+### 사이트 삭제
+
+POST {{host}}/api/sites
+Content-Type: multipart/form-data; boundary=Boundary
+
+--Boundary
+Content-Disposition: form-data; name="name"
+
+새로운 사이트
+--Boundary
+Content-Disposition: form-data; name="openDate"
+
+2020-03-26
+--Boundary--
+### 사이트 추가 로고 미첨부
+
+
+
+POST {{host}}/api/sites
+Content-Type: multipart/form-data; boundary=Boundary
+
+--Boundary
+Content-Disposition: form-data; name="name"
+
+새로운 사이트
+--Boundary
+Content-Disposition: form-data; name="openDate"
+
+2020-03-26
+--Boundary
+Content-Disposition: form-data; name="logoFile"; filename="logo-hyundaicard.jpg"
+Content-Type: image/jpg
+
+< ../test/file/logo-hyundaicard.jpg
+--Boundary--
+### 사이트 추가 로고 첨부
+
+
+
+PUT {{host}}/api/sites/2
+Content-Type: multipart/form-data; boundary=Boundary
+
+--Boundary
+Content-Disposition: form-data; name="name"
+
+수정사이트1
+--Boundary
+Content-Disposition: form-data; name="openDate"
+
+2020-03-26
+--Boundary--
+### 사이트 수정 로고 미첨부
+
+
+
+PUT {{host}}/api/sites/3
+Content-Type: multipart/form-data; boundary=Boundary
+
+--Boundary
+Content-Disposition: form-data; name="name"
+
+수정사이트2
+--Boundary
+Content-Disposition: form-data; name="openDate"
+
+2020-03-26
+--Boundary
+Content-Disposition: form-data; name="logoFile"; filename="logo-hyundaicard.jpg"
+Content-Type: image/jpg
+
+< ../test/file/logo-hyundaicard.jpg
+--Boundary--
+### 사이트 수정 로고 첨부
