@@ -25,7 +25,7 @@ router.get('/', [
             return openDateEnd;
         }
     }).optional(),
-    pagingMiddleware(Constants.PER_PAGE, ['name', 'role', 'numberOfInstances', 'openDate', 'endpoint'])
+    pagingMiddleware(Constants.PER_PAGE, ['name', 'role', 'numberOfInstances', 'openDate', 'endpoint', 'siteName'])
 ], async (req, res, next) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
@@ -69,6 +69,8 @@ router.get('/', [
             switch (s.key) {
                 case 'numberOfInstances':
                     return [Sequelize.literal('(SELECT COUNT(instance.service_id) FROM instance WHERE instance.service_id = service.id)'), s.value];
+                case 'siteName':
+                    return [Sequelize.literal('(SELECT site.name FROM site WHERE site.id = service.site_id)'), s.value];
                 default:
                     return [s.key, s.value];
             }
