@@ -3,7 +3,7 @@
 GET {{host}}/api/services
     ?perPage=10
     &page=1
-    &sort=name+asc,role+asc,numberOfInstances+desc,openDate+asc,endpoint+asc
+    &sort=name+asc,role+asc,numberOfInstances+desc,openDate+asc,endpoint+asc,siteName+asc
 # 서비스 리스트 조회 - paging, sort 예제
 ###
 

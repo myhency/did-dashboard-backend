@@ -27,7 +27,7 @@ describe('Services API', () => {
                     .query({
                         perPage: 10,
                         page: 1,
-                        sort: 'name asc,role asc,numberOfInstances desc,openDate asc,endpoint asc'
+                        sort: 'name asc,role asc,numberOfInstances desc,openDate asc,endpoint asc,siteName asc'
                     })
                     .expect(200)
                     .end((err, res) => {
